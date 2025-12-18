@@ -13,6 +13,6 @@
     "skipLibCheck": true,
     "sourceMap": true
   },
-  "include": ["src/**/*"],
+  "include": ["src/lib/**/*"],
   "exclude": ["dist", "node_modules", ".svelte-kit"]
 }
