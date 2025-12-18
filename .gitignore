@@ -1,0 +1,31 @@
+# Node modules
+node_modules
+
+# Output / build
+.output
+.vercel
+.netlify
+.wrangler
+/.svelte-kit
+/build
+/dist
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+.env.*
+!.env.example
+!.env.test
+
+# Vite cache / timestamp
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+
+# Optional: Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
