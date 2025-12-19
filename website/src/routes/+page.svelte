@@ -202,6 +202,49 @@
     name="description"
     content="A drawer component built with Svelte 5, inspired by Vaul. Supports multiple directions, nested drawers, and smooth animations."
   />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://drawer.abhivarde.in" />
+  <meta
+    property="og:title"
+    content="Svelte Drawer - A drawer component for Svelte 5"
+  />
+  <meta
+    property="og:description"
+    content="A drawer component built with Svelte 5, inspired by Vaul. Supports multiple directions, nested drawers, and smooth animations."
+  />
+  <meta
+    property="og:image"
+    content="https://drawer.abhivarde.in/og-image.png"
+  />
+  <meta property="og:image:width" content="800" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:site_name" content="Svelte Drawer" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://drawer.abhivarde.in" />
+  <meta
+    name="twitter:title"
+    content="Svelte Drawer - A drawer component for Svelte 5"
+  />
+  <meta
+    name="twitter:description"
+    content="A drawer component built with Svelte 5, inspired by Vaul. Supports multiple directions, nested drawers, and smooth animations."
+  />
+  <meta
+    name="twitter:image"
+    content="https://drawer.abhivarde.in/og-image.png"
+  />
+  <meta name="twitter:site" content="@varde_abhi" />
+  <meta name="twitter:creator" content="@varde_abhi" />
+
+  <meta name="robots" content="index,follow" />
+  <meta name="author" content="Abhi Varde" />
+  <meta
+    name="keywords"
+    content="svelte drawer, svelte 5 component, drawer component, mobile drawer, bottom sheet, vaul svelte, svelte dialog, svelte modal, svelte sheet, ui component library, svelte ui, responsive drawer, gesture drawer, nested drawer, svelte animation, web component, mobile ui, tablet ui, svelte library, npm package, open source svelte"
+  />
+  <link rel="canonical" href="https://drawer.abhivarde.in" />
 </svelte:head>
 
 <div class="min-h-screen bg-[#fafafa] flex flex-col">
