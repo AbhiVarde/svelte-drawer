@@ -1,6 +1,6 @@
 {
   "name": "@abhivarde/svelte-drawer",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A drawer component for Svelte 5, inspired by Vaul",
   "author": "Abhi Varde",
   "license": "MIT",
