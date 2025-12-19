@@ -13,3 +13,16 @@ export interface DrawerContentProps {
 export interface DrawerOverlayProps {
   class?: string;
 }
+
+export type DrawerVariant =
+  | "default"
+  | "sheet"
+  | "dialog"
+  | "minimal"
+  | "sidebar";
+
+export interface DrawerVariantsProps {
+  variant?: DrawerVariant;
+  class?: string;
+  trapFocus?: boolean;
+}
