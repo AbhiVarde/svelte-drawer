@@ -5,7 +5,6 @@
     DrawerContent,
   } from "@abhivarde/svelte-drawer";
 
-  // Drawer states
   let defaultOpen = $state(false);
   let sideOpen = $state(false);
   let nested1Open = $state(false);
@@ -13,7 +12,6 @@
   let scrollableOpen = $state(false);
   let controlledOpen = $state(false);
 
-  // Copy feedback
   let copyStatus: Record<string, "idle" | "success"> = $state({
     installation: "idle",
     usage: "idle",
@@ -49,10 +47,10 @@
     <p class="text-gray-600">Drawer content goes here.</p>
   </DrawerContent>
 </Drawer>`,
-    position: `<Drawer direction="bottom"> <!-- Default: from bottom --> </Drawer>
-<Drawer direction="top"> <!-- From top --> </Drawer>
-<Drawer direction="left"> <!-- From left --> </Drawer>
-<Drawer direction="right"> <!-- From right --> </Drawer>`,
+    position: `<Drawer direction="bottom"></Drawer>
+<Drawer direction="top"></Drawer>
+<Drawer direction="left"></Drawer>
+<Drawer direction="right"></Drawer>`,
     defaultDrawer: `<Drawer bind:open={defaultOpen}>
   <DrawerOverlay />
   <DrawerContent class="bg-gray-100 flex flex-col rounded-t-[10px] mt-24 h-fit fixed bottom-0 left-0 right-0 outline-none">
@@ -153,7 +151,6 @@
       <div class="max-w-md mx-auto space-y-4">
         <div aria-hidden="true" class="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-gray-300 mb-8"></div>
         <h2 class="font-medium mb-4 text-gray-900">Scrollable Drawer</h2>
-        <!-- Long content here -->
       </div>
     </div>
     <div class="p-4 bg-gray-100 border-t border-gray-200 mt-auto">
@@ -208,19 +205,18 @@
 </svelte:head>
 
 <div class="min-h-screen bg-[#fafafa] flex flex-col">
-  <!-- Hero -->
   <div class="w-full max-w-3xl mx-auto px-4 sm:px-6 py-12 text-center">
-    <h2 class="text-sm text-gray-500 mb-3">
-      Packages by
+    <p class="text-sm text-gray-500 mb-4">
+      npm:
       <a
-        href="https://abhivarde.in"
+        href="https://www.npmjs.com/package/@abhivarde/svelte-drawer"
         target="_blank"
         rel="noopener noreferrer"
         class="underline underline-offset-2 hover:text-gray-800 transition-colors"
       >
-        abhivarde.in
+        @abhivarde/svelte-drawer
       </a>
-    </h2>
+    </p>
 
     <h1 class="text-2xl sm:text-3xl font-medium mb-3">Svelte Drawer</h1>
 
@@ -236,7 +232,7 @@
       </a>.
     </p>
 
-    <div class="flex flex-wrap gap-4 justify-center">
+    <div class="flex justify-center gap-4 mb-6">
       <button
         onclick={() => (defaultOpen = true)}
         class="px-5 py-2 bg-black text-white rounded-md font-medium hover:bg-gray-800 transition text-sm"
@@ -253,11 +249,35 @@
         GitHub
       </a>
     </div>
+
+    <div class="space-y-1 text-sm text-gray-400">
+      <p>
+        UI library:
+        <a
+          href="https://syncui.design"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="underline underline-offset-2 hover:text-gray-600 transition-colors"
+        >
+          syncui.design
+        </a>
+      </p>
+
+      <p>
+        by
+        <a
+          href="https://abhivarde.in"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="underline underline-offset-2 hover:text-gray-600 transition-colors"
+        >
+          abhivarde.in
+        </a>
+      </p>
+    </div>
   </div>
 
-  <!-- Docs -->
   <div class="w-full max-w-3xl mx-auto px-4 sm:px-6 pb-16 space-y-12">
-    <!-- Installation -->
     <section>
       <h2 class="text-xl font-medium mb-3">Installation</h2>
       <div class="bg-white rounded-md border border-gray-200 p-4 relative">
@@ -300,7 +320,6 @@
       </div>
     </section>
 
-    <!-- Usage -->
     <section>
       <h2 class="text-xl font-medium mb-3">Usage</h2>
       <p class="text-sm text-gray-600 mb-4">
@@ -340,7 +359,6 @@
       </div>
     </section>
 
-    <!-- Position -->
     <section>
       <h2 class="text-xl font-medium mb-3">Position</h2>
       <p class="text-sm text-gray-600 mb-4">
@@ -380,7 +398,6 @@
       </div>
     </section>
 
-    <!-- Examples -->
     <section>
       <h2 class="text-xl font-medium mb-6">Examples</h2>
       <div class="space-y-10">
@@ -394,7 +411,6 @@
               Open {example.title}
             </button>
 
-            <!-- Safe & type-checked dynamic code access -->
             {#if example.key === "default"}
               {@const code = codeExamples.defaultDrawer}
               <div
@@ -598,7 +614,6 @@
   </div>
 </div>
 
-<!-- Live Drawers -->
 <Drawer bind:open={defaultOpen}>
   <DrawerOverlay />
   <DrawerContent
@@ -674,7 +689,7 @@
 <Drawer bind:open={nested1Open}>
   <DrawerOverlay />
   <DrawerContent
-    class="bg-gray-100 flex flex-col rounded-t-[10px] h-full mt-24 lg:h-fit max-h-[96%] fixed bottom-0 left-0 right-0"
+    class="bg-gray-100 flex flex-col rounded-t-[10px] h-full mt-24 lg:h-fit max-h-[40%] fixed bottom-0 left-0 right-0"
   >
     <div class="p-4 bg-white rounded-t-[10px] flex-1">
       <div
@@ -718,7 +733,7 @@
 <Drawer bind:open={nested2Open}>
   <DrawerOverlay class="z-[60]" />
   <DrawerContent
-    class="bg-gray-100 flex flex-col rounded-t-[10px] h-full mt-24 max-h-[94%] fixed bottom-0 left-0 right-0 z-[70]"
+    class="bg-gray-100 flex flex-col rounded-t-[10px] h-full mt-24 max-h-[60%] fixed bottom-0 left-0 right-0 z-[70]"
   >
     <div class="p-4 bg-white rounded-t-[10px] flex-1">
       <div
