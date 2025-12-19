@@ -4,8 +4,9 @@ A drawer component for Svelte 5, inspired by [Vaul](https://github.com/emilkowal
 
 ## Features
 
-- ✅ Smooth animations using Svelte 5's Spring motion
+- ✅ Smooth animations using Svelte 5's Tween motion
 - ✅ Multiple directions (bottom, top, left, right)
+- ✅ Prebuilt variants (default, sheet, dialog, minimal, sidebar)
 - ✅ Nested drawers support
 - ✅ Scrollable content
 - ✅ Keyboard shortcuts (Escape to close, Tab navigation)
@@ -111,6 +112,59 @@ npm install @abhivarde/svelte-drawer
 </Drawer>
 ```
 
+### Using Variants
+
+```svelte
+<script>
+	import { Drawer, DrawerOverlay, DrawerVariants } from '@abhivarde/svelte-drawer';
+
+	let open = $state(false);
+</script>
+
+<!-- Sheet variant (iOS-style bottom sheet) -->
+<Drawer bind:open>
+	<DrawerOverlay class="fixed inset-0 bg-black/40" />
+	<DrawerVariants variant="sheet">
+		<div class="p-6">
+			<h2>iOS-style Sheet</h2>
+			<p>Clean and modern bottom sheet design</p>
+		</div>
+	</DrawerVariants>
+</Drawer>
+
+<!-- Dialog variant (center modal) -->
+<Drawer bind:open>
+	<DrawerOverlay class="fixed inset-0 bg-black/40" />
+	<DrawerVariants variant="dialog">
+		<div class="p-6">
+			<h2>Dialog Style</h2>
+			<p>Center-positioned modal dialog</p>
+		</div>
+	</DrawerVariants>
+</Drawer>
+
+<!-- Sidebar variant (navigation drawer) -->
+<Drawer bind:open direction="right">
+	<DrawerOverlay class="fixed inset-0 bg-black/40" />
+	<DrawerVariants variant="sidebar">
+		<div class="p-6">
+			<h2>Sidebar Navigation</h2>
+			<p>Side navigation drawer</p>
+		</div>
+	</DrawerVariants>
+</Drawer>
+```
+
+## Variants
+
+Available variants for `DrawerVariants` component:
+
+- `default` - Standard bottom drawer with gray background
+- `sheet` - iOS-style bottom sheet (white, rounded, 85vh height)
+- `dialog` - Center modal dialog style
+- `minimal` - Simple bottom drawer without extra styling
+- `sidebar` - Side navigation drawer (full height)
+
 ## Keyboard Shortcuts
 
 - **Escape** - Close the drawer (can be disabled with `closeOnEscape={false}`)
@@ -145,6 +199,16 @@ Content container for the drawer.
 **Props:**
 
 - `class` (string, optional) - CSS classes for styling
+- `trapFocus` (boolean, optional, default: true) - Whether to trap focus inside drawer
+
+### DrawerVariants
+
+Pre-styled drawer content with built-in variants.
+
+**Props:**
+
+- `variant` ('default' | 'sheet' | 'dialog' | 'minimal' | 'sidebar', default: 'default') - Preset style variant
+- `class` (string, optional) - Additional CSS classes for styling
 - `trapFocus` (boolean, optional, default: true) - Whether to trap focus inside drawer
 
 ## Demo
