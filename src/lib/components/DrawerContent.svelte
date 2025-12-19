@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getContext } from "svelte";
+  import { getContext, onMount, tick } from "svelte";
 
   type DrawerContext = {
     open: boolean;
@@ -9,10 +9,16 @@
     closeDrawer: () => void;
   };
 
-  let { class: className = "", children, ...restProps } = $props();
+  let {
+    class: className = "",
+    trapFocus = true,
+    children,
+    ...restProps
+  } = $props();
 
   const drawer = getContext<DrawerContext>("drawer");
 
+  let contentElement = $state<HTMLDivElement | null>(null);
   let startPos = 0;
   let dragging = false;
 
@@ -95,13 +101,77 @@
     window.removeEventListener("pointermove", onPointerMove);
     window.removeEventListener("pointerup", onPointerUp);
   }
+
+  function getFocusableElements(): HTMLElement[] {
+    if (!contentElement) return [];
+
+    const focusableSelectors = [
+      "a[href]",
+      "button:not([disabled])",
+      "textarea:not([disabled])",
+      "input:not([disabled])",
+      "select:not([disabled])",
+      '[tabindex]:not([tabindex="-1"])',
+    ];
+
+    return Array.from(
+      contentElement.querySelectorAll(focusableSelectors.join(","))
+    ) as HTMLElement[];
+  }
+
+  function handleFocusTrap(e: KeyboardEvent) {
+    if (!trapFocus || !drawer.open) return;
+    if (e.key !== "Tab") return;
+
+    const focusableElements = getFocusableElements();
+    if (focusableElements.length === 0) return;
+
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+
+    if (e.shiftKey) {
+      if (document.activeElement === firstElement) {
+        e.preventDefault();
+        lastElement.focus();
+      }
+    } else {
+      if (document.activeElement === lastElement) {
+        e.preventDefault();
+        firstElement.focus();
+      }
+    }
+  }
+
+  $effect(() => {
+    if (drawer.open && trapFocus && contentElement) {
+      tick().then(() => {
+        const focusableElements = getFocusableElements();
+        if (focusableElements.length > 0) {
+          focusableElements[0].focus();
+        } else {
+          contentElement?.focus();
+        }
+      });
+    }
+  });
+
+  onMount(() => {
+    window.addEventListener("keydown", handleFocusTrap);
+    return () => {
+      window.removeEventListener("keydown", handleFocusTrap);
+    };
+  });
 </script>
 
 {#if drawer.open}
   <div
+    bind:this={contentElement}
     class={className}
     style="transform: {getTransform()}; z-index: 50; cursor: grab;"
     onpointerdown={onPointerDown}
+    tabindex="-1"
+    role="dialog"
+    aria-modal="true"
     {...restProps}
   >
     {@render children()}
