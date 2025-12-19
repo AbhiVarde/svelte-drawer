@@ -1,7 +1,6 @@
 <script lang="ts">
   import { getContext } from "svelte";
 
-  // Minimal inline type just to fix TypeScript
   type DrawerContext = {
     open: boolean;
     overlayOpacity: { current: number; set: (v: number) => void };
@@ -12,7 +11,6 @@
 
   let { class: className = "", children, ...restProps } = $props();
 
-  // Tell TypeScript that context has this shape
   const drawer = getContext<DrawerContext>("drawer");
 
   let startPos = 0;
@@ -36,6 +34,8 @@
 
   function onPointerDown(e: PointerEvent | TouchEvent) {
     dragging = true;
+    document.body.style.cursor = "grabbing";
+
     startPos =
       drawer.direction === "bottom" || drawer.direction === "top"
         ? "clientY" in e
@@ -51,6 +51,7 @@
 
   function onPointerMove(e: PointerEvent | TouchEvent) {
     if (!dragging) return;
+
     const current =
       drawer.direction === "bottom" || drawer.direction === "top"
         ? "clientY" in e
@@ -80,8 +81,16 @@
 
   function onPointerUp() {
     dragging = false;
-    if (drawer.drawerPosition.current > 30) drawer.closeDrawer();
-    else drawer.drawerPosition.set(0);
+    document.body.style.cursor = "default";
+
+    const pos = drawer.drawerPosition.current;
+    const deltaThreshold = 30;
+
+    if (pos > deltaThreshold) {
+      drawer.closeDrawer();
+    } else {
+      drawer.drawerPosition.set(0);
+    }
 
     window.removeEventListener("pointermove", onPointerMove);
     window.removeEventListener("pointerup", onPointerUp);
@@ -91,7 +100,7 @@
 {#if drawer.open}
   <div
     class={className}
-    style="transform: {getTransform()}; z-index: 50;"
+    style="transform: {getTransform()}; z-index: 50; cursor: grab;"
     onpointerdown={onPointerDown}
     {...restProps}
   >
