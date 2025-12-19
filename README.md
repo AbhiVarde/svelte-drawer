@@ -8,6 +8,8 @@ A drawer component for Svelte 5, inspired by [Vaul](https://github.com/emilkowal
 - ✅ Multiple directions (bottom, top, left, right)
 - ✅ Nested drawers support
 - ✅ Scrollable content
+- ✅ Keyboard shortcuts (Escape to close, Tab navigation)
+- ✅ Focus management (auto-focus, focus trap, focus restoration)
 - ✅ Fully accessible with keyboard navigation
 - ✅ TypeScript support
 - ✅ Customizable styling with Tailwind CSS
@@ -83,6 +85,38 @@ npm install @abhivarde/svelte-drawer
 </Drawer>
 ```
 
+### Disable Keyboard Features
+
+```svelte
+<script>
+	import { Drawer, DrawerOverlay, DrawerContent } from '@abhivarde/svelte-drawer';
+
+	let open = $state(false);
+</script>
+
+<!-- Disable Escape key -->
+<Drawer bind:open closeOnEscape={false}>
+	<DrawerOverlay class="fixed inset-0 bg-black/40" />
+	<DrawerContent class="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg p-4">
+		<h2>Cannot close with Escape</h2>
+	</DrawerContent>
+</Drawer>
+
+<!-- Disable focus trap -->
+<Drawer bind:open>
+	<DrawerOverlay class="fixed inset-0 bg-black/40" />
+	<DrawerContent trapFocus={false} class="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg p-4">
+		<h2>Tab navigation not restricted</h2>
+	</DrawerContent>
+</Drawer>
+```
+
+## Keyboard Shortcuts
+
+- **Escape** - Close the drawer (can be disabled with `closeOnEscape={false}`)
+- **Tab / Shift+Tab** - Navigate between focusable elements inside the drawer
+- **Enter / Space** (on overlay) - Close the drawer
+
 ## API Reference
 
 ### Drawer
@@ -94,6 +128,7 @@ Main wrapper component that manages drawer state and animations.
 - `open` (boolean, bindable) - Controls the open/closed state
 - `onOpenChange` (function, optional) - Callback when open state changes
 - `direction` ('bottom' | 'top' | 'left' | 'right', default: 'bottom') - Direction from which drawer slides
+- `closeOnEscape` (boolean, optional, default: true) - Whether Escape key closes the drawer
 
 ### DrawerOverlay
 
@@ -110,6 +145,7 @@ Content container for the drawer.
 **Props:**
 
 - `class` (string, optional) - CSS classes for styling
+- `trapFocus` (boolean, optional, default: true) - Whether to trap focus inside drawer
 
 ## Demo
 

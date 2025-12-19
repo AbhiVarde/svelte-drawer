@@ -1,25 +1,34 @@
 <script lang="ts">
   import { Tween } from "svelte/motion";
   import { cubicOut } from "svelte/easing";
-  import { setContext } from "svelte";
+  import { setContext, onMount } from "svelte";
 
   let {
     open = $bindable(false),
     onOpenChange = undefined,
     direction = "bottom",
+    closeOnEscape = true,
     children,
   } = $props();
 
   let overlayOpacity = new Tween(0, { duration: 300, easing: cubicOut });
   let drawerPosition = new Tween(100, { duration: 300, easing: cubicOut });
+  let previouslyFocusedElement: HTMLElement | null = null;
 
   $effect(() => {
     if (open) {
+      previouslyFocusedElement = document.activeElement as HTMLElement;
+
       overlayOpacity.set(1);
       drawerPosition.set(0);
     } else {
       overlayOpacity.set(0);
       drawerPosition.set(100);
+
+      if (previouslyFocusedElement) {
+        previouslyFocusedElement.focus();
+        previouslyFocusedElement = null;
+      }
     }
   });
 
@@ -27,6 +36,20 @@
     open = false;
     if (onOpenChange) onOpenChange(false);
   }
+
+  function handleKeydown(e: KeyboardEvent) {
+    if (open && closeOnEscape && e.key === "Escape") {
+      e.preventDefault();
+      closeDrawer();
+    }
+  }
+
+  onMount(() => {
+    window.addEventListener("keydown", handleKeydown);
+    return () => {
+      window.removeEventListener("keydown", handleKeydown);
+    };
+  });
 
   setContext("drawer", {
     get open() {
