@@ -3,8 +3,9 @@
 
   type DrawerContext = {
     open: boolean;
-    overlayOpacity: { current: number; set: (v: number) => void };
-    drawerPosition: { current: number; set: (v: number) => void };
+    visible: boolean;
+    overlayOpacity: { current: number; set: (v: number, opts?: any) => void };
+    drawerPosition: { current: number; set: (v: number, opts?: any) => void };
     direction: "bottom" | "top" | "left" | "right";
     closeDrawer: () => void;
   };
@@ -33,8 +34,6 @@
         return `translateX(-${pos}%)`;
       case "right":
         return `translateX(${pos}%)`;
-      default:
-        return `translateY(${pos}%)`;
     }
   }
 
@@ -90,9 +89,8 @@
     document.body.style.cursor = "default";
 
     const pos = drawer.drawerPosition.current;
-    const deltaThreshold = 30;
 
-    if (pos > deltaThreshold) {
+    if (pos > 30) {
       drawer.closeDrawer();
     } else {
       drawer.drawerPosition.set(0);
@@ -104,53 +102,36 @@
 
   function getFocusableElements(): HTMLElement[] {
     if (!contentElement) return [];
-
-    const focusableSelectors = [
-      "a[href]",
-      "button:not([disabled])",
-      "textarea:not([disabled])",
-      "input:not([disabled])",
-      "select:not([disabled])",
-      '[tabindex]:not([tabindex="-1"])',
-    ];
-
     return Array.from(
-      contentElement.querySelectorAll(focusableSelectors.join(","))
+      contentElement.querySelectorAll(
+        'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      )
     ) as HTMLElement[];
   }
 
   function handleFocusTrap(e: KeyboardEvent) {
-    if (!trapFocus || !drawer.open) return;
-    if (e.key !== "Tab") return;
+    if (!trapFocus || !drawer.open || e.key !== "Tab") return;
 
-    const focusableElements = getFocusableElements();
-    if (focusableElements.length === 0) return;
+    const focusable = getFocusableElements();
+    if (!focusable.length) return;
 
-    const firstElement = focusableElements[0];
-    const lastElement = focusableElements[focusableElements.length - 1];
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
 
-    if (e.shiftKey) {
-      if (document.activeElement === firstElement) {
-        e.preventDefault();
-        lastElement.focus();
-      }
-    } else {
-      if (document.activeElement === lastElement) {
-        e.preventDefault();
-        firstElement.focus();
-      }
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
     }
   }
 
   $effect(() => {
     if (drawer.open && trapFocus && contentElement) {
       tick().then(() => {
-        const focusableElements = getFocusableElements();
-        if (focusableElements.length > 0) {
-          focusableElements[0].focus();
-        } else {
-          contentElement?.focus();
-        }
+        const focusable = getFocusableElements();
+        (focusable[0] ?? contentElement)?.focus();
       });
     }
   });
@@ -163,11 +144,11 @@
   });
 </script>
 
-{#if drawer.open}
+{#if drawer.open || drawer.visible}
   <div
     bind:this={contentElement}
     class={className}
-    style="transform: {getTransform()}; z-index: 50; cursor: grab; transition: transform 300ms cubic-bezier(0.33, 1, 0.68, 1);"
+    style="transform: {getTransform()}; z-index: 50; cursor: grab;"
     onpointerdown={onPointerDown}
     tabindex="-1"
     role="dialog"

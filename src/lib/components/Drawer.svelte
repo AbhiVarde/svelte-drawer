@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Tween } from "svelte/motion";
-  import { cubicOut } from "svelte/easing";
+  import { expoOut } from "svelte/easing";
   import { setContext, onMount } from "svelte";
 
   let {
@@ -11,21 +11,31 @@
     children,
   } = $props();
 
-  let overlayOpacity = new Tween(0, { duration: 300, easing: cubicOut });
-  let drawerPosition = new Tween(100, { duration: 300, easing: cubicOut });
+  let overlayOpacity = new Tween(0, {
+    duration: 150,
+    easing: expoOut,
+  });
+
+  let drawerPosition = new Tween(100, {
+    duration: 220,
+    easing: expoOut,
+  });
+
   let previouslyFocusedElement: HTMLElement | null = null;
+
+  let visible = false;
 
   $effect(() => {
     if (open) {
+      visible = true;
       previouslyFocusedElement = document.activeElement as HTMLElement;
-
       document.body.style.overflow = "hidden";
 
       overlayOpacity.set(1);
       drawerPosition.set(0);
-    } else {
-      overlayOpacity.set(0);
-      drawerPosition.set(100);
+    } else if (visible) {
+      overlayOpacity.set(0, { duration: 120 });
+      drawerPosition.set(100, { duration: 180 });
 
       document.body.style.overflow = "";
 
@@ -33,12 +43,16 @@
         previouslyFocusedElement.focus();
         previouslyFocusedElement = null;
       }
+
+      setTimeout(() => {
+        visible = false;
+      }, 180);
     }
   });
 
   function closeDrawer() {
     open = false;
-    if (onOpenChange) onOpenChange(false);
+    onOpenChange?.(false);
   }
 
   function handleKeydown(e: KeyboardEvent) {
@@ -59,6 +73,9 @@
   setContext("drawer", {
     get open() {
       return open;
+    },
+    get visible() {
+      return visible;
     },
     get overlayOpacity() {
       return overlayOpacity;
