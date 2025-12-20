@@ -167,7 +167,7 @@
   <div
     bind:this={contentElement}
     class={className}
-    style="transform: {getTransform()}; z-index: 50; cursor: grab;"
+    style="transform: {getTransform()}; z-index: 50; cursor: grab; transition: transform 300ms cubic-bezier(0.33, 1, 0.68, 1);"
     onpointerdown={onPointerDown}
     tabindex="-1"
     role="dialog"

@@ -19,11 +19,15 @@
     if (open) {
       previouslyFocusedElement = document.activeElement as HTMLElement;
 
+      document.body.style.overflow = "hidden";
+
       overlayOpacity.set(1);
       drawerPosition.set(0);
     } else {
       overlayOpacity.set(0);
       drawerPosition.set(100);
+
+      document.body.style.overflow = "";
 
       if (previouslyFocusedElement) {
         previouslyFocusedElement.focus();
@@ -48,6 +52,7 @@
     window.addEventListener("keydown", handleKeydown);
     return () => {
       window.removeEventListener("keydown", handleKeydown);
+      document.body.style.overflow = "";
     };
   });
 
