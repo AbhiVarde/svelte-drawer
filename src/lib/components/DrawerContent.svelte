@@ -131,7 +131,11 @@
     if (drawer.open && trapFocus && contentElement) {
       tick().then(() => {
         const focusable = getFocusableElements();
-        (focusable[0] ?? contentElement)?.focus();
+        if (focusable[0]) {
+          focusable[0].focus({ preventScroll: true });
+        } else {
+          contentElement?.focus({ preventScroll: true });
+        }
       });
     }
   });
