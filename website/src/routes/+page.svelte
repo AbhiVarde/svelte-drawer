@@ -3,6 +3,7 @@
     Drawer,
     DrawerOverlay,
     DrawerContent,
+    DrawerVariants,
   } from "@abhivarde/svelte-drawer";
 
   let defaultOpen = $state(false);
@@ -11,6 +12,7 @@
   let nested2Open = $state(false);
   let scrollableOpen = $state(false);
   let controlledOpen = $state(false);
+  let variantOpen = $state(false);
 
   let copyStatus: Record<string, "idle" | "success"> = $state({
     installation: "idle",
@@ -21,6 +23,8 @@
     nested: "idle",
     scrollable: "idle",
     controlled: "idle",
+    variant: "idle",
+    "variants-feature": "idle",
   });
 
   async function copyToClipboard(text: string, key: string) {
@@ -186,6 +190,16 @@
       </div>
     </div>
   </DrawerContent>
+</Drawer>`,
+    variantDrawer: `<Drawer bind:open={variantOpen}>
+  <DrawerOverlay />
+  <DrawerVariants variant="sheet">
+    <div class="p-6">
+      <div class="mx-auto w-12 h-1.5 rounded-full bg-gray-300 mb-6" />
+      <h2 class="text-xl font-semibold mb-4">Sheet Variant</h2>
+      <p class="text-gray-600">This uses the prebuilt "sheet" variant style.</p>
+    </div>
+  </DrawerVariants>
 </Drawer>`,
   };
 
@@ -442,9 +456,108 @@
     </section>
 
     <section>
+      <h2 class="text-xl font-medium mb-3">Keyboard Shortcuts</h2>
+      <p class="text-sm text-gray-600 mb-4">
+        Press <kbd
+          class="px-2 py-1 bg-gray-100 rounded border border-gray-300 text-xs font-mono"
+          >Esc</kbd
+        >
+        to close the drawer. Disable with <code>closeOnEscape={false}</code>.
+      </p>
+      <div class="bg-white rounded-md border border-gray-200 p-4 relative">
+        <pre class="text-sm overflow-x-auto"><code
+            >&lt;Drawer bind:open closeOnEscape={true}&gt;
+  &lt;!-- Drawer content --&gt;
+&lt;/Drawer&gt;</code
+          ></pre>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="text-xl font-medium mb-3">Prebuilt Variants</h2>
+      <p class="text-sm text-gray-600 mb-4">
+        Use prebuilt variants for common drawer styles. Available variants: <code
+          >default</code
+        >, <code>sheet</code>, <code>dialog</code>, <code>minimal</code>, and
+        <code>sidebar</code>.
+      </p>
+      <div class="bg-white rounded-md border border-gray-200 p-4 relative">
+        <pre class="text-sm overflow-x-auto"><code
+            >&lt;Drawer bind:open&gt;
+  &lt;DrawerOverlay /&gt;
+  &lt;DrawerVariants variant="sheet"&gt;
+    &lt;div class="p-6"&gt;
+      &lt;h2&gt;Sheet Variant&lt;/h2&gt;
+      &lt;p&gt;Prebuilt styling applied!&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/DrawerVariants&gt;
+&lt;/Drawer&gt;
+
+&lt;!-- Available variants --&gt;
+&lt;DrawerVariants variant="default" /&gt;  &lt;!-- Default bottom drawer --&gt;
+&lt;DrawerVariants variant="sheet" /&gt;    &lt;!-- Full-height sheet --&gt;
+&lt;DrawerVariants variant="dialog" /&gt;   &lt;!-- Centered dialog --&gt;
+&lt;DrawerVariants variant="minimal" /&gt;  &lt;!-- Minimal bottom --&gt;
+&lt;DrawerVariants variant="sidebar" /&gt;  &lt;!-- Side panel --&gt;</code
+          ></pre>
+        <button
+          onclick={() =>
+            copyToClipboard(
+              `<Drawer bind:open>
+  <DrawerOverlay />
+  <DrawerVariants variant="sheet">
+    <div class="p-6">
+      <h2>Sheet Variant</h2>
+      <p>Prebuilt styling applied!</p>
+    </div>
+  </DrawerVariants>
+</Drawer>
+
+<!-- Available variants -->
+<DrawerVariants variant="default" />  <!-- Default bottom drawer -->
+<DrawerVariants variant="sheet" />    <!-- Full-height sheet -->
+<DrawerVariants variant="dialog" />   <!-- Centered dialog -->
+<DrawerVariants variant="minimal" />  <!-- Minimal bottom -->
+<DrawerVariants variant="sidebar" />  <!-- Side panel -->`,
+              "variants-feature"
+            )}
+          class="absolute right-3 top-3 p-1.5 rounded hover:bg-gray-100"
+        >
+          {#if copyStatus["variants-feature"] === "success"}
+            <svg
+              class="w-4 h-4 text-green-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              ><path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 13l4 4L19 7"
+              /></svg
+            >
+          {:else}
+            <svg
+              class="w-4 h-4 text-gray-500"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              ><path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+              /></svg
+            >
+          {/if}
+        </button>
+      </div>
+    </section>
+
+    <section>
       <h2 class="text-xl font-medium mb-6">Examples</h2>
       <div class="space-y-10">
-        {#each [{ title: "Default Drawer", key: "default", open: () => (defaultOpen = true) }, { title: "Side Drawer", key: "side", open: () => (sideOpen = true) }, { title: "Nested Drawers", key: "nested", open: () => (nested1Open = true) }, { title: "Scrollable Drawer", key: "scrollable", open: () => (scrollableOpen = true) }, { title: "Controlled Drawer", key: "controlled", open: () => (controlledOpen = true) }] as example}
+        {#each [{ title: "Default Drawer", key: "default", open: () => (defaultOpen = true) }, { title: "Side Drawer", key: "side", open: () => (sideOpen = true) }, { title: "Nested Drawers", key: "nested", open: () => (nested1Open = true) }, { title: "Scrollable Drawer", key: "scrollable", open: () => (scrollableOpen = true) }, { title: "Controlled Drawer", key: "controlled", open: () => (controlledOpen = true) }, { title: "Prebuilt Variants", key: "variant", open: () => (variantOpen = true) }] as example}
           <div>
             <h3 class="text-lg font-medium mb-3">{example.title}</h3>
             <button
@@ -621,6 +734,45 @@
                   class="absolute right-3 top-3 p-1.5 rounded hover:bg-gray-100"
                 >
                   {#if copyStatus.controlled === "success"}
+                    <svg
+                      class="w-4 h-4 text-green-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      ><path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M5 13l4 4L19 7"
+                      /></svg
+                    >
+                  {:else}
+                    <svg
+                      class="w-4 h-4 text-gray-500"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      ><path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                      /></svg
+                    >
+                  {/if}
+                </button>
+              </div>
+            {:else if example.key === "variant"}
+              {@const code = codeExamples.variantDrawer}
+              <div
+                class="bg-white rounded-md border border-gray-200 p-4 relative"
+              >
+                <pre class="text-sm overflow-x-auto"><code>{code}</code></pre>
+                <button
+                  onclick={() => copyToClipboard(code, "variant")}
+                  class="absolute right-3 top-3 p-1.5 rounded hover:bg-gray-100"
+                >
+                  {#if copyStatus.variant === "success"}
                     <svg
                       class="w-4 h-4 text-green-600"
                       fill="none"
@@ -899,4 +1051,23 @@
       </div>
     </div>
   </DrawerContent>
+</Drawer>
+
+<Drawer bind:open={variantOpen} closeOnEscape={true}>
+  <DrawerOverlay />
+  <DrawerVariants variant="sheet">
+    <div class="p-6">
+      <div class="mx-auto w-12 h-1.5 rounded-full bg-gray-300 mb-6"></div>
+      <h2 class="text-xl font-semibold mb-4 text-gray-900">Sheet Variant</h2>
+      <p class="text-gray-600 mb-4">
+        This drawer uses the prebuilt "sheet" variant.
+      </p>
+      <p class="text-gray-600 text-sm">
+        Press <kbd
+          class="px-2 py-1 bg-gray-100 rounded border text-xs font-mono"
+          >Esc</kbd
+        > to close.
+      </p>
+    </div>
+  </DrawerVariants>
 </Drawer>
