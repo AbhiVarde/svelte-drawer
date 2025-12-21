@@ -1,10 +1,13 @@
 # Svelte Drawer
 
+![GitHub Repo Views](https://gitviews.com/repo/AbhiVarde/svelte-drawer.svg)
+
 A drawer component for Svelte 5, inspired by [Vaul](https://github.com/emilkowalski/vaul).
 
 ## Features
 
-- ✅ Smooth animations using Svelte 5's Tween motion
+- ✅ Smooth animations and **gesture-driven dragging** (mouse & touch)
+- ✅ Mobile-optimized drag handling with **scroll prevention**
 - ✅ Multiple directions (bottom, top, left, right)
 - ✅ Prebuilt variants (default, sheet, dialog, minimal, sidebar)
 - ✅ Nested drawers support
