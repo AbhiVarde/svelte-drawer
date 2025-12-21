@@ -259,6 +259,12 @@
     content="svelte drawer, svelte 5 component, drawer component, mobile drawer, bottom sheet, vaul svelte, svelte dialog, svelte modal, svelte sheet, ui component library, svelte ui, responsive drawer, gesture drawer, nested drawer, svelte animation, web component, mobile ui, tablet ui, svelte library, npm package, open source svelte"
   />
   <link rel="canonical" href="https://drawer.abhivarde.in" />
+
+  <script
+    defer
+    src="https://cloud.umami.is/script.js"
+    data-website-id="7825f96f-0b2e-4151-9038-a8b2484df381"
+  ></script>
 </svelte:head>
 
 <div class="min-h-screen bg-[#fafafa] flex flex-col">
