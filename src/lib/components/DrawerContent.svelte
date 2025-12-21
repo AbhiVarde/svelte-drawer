@@ -21,6 +21,7 @@
 
   let contentElement = $state<HTMLDivElement | null>(null);
   let startPos = 0;
+  let startDragPos = 0;
   let dragging = false;
 
   function getTransform(): string {
@@ -38,8 +39,16 @@
   }
 
   function onPointerDown(e: PointerEvent | TouchEvent) {
+    const target = e.target as HTMLElement;
+    
+    if (
+      target.closest('button, a, input, textarea, select') &&
+      !target.closest('[data-drawer-drag]')
+    ) {
+      return;
+    }
+
     dragging = true;
-    document.body.style.cursor = "grabbing";
 
     startPos =
       drawer.direction === "bottom" || drawer.direction === "top"
@@ -50,12 +59,20 @@
           ? e.clientX
           : (e.touches[0]?.clientX ?? 0);
 
-    window.addEventListener("pointermove", onPointerMove);
+    startDragPos = drawer.drawerPosition.current;
+
+    window.addEventListener("pointermove", onPointerMove, { passive: false });
     window.addEventListener("pointerup", onPointerUp);
+    window.addEventListener("touchmove", onPointerMove, { passive: false });
+    window.addEventListener("touchend", onPointerUp);
+
+    e.preventDefault();
   }
 
   function onPointerMove(e: PointerEvent | TouchEvent) {
     if (!dragging) return;
+
+    e.preventDefault();
 
     const current =
       drawer.direction === "bottom" || drawer.direction === "top"
@@ -67,26 +84,25 @@
           : (e.touches[0]?.clientX ?? 0);
 
     const delta = current - startPos;
+    let newPos = startDragPos;
 
-    if (drawer.direction === "bottom")
-      drawer.drawerPosition.set(
-        Math.max(0, (delta / window.innerHeight) * 100)
-      );
-    else if (drawer.direction === "top")
-      drawer.drawerPosition.set(
-        Math.max(0, (-delta / window.innerHeight) * 100)
-      );
-    else if (drawer.direction === "left")
-      drawer.drawerPosition.set(
-        Math.max(0, (-delta / window.innerWidth) * 100)
-      );
-    else if (drawer.direction === "right")
-      drawer.drawerPosition.set(Math.max(0, (delta / window.innerWidth) * 100));
+    if (drawer.direction === "bottom") {
+      newPos = Math.max(0, startDragPos + (delta / window.innerHeight) * 100);
+    } else if (drawer.direction === "top") {
+      newPos = Math.max(0, startDragPos + (-delta / window.innerHeight) * 100);
+    } else if (drawer.direction === "left") {
+      newPos = Math.max(0, startDragPos + (-delta / window.innerWidth) * 100);
+    } else if (drawer.direction === "right") {
+      newPos = Math.max(0, startDragPos + (delta / window.innerWidth) * 100);
+    }
+
+    drawer.drawerPosition.set(newPos, { duration: 0 });
   }
 
   function onPointerUp() {
+    if (!dragging) return;
+    
     dragging = false;
-    document.body.style.cursor = "default";
 
     const pos = drawer.drawerPosition.current;
 
@@ -98,6 +114,8 @@
 
     window.removeEventListener("pointermove", onPointerMove);
     window.removeEventListener("pointerup", onPointerUp);
+    window.removeEventListener("touchmove", onPointerMove);
+    window.removeEventListener("touchend", onPointerUp);
   }
 
   function getFocusableElements(): HTMLElement[] {
@@ -152,11 +170,12 @@
   <div
     bind:this={contentElement}
     class={className}
-    style="transform: {getTransform()}; z-index: 50; cursor: grab;"
-    onpointerdown={onPointerDown}
+    style="transform: {getTransform()}; z-index: 50; touch-action: none;"
     tabindex="-1"
     role="dialog"
     aria-modal="true"
+    onpointerdown={onPointerDown}
+    ontouchstart={onPointerDown}
     {...restProps}
   >
     {@render children()}
