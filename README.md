@@ -1,5 +1,6 @@
 # Svelte Drawer
 
+[![npm version](https://img.shields.io/npm/v/@abhivarde/svelte-drawer)](https://www.npmjs.com/package/@abhivarde/svelte-drawer)
 ![GitHub Repo Views](https://gitviews.com/repo/AbhiVarde/svelte-drawer.svg)
 
 A drawer component for Svelte 5, inspired by [Vaul](https://github.com/emilkowalski/vaul).
