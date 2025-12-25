@@ -14,6 +14,10 @@ export interface DrawerOverlayProps {
   class?: string;
 }
 
+export interface DrawerHandleProps {
+  class?: string;
+}
+
 export type DrawerVariant =
   | "default"
   | "sheet"
