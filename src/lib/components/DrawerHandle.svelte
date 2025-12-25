@@ -15,8 +15,8 @@
 
   const defaultClasses = $derived(
     isVertical
-      ? "mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-gray-300"
-      : "my-auto w-1.5 h-12 flex-shrink-0 rounded-full bg-gray-300"
+      ? "mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-gray-300 cursor-grab active:cursor-grabbing"
+      : "my-auto w-1.5 h-12 flex-shrink-0 rounded-full bg-gray-300 cursor-grab active:cursor-grabbing"
   );
 
   const combinedClass = $derived(
