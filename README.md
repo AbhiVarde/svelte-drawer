@@ -11,6 +11,7 @@ A drawer component for Svelte 5, inspired by [Vaul](https://github.com/emilkowal
 - ✅ Mobile-optimized drag handling with **scroll prevention**
 - ✅ Multiple directions (bottom, top, left, right)
 - ✅ Prebuilt variants (default, sheet, dialog, minimal, sidebar)
+- ✅ **Drag handle component** with auto-adaptive orientation
 - ✅ Nested drawers support
 - ✅ Scrollable content
 - ✅ Keyboard shortcuts (Escape to close, Tab navigation)
@@ -31,7 +32,7 @@ npm install @abhivarde/svelte-drawer
 
 ```svelte
 <script>
-	import { Drawer, DrawerOverlay, DrawerContent } from '@abhivarde/svelte-drawer';
+	import { Drawer, DrawerOverlay, DrawerContent, DrawerHandle } from '@abhivarde/svelte-drawer';
 
 	let open = $state(false);
 </script>
@@ -43,6 +44,7 @@ npm install @abhivarde/svelte-drawer
 <Drawer bind:open>
 	<DrawerOverlay class="fixed inset-0 bg-black/40" />
 	<DrawerContent class="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg p-4">
+		<DrawerHandle class="mb-8" />
 		<h2>Drawer Content</h2>
 		<p>This is a drawer component.</p>
 		<button onclick={() => open = false}>Close</button>
@@ -54,7 +56,7 @@ npm install @abhivarde/svelte-drawer
 
 ```svelte
 <script>
-	import { Drawer, DrawerOverlay, DrawerContent } from '@abhivarde/svelte-drawer';
+	import { Drawer, DrawerOverlay, DrawerContent, DrawerHandle } from '@abhivarde/svelte-drawer';
 
 	let open = $state(false);
 </script>
@@ -62,6 +64,7 @@ npm install @abhivarde/svelte-drawer
 <Drawer bind:open direction="right">
 	<DrawerOverlay class="fixed inset-0 bg-black/40" />
 	<DrawerContent class="fixed right-0 top-0 bottom-0 w-80 bg-white p-4">
+		<DrawerHandle class="mb-4" />
 		<h2>Side Drawer</h2>
 		<button onclick={() => open = false}>Close</button>
 	</DrawerContent>
@@ -72,7 +75,7 @@ npm install @abhivarde/svelte-drawer
 
 ```svelte
 <script>
-	import { Drawer, DrawerOverlay, DrawerContent } from '@abhivarde/svelte-drawer';
+	import { Drawer, DrawerOverlay, DrawerContent, DrawerHandle } from '@abhivarde/svelte-drawer';
 
 	let open = $state(false);
 
@@ -85,6 +88,7 @@ npm install @abhivarde/svelte-drawer
 <Drawer bind:open onOpenChange={handleOpenChange}>
 	<DrawerOverlay class="fixed inset-0 bg-black/40" />
 	<DrawerContent class="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg p-4">
+		<DrawerHandle class="mb-8" />
 		<h2>Controlled Drawer</h2>
 	</DrawerContent>
 </Drawer>
@@ -120,7 +124,7 @@ npm install @abhivarde/svelte-drawer
 
 ```svelte
 <script>
-	import { Drawer, DrawerOverlay, DrawerVariants } from '@abhivarde/svelte-drawer';
+	import { Drawer, DrawerOverlay, DrawerVariants, DrawerHandle } from '@abhivarde/svelte-drawer';
 
 	let open = $state(false);
 </script>
@@ -130,6 +134,7 @@ npm install @abhivarde/svelte-drawer
 	<DrawerOverlay class="fixed inset-0 bg-black/40" />
 	<DrawerVariants variant="sheet">
 		<div class="p-6">
+			<DrawerHandle class="mb-6" />
 			<h2>iOS-style Sheet</h2>
 			<p>Clean and modern bottom sheet design</p>
 		</div>
@@ -152,10 +157,38 @@ npm install @abhivarde/svelte-drawer
 	<DrawerOverlay class="fixed inset-0 bg-black/40" />
 	<DrawerVariants variant="sidebar">
 		<div class="p-6">
+			<DrawerHandle class="mb-4" />
 			<h2>Sidebar Navigation</h2>
 			<p>Side navigation drawer</p>
 		</div>
 	</DrawerVariants>
+</Drawer>
+```
+
+### Drag Handle Customization
+
+```svelte
+<script>
+	import { Drawer, DrawerOverlay, DrawerContent, DrawerHandle } from '@abhivarde/svelte-drawer';
+
+	let open = $state(false);
+</script>
+
+<Drawer bind:open>
+	<DrawerOverlay class="fixed inset-0 bg-black/40" />
+	<DrawerContent class="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg p-4">
+		<!-- Default gray handle -->
+		<DrawerHandle class="mb-8" />
+
+		<!-- Custom colored handle -->
+		<!-- <DrawerHandle class="bg-blue-500 mb-8" /> -->
+
+		<!-- Larger handle -->
+		<!-- <DrawerHandle class="w-16 h-2 mb-8" /> -->
+
+		<h2>Drawer with Custom Handle</h2>
+		<p>The handle automatically adapts to drawer direction.</p>
+	</DrawerContent>
 </Drawer>
 ```
 
@@ -204,6 +237,34 @@ Content container for the drawer.
 
 - `class` (string, optional) - CSS classes for styling
 - `trapFocus` (boolean, optional, default: true) - Whether to trap focus inside drawer
+
+### DrawerHandle
+
+Visual drag indicator that automatically adapts to drawer direction.
+
+**Props:**
+
+- `class` (string, optional) - CSS classes for styling
+
+**Features:**
+
+- Automatically horizontal for `bottom`/`top` drawers (12px wide, 1.5px tall)
+- Automatically vertical for `left`/`right` drawers (1.5px wide, 12px tall)
+- Includes `data-drawer-drag` attribute for improved touch targeting
+- Fully customizable with Tailwind classes
+
+**Example:**
+
+```svelte
+<!-- Default gray handle -->
+<DrawerHandle class="mb-8" />
+
+<!-- Custom color -->
+<DrawerHandle class="bg-blue-500 mb-8" />
+
+<!-- Larger size -->
+<DrawerHandle class="w-16 h-2 mb-8" />
+```
 
 ### DrawerVariants
 
