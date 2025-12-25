@@ -4,6 +4,7 @@
     DrawerOverlay,
     DrawerContent,
     DrawerVariants,
+    DrawerHandle,
   } from "@abhivarde/svelte-drawer";
 
   let defaultOpen = $state(false);
@@ -35,7 +36,7 @@
 
   const codeExamples = {
     installation: `npm install @abhivarde/svelte-drawer`,
-    usage: `import { Drawer, DrawerOverlay, DrawerContent } from '@abhivarde/svelte-drawer';
+    usage: `import { Drawer, DrawerOverlay, DrawerContent, DrawerHandle } from '@abhivarde/svelte-drawer';
 
 <script>
   let open = $state(false);
@@ -46,7 +47,7 @@
 <Drawer bind:open>
   <DrawerOverlay />
   <DrawerContent class="bg-white rounded-t-lg p-6">
-    <div class="mx-auto w-12 h-1.5 rounded-full bg-gray-300 mb-8" />
+    <DrawerHandle class="mb-8" />
     <h2 class="text-lg font-medium">Drawer Title</h2>
     <p class="text-gray-600">Drawer content goes here.</p>
   </DrawerContent>
@@ -59,7 +60,7 @@
   <DrawerOverlay />
   <DrawerContent class="bg-gray-100 flex flex-col rounded-t-[10px] mt-24 h-fit fixed bottom-0 left-0 right-0 outline-none">
     <div class="p-4 bg-white rounded-t-[10px] flex-1">
-      <div aria-hidden="true" class="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-gray-300 mb-8"></div>
+      <DrawerHandle class="mb-8" />
       <div class="max-w-md mx-auto">
         <h2 class="font-medium mb-4 text-gray-900">Drawer for Svelte.</h2>
         <p class="text-gray-600 mb-2">This component can be used as a Dialog replacement on mobile and tablet devices.</p>
@@ -82,6 +83,7 @@
   <DrawerOverlay />
   <DrawerContent class="right-2 top-2 bottom-2 fixed outline-none w-[310px] flex">
     <div class="bg-zinc-50 h-full w-full grow p-5 flex flex-col rounded-[16px]">
+      <DrawerHandle class="mb-4" />
       <div class="max-w-md mx-auto">
         <h2 class="font-medium mb-2 text-zinc-900">It supports all directions.</h2>
         <p class="text-zinc-600 mb-2">This drawer is positioned on the right side.</p>
@@ -103,7 +105,7 @@
   <DrawerOverlay />
   <DrawerContent class="bg-gray-100 flex flex-col rounded-t-[10px] h-full mt-24 lg:h-fit max-h-[96%] fixed bottom-0 left-0 right-0">
     <div class="p-4 bg-white rounded-t-[10px] flex-1">
-      <div class="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-gray-300 mb-8"></div>
+      <DrawerHandle class="mb-8" />
       <div class="max-w-md mx-auto">
         <h2 class="font-medium mb-4 text-gray-900">Nested Drawers.</h2>
         <p class="text-gray-600 mb-2">Nesting drawers creates a stacking effect.</p>
@@ -130,7 +132,7 @@
   <DrawerOverlay class="z-[60]" />
   <DrawerContent class="bg-gray-100 flex flex-col rounded-t-[10px] h-full mt-24 max-h-[94%] fixed bottom-0 left-0 right-0 z-[70]">
     <div class="p-4 bg-white rounded-t-[10px] flex-1">
-      <div class="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-gray-300 mb-8"></div>
+      <DrawerHandle class="mb-8" />
       <div class="max-w-md mx-auto">
         <h2 class="font-medium mb-4 text-gray-900">This drawer is nested.</h2>
         <p class="text-gray-600 mb-2">Pull down to see the scaling effect.</p>
@@ -153,7 +155,7 @@
   <DrawerContent class="bg-gray-100 flex flex-col rounded-t-[10px] mt-24 h-[80%] lg:h-[320px] fixed bottom-0 left-0 right-0 outline-none">
     <div class="p-4 bg-white rounded-t-[10px] flex-1 overflow-y-auto">
       <div class="max-w-md mx-auto space-y-4">
-        <div aria-hidden="true" class="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-gray-300 mb-8"></div>
+        <DrawerHandle class="mb-8" />
         <h2 class="font-medium mb-4 text-gray-900">Scrollable Drawer</h2>
       </div>
     </div>
@@ -173,7 +175,7 @@
   <DrawerOverlay />
   <DrawerContent class="bg-gray-100 flex flex-col rounded-t-[10px] mt-24 h-fit fixed bottom-0 left-0 right-0 outline-none">
     <div class="p-4 bg-white rounded-t-[10px] flex-1">
-      <div class="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-gray-300 mb-8"></div>
+      <DrawerHandle class="mb-8" />
       <div class="max-w-md mx-auto">
         <h2 class="font-medium mb-4 text-gray-900">A controlled drawer.</h2>
         <p class="text-gray-600 mb-2">Control the state externally while still reacting to user gestures via onOpenChange.</p>
@@ -195,7 +197,7 @@
   <DrawerOverlay />
   <DrawerVariants variant="sheet">
     <div class="p-6">
-      <div class="mx-auto w-12 h-1.5 rounded-full bg-gray-300 mb-6" />
+      <DrawerHandle class="mb-6" />
       <h2 class="text-xl font-semibold mb-4">Sheet Variant</h2>
       <p class="text-gray-600">This uses the prebuilt "sheet" variant style.</p>
     </div>
@@ -821,10 +823,7 @@
     class="bg-gray-100 flex flex-col rounded-t-[10px] mt-24 h-fit fixed bottom-0 left-0 right-0 outline-none"
   >
     <div class="p-4 bg-white rounded-t-[10px] flex-1">
-      <div
-        aria-hidden="true"
-        class="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-gray-300 mb-8"
-      ></div>
+      <DrawerHandle class="mb-8" />
       <div class="max-w-md mx-auto">
         <h2 class="font-medium mb-4 text-gray-900">Drawer for Svelte.</h2>
         <p class="text-gray-600 mb-2">
@@ -858,29 +857,32 @@
   <DrawerContent
     class="right-2 top-2 bottom-2 fixed outline-none w-[310px] flex"
   >
-    <div class="bg-zinc-50 h-full w-full grow p-5 flex flex-col rounded-[16px]">
-      <div class="max-w-md mx-auto">
-        <h2 class="font-medium mb-2 text-zinc-900">
-          It supports all directions.
-        </h2>
-        <p class="text-zinc-600 mb-2">
-          This drawer is positioned on the right side.
-        </p>
-      </div>
-      <div class="mt-auto pt-8">
-        <div class="flex gap-6 justify-center">
-          <a
-            class="text-xs text-zinc-600 flex items-center gap-0.5 hover:text-zinc-900"
-            href="https://github.com/AbhiVarde/svelte-drawer"
-            target="_blank"
-            rel="noopener noreferrer">GitHub {@html externalLinkIcon}</a
-          >
-          <a
-            class="text-xs text-zinc-600 flex items-center gap-0.5 hover:text-zinc-900"
-            href="https://x.com/varde_abhi"
-            target="_blank"
-            rel="noopener noreferrer">X {@html externalLinkIcon}</a
-          >
+    <div class="bg-zinc-50 h-full w-full grow p-5 flex rounded-[16px]">
+      <DrawerHandle class="mr-4" />
+      <div class="flex flex-col flex-1">
+        <div class="max-w-md mx-auto">
+          <h2 class="font-medium mb-2 text-zinc-900">
+            It supports all directions.
+          </h2>
+          <p class="text-zinc-600 mb-2">
+            This drawer is positioned on the right side.
+          </p>
+        </div>
+        <div class="mt-auto pt-8">
+          <div class="flex gap-6 justify-center">
+            <a
+              class="text-xs text-zinc-600 flex items-center gap-0.5 hover:text-zinc-900"
+              href="https://github.com/AbhiVarde/svelte-drawer"
+              target="_blank"
+              rel="noopener noreferrer">GitHub {@html externalLinkIcon}</a
+            >
+            <a
+              class="text-xs text-zinc-600 flex items-center gap-0.5 hover:text-zinc-900"
+              href="https://x.com/varde_abhi"
+              target="_blank"
+              rel="noopener noreferrer">X {@html externalLinkIcon}</a
+            >
+          </div>
         </div>
       </div>
     </div>
@@ -893,9 +895,7 @@
     class="bg-gray-100 flex flex-col rounded-t-[10px] h-full mt-24 lg:h-fit max-h-[40%] fixed bottom-0 left-0 right-0"
   >
     <div class="p-4 bg-white rounded-t-[10px] flex-1">
-      <div
-        class="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-gray-300 mb-8"
-      ></div>
+      <DrawerHandle class="mb-8" />
       <div class="max-w-md mx-auto">
         <h2 class="font-medium mb-4 text-gray-900">Nested Drawers.</h2>
         <p class="text-gray-600 mb-2">
@@ -937,9 +937,7 @@
     class="bg-gray-100 flex flex-col rounded-t-[10px] h-full mt-24 max-h-[60%] fixed bottom-0 left-0 right-0 z-[70]"
   >
     <div class="p-4 bg-white rounded-t-[10px] flex-1">
-      <div
-        class="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-gray-300 mb-8"
-      ></div>
+      <DrawerHandle class="mb-8" />
       <div class="max-w-md mx-auto">
         <h2 class="font-medium mb-4 text-gray-900">This drawer is nested.</h2>
         <p class="text-gray-600 mb-2">Pull down to see the scaling effect.</p>
@@ -1029,9 +1027,7 @@
     class="bg-gray-100 flex flex-col rounded-t-[10px] mt-24 h-fit fixed bottom-0 left-0 right-0 outline-none"
   >
     <div class="p-4 bg-white rounded-t-[10px] flex-1">
-      <div
-        class="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-gray-300 mb-8"
-      ></div>
+      <DrawerHandle class="mb-8" />
       <div class="max-w-md mx-auto">
         <h2 class="font-medium mb-4 text-gray-900">A controlled drawer.</h2>
         <p class="text-gray-600 mb-2">
@@ -1063,7 +1059,7 @@
   <DrawerOverlay />
   <DrawerVariants variant="sheet">
     <div class="p-6">
-      <div class="mx-auto w-12 h-1.5 rounded-full bg-gray-300 mb-6"></div>
+      <DrawerHandle class="mb-6" />
       <h2 class="text-xl font-semibold mb-4 text-gray-900">Sheet Variant</h2>
       <p class="text-gray-600 mb-4">
         This drawer uses the prebuilt "sheet" variant.
