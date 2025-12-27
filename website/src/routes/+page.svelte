@@ -14,6 +14,8 @@
   let scrollableOpen = $state(false);
   let controlledOpen = $state(false);
   let variantOpen = $state(false);
+  let snapPointOpen = $state(false);
+  let currentSnapPoint = $state<number | undefined>(undefined);
 
   let copyStatus: Record<string, "idle" | "success"> = $state({
     installation: "idle",
@@ -26,6 +28,7 @@
     controlled: "idle",
     variant: "idle",
     "variants-feature": "idle",
+    snappoint: "idle",
   });
 
   async function copyToClipboard(text: string, key: string) {
@@ -202,6 +205,53 @@
       <p class="text-gray-600">This uses the prebuilt "sheet" variant style.</p>
     </div>
   </DrawerVariants>
+</Drawer>`,
+    snapPointDrawer: `<script>
+  let open = $state(false);
+  let activeSnapPoint = $state(undefined);
+<\/script>
+
+<Drawer 
+  bind:open 
+  snapPoints={[0.25, 0.5, 0.9]}
+  bind:activeSnapPoint
+  onSnapPointChange={(point) => console.log('Snapped to:', point)}
+>
+  <DrawerOverlay />
+  <DrawerContent class="bg-gray-100 flex flex-col rounded-t-[10px] fixed bottom-0 left-0 right-0 outline-none">
+    <div class="p-4 bg-white rounded-t-[10px] flex-1">
+      <DrawerHandle class="mb-8" />
+      <div class="max-w-md mx-auto">
+        <h2 class="font-medium mb-4 text-gray-900">Snap Points Drawer</h2>
+        <p class="text-gray-600 mb-2">
+          Try dragging this drawer! It will snap to 25%, 50%, or 90% heights.
+        </p>
+        <p class="text-gray-600 mb-4">
+          Current: {activeSnapPoint ? \`\${(activeSnapPoint * 100).toFixed(0)}%\` : 'Loading...'}
+        </p>
+        <div class="space-y-2">
+          <button 
+            onclick={() => activeSnapPoint = 0.25}
+            class="w-full px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+          >
+            Snap to 25%
+          </button>
+          <button 
+            onclick={() => activeSnapPoint = 0.5}
+            class="w-full px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+          >
+            Snap to 50%
+          </button>
+          <button 
+            onclick={() => activeSnapPoint = 0.9}
+            class="w-full px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+          >
+            Snap to 90%
+          </button>
+        </div>
+      </div>
+    </div>
+  </DrawerContent>
 </Drawer>`,
   };
 
@@ -563,9 +613,56 @@
     </section>
 
     <section>
+      <h2 class="text-xl font-medium mb-3">Snap Points</h2>
+      <p class="text-sm text-gray-600 mb-4">
+        Snap points allow the drawer to rest at predefined heights, creating an
+        iOS-like sheet experience. Drag to snap between positions or control
+        programmatically.
+      </p>
+      <div class="bg-white rounded-md border border-gray-200 p-4 relative">
+        <pre class="text-sm overflow-x-auto"><code
+            >{codeExamples.snapPointDrawer}</code
+          ></pre>
+        <button
+          onclick={() =>
+            copyToClipboard(codeExamples.snapPointDrawer, "snappoint")}
+          class="absolute right-3 top-3 p-1.5 rounded hover:bg-gray-100"
+        >
+          {#if copyStatus.snappoint === "success"}
+            <svg
+              class="w-4 h-4 text-green-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              ><path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 13l4 4L19 7"
+              /></svg
+            >
+          {:else}
+            <svg
+              class="w-4 h-4 text-gray-500"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              ><path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+              /></svg
+            >
+          {/if}
+        </button>
+      </div>
+    </section>
+
+    <section>
       <h2 class="text-xl font-medium mb-6">Examples</h2>
       <div class="space-y-10">
-        {#each [{ title: "Default Drawer", key: "default", open: () => (defaultOpen = true) }, { title: "Side Drawer", key: "side", open: () => (sideOpen = true) }, { title: "Nested Drawers", key: "nested", open: () => (nested1Open = true) }, { title: "Scrollable Drawer", key: "scrollable", open: () => (scrollableOpen = true) }, { title: "Controlled Drawer", key: "controlled", open: () => (controlledOpen = true) }, { title: "Prebuilt Variants", key: "variant", open: () => (variantOpen = true) }] as example}
+        {#each [{ title: "Default Drawer", key: "default", open: () => (defaultOpen = true) }, { title: "Side Drawer", key: "side", open: () => (sideOpen = true) }, { title: "Nested Drawers", key: "nested", open: () => (nested1Open = true) }, { title: "Scrollable Drawer", key: "scrollable", open: () => (scrollableOpen = true) }, { title: "Controlled Drawer", key: "controlled", open: () => (controlledOpen = true) }, { title: "Prebuilt Variants", key: "variant", open: () => (variantOpen = true) }, { title: "Snap Points", key: "snappoint", open: () => (snapPointOpen = true) }] as example}
           <div>
             <h3 class="text-lg font-medium mb-3">{example.title}</h3>
             <button
@@ -781,6 +878,45 @@
                   class="absolute right-3 top-3 p-1.5 rounded hover:bg-gray-100"
                 >
                   {#if copyStatus.variant === "success"}
+                    <svg
+                      class="w-4 h-4 text-green-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      ><path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M5 13l4 4L19 7"
+                      /></svg
+                    >
+                  {:else}
+                    <svg
+                      class="w-4 h-4 text-gray-500"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      ><path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                      /></svg
+                    >
+                  {/if}
+                </button>
+              </div>
+            {:else if example.key === "snappoint"}
+              {@const code = codeExamples.snapPointDrawer}
+              <div
+                class="bg-white rounded-md border border-gray-200 p-4 relative"
+              >
+                <pre class="text-sm overflow-x-auto"><code>{code}</code></pre>
+                <button
+                  onclick={() => copyToClipboard(code, "snappoint")}
+                  class="absolute right-3 top-3 p-1.5 rounded hover:bg-gray-100"
+                >
+                  {#if copyStatus.snappoint === "success"}
                     <svg
                       class="w-4 h-4 text-green-600"
                       fill="none"
@@ -1072,4 +1208,69 @@
       </p>
     </div>
   </DrawerVariants>
+</Drawer>
+
+<Drawer
+  bind:open={snapPointOpen}
+  snapPoints={[0.25, 0.5, 0.9]}
+  bind:activeSnapPoint={currentSnapPoint}
+  onSnapPointChange={(point: number) => console.log("Snapped to:", point)}
+>
+  <DrawerOverlay />
+  <DrawerContent
+    class="bg-gray-100 flex flex-col rounded-t-[10px] fixed bottom-0 left-0 right-0 outline-none"
+  >
+    <div class="p-4 bg-white rounded-t-[10px] flex-1">
+      <DrawerHandle class="mb-8" />
+      <div class="max-w-md mx-auto">
+        <h2 class="font-medium mb-4 text-gray-900">Snap Points Drawer</h2>
+        <p class="text-gray-600 mb-2">
+          Try dragging this drawer! It will snap to 25%, 50%, or 90% heights.
+        </p>
+        <p class="text-gray-600 mb-4">
+          Current position: <strong
+            >{currentSnapPoint
+              ? `${(currentSnapPoint * 100).toFixed(0)}%`
+              : "Loading..."}</strong
+          >
+        </p>
+        <div class="space-y-2">
+          <button
+            onclick={() => (currentSnapPoint = 0.25)}
+            class="w-full px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 text-sm font-medium"
+          >
+            Snap to 25%
+          </button>
+          <button
+            onclick={() => (currentSnapPoint = 0.5)}
+            class="w-full px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 text-sm font-medium"
+          >
+            Snap to 50%
+          </button>
+          <button
+            onclick={() => (currentSnapPoint = 0.9)}
+            class="w-full px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 text-sm font-medium"
+          >
+            Snap to 90%
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="p-4 bg-gray-100 border-t border-gray-200 mt-auto">
+      <div class="flex gap-6 justify-end max-w-md mx-auto">
+        <a
+          class="text-xs text-gray-600 flex items-center gap-0.5 hover:text-gray-900"
+          href="https://github.com/AbhiVarde/svelte-drawer"
+          target="_blank"
+          rel="noopener noreferrer">GitHub {@html externalLinkIcon}</a
+        >
+        <a
+          class="text-xs text-gray-600 flex items-center gap-0.5 hover:text-gray-900"
+          href="https://x.com/varde_abhi"
+          target="_blank"
+          rel="noopener noreferrer">X {@html externalLinkIcon}</a
+        >
+      </div>
+    </div>
+  </DrawerContent>
 </Drawer>
