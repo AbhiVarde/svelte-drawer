@@ -7,18 +7,19 @@ A drawer component for Svelte 5, inspired by [Vaul](https://github.com/emilkowal
 
 ## Features
 
-- ✅ Smooth animations and **gesture-driven dragging** (mouse & touch)
+- ✅ Smooth animations with **gesture-driven dragging** (mouse & touch)
 - ✅ Mobile-optimized drag handling with **scroll prevention**
-- ✅ Multiple directions (bottom, top, left, right)
-- ✅ Prebuilt variants (default, sheet, dialog, minimal, sidebar)
+- ✅ Support for multiple directions (**bottom, top, left, right**)
+- ✅ Prebuilt variants (**default, sheet, dialog, minimal, sidebar**)
 - ✅ **Drag handle component** with auto-adaptive orientation
-- ✅ Nested drawers support
-- ✅ Scrollable content
-- ✅ Keyboard shortcuts (Escape to close, Tab navigation)
-- ✅ Focus management (auto-focus, focus trap, focus restoration)
+- ✅ **Snap points** for iOS-like multi-height drawers
+- ✅ Nested drawer support
+- ✅ Scrollable content areas
+- ✅ Keyboard shortcuts (**Escape to close**, Tab navigation)
+- ✅ Focus management (**auto-focus, focus trap, focus restoration**)
 - ✅ Fully accessible with keyboard navigation
-- ✅ TypeScript support
-- ✅ Customizable styling with Tailwind CSS
+- ✅ Full **TypeScript** support
+- ✅ Customizable styling with **Tailwind CSS**
 
 ## Installation
 
@@ -192,6 +193,44 @@ npm install @abhivarde/svelte-drawer
 </Drawer>
 ```
 
+### Snap Points
+
+Snap points allow the drawer to rest at predefined heights, creating an iOS-like sheet experience.
+
+```svelte
+<script>
+	import { Drawer, DrawerOverlay, DrawerContent, DrawerHandle } from '@abhivarde/svelte-drawer';
+
+	let open = $state(false);
+	let activeSnapPoint = $state(undefined);
+</script>
+
+<Drawer
+	bind:open
+	snapPoints={[0.25, 0.5, 0.9]}
+	bind:activeSnapPoint
+	onSnapPointChange={(point) => console.log('Snapped to:', point)}
+>
+	<DrawerOverlay class="fixed inset-0 bg-black/40" />
+	<DrawerContent class="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg p-4">
+		<DrawerHandle class="mb-8" />
+		<h2>Drawer with Snap Points</h2>
+		<p>Drag to see snapping behavior at 25%, 50%, and 90%</p>
+
+		<!-- Programmatically change snap point -->
+		<button onclick={() => activeSnapPoint = 0.5}>Jump to 50%</button>
+	</DrawerContent>
+</Drawer>
+```
+
+**How it works:**
+
+- Snap point values range from 0 to 1 (e.g., `0.5` = 50% of screen height)
+- The drawer automatically snaps to the nearest point when released
+- Dragging beyond the lowest snap point dismisses the drawer
+- Use `bind:activeSnapPoint` to programmatically control the current position
+- Use `onSnapPointChange` callback to react to snap changes
+
 ## Variants
 
 Available variants for `DrawerVariants` component:
@@ -220,6 +259,9 @@ Main wrapper component that manages drawer state and animations.
 - `onOpenChange` (function, optional) - Callback when open state changes
 - `direction` ('bottom' | 'top' | 'left' | 'right', default: 'bottom') - Direction from which drawer slides
 - `closeOnEscape` (boolean, optional, default: true) - Whether Escape key closes the drawer
+- `snapPoints` (number[], optional) - Array of snap positions between 0-1, where 1 is fully open (e.g., `[0.25, 0.5, 0.9]`)
+- `activeSnapPoint` (number, bindable, optional) - Current active snap point value
+- `onSnapPointChange` (function, optional) - Callback fired when the drawer snaps to a different point
 
 ### DrawerOverlay
 

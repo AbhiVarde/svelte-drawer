@@ -8,6 +8,9 @@
     onOpenChange = undefined,
     direction = "bottom",
     closeOnEscape = true,
+    snapPoints = undefined,
+    activeSnapPoint = $bindable(undefined),
+    onSnapPointChange = undefined,
     children,
   } = $props();
 
@@ -33,6 +36,14 @@
 
       overlayOpacity.set(1);
       drawerPosition.set(0);
+
+      if (
+        snapPoints &&
+        snapPoints.length > 0 &&
+        activeSnapPoint === undefined
+      ) {
+        activeSnapPoint = snapPoints[snapPoints.length - 1];
+      }
     } else if (visible) {
       overlayOpacity.set(0, { duration: 120 });
       drawerPosition.set(100, { duration: 180 });
@@ -85,6 +96,16 @@
     },
     get direction() {
       return direction;
+    },
+    get snapPoints() {
+      return snapPoints;
+    },
+    get activeSnapPoint() {
+      return activeSnapPoint;
+    },
+    setActiveSnapPoint(point: number) {
+      activeSnapPoint = point;
+      onSnapPointChange?.(point);
     },
     closeDrawer,
   });

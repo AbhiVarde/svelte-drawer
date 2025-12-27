@@ -8,6 +8,9 @@
     drawerPosition: { current: number; set: (v: number, opts?: any) => void };
     direction: "bottom" | "top" | "left" | "right";
     closeDrawer: () => void;
+    snapPoints?: number[];
+    activeSnapPoint?: number;
+    setActiveSnapPoint?: (point: number) => void;
   };
 
   let {
@@ -24,8 +27,53 @@
   let startDragPos = 0;
   let dragging = false;
 
+  function snapPointToPosition(snapPoint: number): number {
+    // snapPoint is 0-1 where 1 = fully open (0% position)
+    // Convert: 1 -> 0%, 0.5 -> 50%, 0 -> 100%
+    return (1 - snapPoint) * 100;
+  }
+
+  function findNearestSnapPoint(currentPos: number): number {
+    if (!drawer.snapPoints || drawer.snapPoints.length === 0) {
+      return currentPos;
+    }
+
+    const currentSnapValue = 1 - currentPos / 100;
+    let nearest = drawer.snapPoints[0];
+    let minDiff = Math.abs(currentSnapValue - nearest);
+
+    for (const snapPoint of drawer.snapPoints) {
+      const diff = Math.abs(currentSnapValue - snapPoint);
+      if (diff < minDiff) {
+        minDiff = diff;
+        nearest = snapPoint;
+      }
+    }
+
+    return nearest;
+  }
+
   function getTransform(): string {
     const pos = drawer.drawerPosition.current;
+
+    if (
+      drawer.snapPoints &&
+      drawer.activeSnapPoint !== undefined &&
+      !dragging
+    ) {
+      const snapPos = snapPointToPosition(drawer.activeSnapPoint);
+      switch (drawer.direction) {
+        case "bottom":
+          return `translateY(${snapPos}%)`;
+        case "top":
+          return `translateY(-${snapPos}%)`;
+        case "left":
+          return `translateX(-${snapPos}%)`;
+        case "right":
+          return `translateX(${snapPos}%)`;
+      }
+    }
+
     switch (drawer.direction) {
       case "bottom":
         return `translateY(${pos}%)`;
@@ -40,10 +88,10 @@
 
   function onPointerDown(e: PointerEvent | TouchEvent) {
     const target = e.target as HTMLElement;
-    
+
     if (
-      target.closest('button, a, input, textarea, select') &&
-      !target.closest('[data-drawer-drag]')
+      target.closest("button, a, input, textarea, select") &&
+      !target.closest("[data-drawer-drag]")
     ) {
       return;
     }
@@ -101,15 +149,30 @@
 
   function onPointerUp() {
     if (!dragging) return;
-    
+
     dragging = false;
 
     const pos = drawer.drawerPosition.current;
 
-    if (pos > 30) {
-      drawer.closeDrawer();
+    if (drawer.snapPoints && drawer.snapPoints.length > 0) {
+      const nearestSnapPoint = findNearestSnapPoint(pos);
+      const snapPos = snapPointToPosition(nearestSnapPoint);
+
+      const lowestSnapPoint = Math.min(...drawer.snapPoints);
+      const lowestSnapPos = snapPointToPosition(lowestSnapPoint);
+
+      if (pos > lowestSnapPos + 30) {
+        drawer.closeDrawer();
+      } else {
+        drawer.drawerPosition.set(snapPos);
+        drawer.setActiveSnapPoint?.(nearestSnapPoint);
+      }
     } else {
-      drawer.drawerPosition.set(0);
+      if (pos > 30) {
+        drawer.closeDrawer();
+      } else {
+        drawer.drawerPosition.set(0);
+      }
     }
 
     window.removeEventListener("pointermove", onPointerMove);

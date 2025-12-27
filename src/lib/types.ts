@@ -3,6 +3,9 @@ export interface DrawerProps {
   onOpenChange?: (open: boolean) => void;
   direction?: "bottom" | "top" | "left" | "right";
   closeOnEscape?: boolean;
+  snapPoints?: number[];
+  activeSnapPoint?: number;
+  onSnapPointChange?: (snapPoint: number) => void;
 }
 
 export interface DrawerContentProps {
