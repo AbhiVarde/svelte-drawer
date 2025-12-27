@@ -41,7 +41,7 @@
           activeSnapPoint = snapPoints[snapPoints.length - 1];
         }
         const snapPos = (1 - activeSnapPoint) * 100;
-        drawerPosition.set(snapPos, { duration: 0 });
+        drawerPosition.set(snapPos);
       } else {
         drawerPosition.set(0);
       }
