@@ -59,7 +59,8 @@
     if (
       drawer.snapPoints &&
       drawer.activeSnapPoint !== undefined &&
-      !dragging
+      !dragging &&
+      drawer.open
     ) {
       const snapPos = snapPointToPosition(drawer.activeSnapPoint);
       switch (drawer.direction) {
