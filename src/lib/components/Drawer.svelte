@@ -35,16 +35,26 @@
       document.body.style.overflow = "hidden";
 
       overlayOpacity.set(1);
-      drawerPosition.set(0);
 
+      if (snapPoints && snapPoints.length > 0) {
+        if (activeSnapPoint === undefined) {
+          activeSnapPoint = snapPoints[snapPoints.length - 1];
+        }
+        const snapPos = (1 - activeSnapPoint) * 100;
+        drawerPosition.set(snapPos, { duration: 0 });
+      } else {
+        drawerPosition.set(0);
+      }
+    } else if (visible) {
       if (
         snapPoints &&
         snapPoints.length > 0 &&
-        activeSnapPoint === undefined
+        activeSnapPoint !== undefined
       ) {
-        activeSnapPoint = snapPoints[snapPoints.length - 1];
+        const currentSnapPos = (1 - activeSnapPoint) * 100;
+        drawerPosition.set(currentSnapPos, { duration: 0 });
       }
-    } else if (visible) {
+
       overlayOpacity.set(0, { duration: 120 });
       drawerPosition.set(100, { duration: 180 });
 
