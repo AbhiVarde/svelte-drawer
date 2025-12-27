@@ -64,6 +64,9 @@
   function closeDrawer() {
     open = false;
     onOpenChange?.(false);
+    if (snapPoints && snapPoints.length > 0) {
+      activeSnapPoint = undefined;
+    }
   }
 
   function handleKeydown(e: KeyboardEvent) {
