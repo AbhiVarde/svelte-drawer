@@ -28,8 +28,6 @@
   let dragging = false;
 
   function snapPointToPosition(snapPoint: number): number {
-    // snapPoint is 0-1 where 1 = fully open (0% position)
-    // Convert: 1 -> 0%, 0.5 -> 50%, 0 -> 100%
     return (1 - snapPoint) * 100;
   }
 
@@ -55,25 +53,6 @@
 
   function getTransform(): string {
     const pos = drawer.drawerPosition.current;
-
-    if (
-      drawer.snapPoints &&
-      drawer.activeSnapPoint !== undefined &&
-      !dragging &&
-      drawer.open
-    ) {
-      const snapPos = snapPointToPosition(drawer.activeSnapPoint);
-      switch (drawer.direction) {
-        case "bottom":
-          return `translateY(${snapPos}%)`;
-        case "top":
-          return `translateY(-${snapPos}%)`;
-        case "left":
-          return `translateX(-${snapPos}%)`;
-        case "right":
-          return `translateX(${snapPos}%)`;
-      }
-    }
 
     switch (drawer.direction) {
       case "bottom":

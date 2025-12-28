@@ -25,8 +25,26 @@
   });
 
   let previouslyFocusedElement: HTMLElement | null = null;
-
   let visible = false;
+  let previousSnapPoint: number | undefined = undefined;
+
+  $effect(() => {
+    if (
+      open &&
+      snapPoints &&
+      snapPoints.length > 0 &&
+      activeSnapPoint !== undefined
+    ) {
+      if (
+        previousSnapPoint !== undefined &&
+        previousSnapPoint !== activeSnapPoint
+      ) {
+        const snapPos = (1 - activeSnapPoint) * 100;
+        drawerPosition.set(snapPos, { duration: 220 });
+      }
+      previousSnapPoint = activeSnapPoint;
+    }
+  });
 
   $effect(() => {
     if (open) {
@@ -67,6 +85,7 @@
 
       setTimeout(() => {
         visible = false;
+        previousSnapPoint = undefined;
       }, 180);
     }
   });
