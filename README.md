@@ -231,6 +231,43 @@ Snap points allow the drawer to rest at predefined heights, creating an iOS-like
 - Use `bind:activeSnapPoint` to programmatically control the current position
 - Use `onSnapPointChange` callback to react to snap changes
 
+### Portal Support
+
+Render the drawer in a portal to avoid z-index conflicts in complex layouts.
+```svelte
+<script>
+	import { Drawer, DrawerOverlay, DrawerContent, DrawerHandle } from '@abhivarde/svelte-drawer';
+
+	let open = $state(false);
+</script>
+
+<!-- Enable portal (renders at end of body) -->
+<Drawer bind:open portal={true}>
+	<DrawerOverlay class="fixed inset-0 bg-black/40" />
+	<DrawerContent class="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg p-4">
+		<DrawerHandle class="mb-8" />
+		<h2>Portal Drawer</h2>
+		<p>This drawer is rendered in a portal, preventing z-index issues.</p>
+	</DrawerContent>
+</Drawer>
+
+<!-- Custom portal container -->
+<Drawer bind:open portal={true} portalContainer="#custom-portal">
+	<DrawerOverlay />
+	<DrawerContent>
+		<h2>Custom Portal</h2>
+	</DrawerContent>
+</Drawer>
+
+<div id="custom-portal"></div>
+```
+
+**When to use portals:**
+- Complex layouts with nested z-index contexts
+- Third-party component libraries with fixed positioning
+- Modals inside scrollable containers
+- Preventing overflow: hidden conflicts
+
 ## Variants
 
 Available variants for `DrawerVariants` component:
@@ -259,9 +296,11 @@ Main wrapper component that manages drawer state and animations.
 - `onOpenChange` (function, optional) - Callback when open state changes
 - `direction` ('bottom' | 'top' | 'left' | 'right', default: 'bottom') - Direction from which drawer slides
 - `closeOnEscape` (boolean, optional, default: true) - Whether Escape key closes the drawer
-- `snapPoints` (number[], optional) - Array of snap positions between 0-1, where 1 is fully open (e.g., `[0.25, 0.5, 0.9]`)
+- `snapPoints` (number[], optional) - Array of snap positions between 0-1
 - `activeSnapPoint` (number, bindable, optional) - Current active snap point value
-- `onSnapPointChange` (function, optional) - Callback fired when the drawer snaps to a different point
+- `onSnapPointChange` (function, optional) - Callback fired when snap changes
+- `portal` (boolean, optional, default: false) - Render drawer in a portal
+- `portalContainer` (HTMLElement | string, optional) - Custom portal container element or selector
 
 ### DrawerOverlay
 

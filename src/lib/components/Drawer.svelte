@@ -2,6 +2,7 @@
   import { Tween } from "svelte/motion";
   import { expoOut } from "svelte/easing";
   import { setContext, onMount } from "svelte";
+  import DrawerPortal from "./DrawerPortal.svelte";
 
   let {
     open = $bindable(false),
@@ -11,6 +12,8 @@
     snapPoints = undefined,
     activeSnapPoint = $bindable(undefined),
     onSnapPointChange = undefined,
+    portal = false,
+    portalContainer = undefined,
     children,
   } = $props();
 
@@ -143,4 +146,10 @@
   });
 </script>
 
-{@render children()}
+{#if portal}
+  <DrawerPortal container={portalContainer}>
+    {@render children()}
+  </DrawerPortal>
+{:else}
+  {@render children()}
+{/if}

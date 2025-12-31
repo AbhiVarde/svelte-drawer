@@ -6,6 +6,8 @@ export interface DrawerProps {
   snapPoints?: number[];
   activeSnapPoint?: number;
   onSnapPointChange?: (snapPoint: number) => void;
+  portal?: boolean;
+  portalContainer?: HTMLElement | string;
 }
 
 export interface DrawerContentProps {
@@ -19,6 +21,10 @@ export interface DrawerOverlayProps {
 
 export interface DrawerHandleProps {
   class?: string;
+}
+
+export interface DrawerPortalProps {
+  container?: HTMLElement | string;
 }
 
 export type DrawerVariant =
