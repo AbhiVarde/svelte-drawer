@@ -20,6 +20,7 @@
   let variantOpen = $state(false);
   let snapPointOpen = $state(false);
   let currentSnapPoint = $state<number | undefined>(undefined);
+  let portalOpen = $state(false);
 
   let copyStatus: Record<string, "idle" | "success"> = $state({
     installation: "idle",
@@ -33,6 +34,7 @@
     variant: "idle",
     "variants-feature": "idle",
     snappoint: "idle",
+    portal: "idle",
   });
 
   async function copyToClipboard(text: string, key: string) {
@@ -83,6 +85,12 @@
       key: "snappoint",
       open: () => (snapPointOpen = true),
       code: codeExamples.snapPointDrawer,
+    },
+    {
+      title: "Portal Drawer",
+      key: "portal",
+      open: () => (portalOpen = true),
+      code: codeExamples.portalDrawer,
     },
   ];
 
@@ -283,6 +291,20 @@
       <CodeBlock
         code={codeExamples.snapPointDrawer}
         copyKey="snappoint"
+        {copyStatus}
+        onCopy={copyToClipboard}
+      />
+    </section>
+
+    <section>
+      <h2 class="text-xl font-medium mb-3">Portal Support</h2>
+      <p class="text-sm text-gray-600 mb-4">
+        Render the drawer in a portal to avoid z-index conflicts. The portal
+        renders the drawer at the end of the document body by default.
+      </p>
+      <CodeBlock
+        code={codeExamples.portalDrawer}
+        copyKey="portal"
         {copyStatus}
         onCopy={copyToClipboard}
       />
@@ -491,6 +513,7 @@
         > to close.
       </p>
     </div>
+    <DrawerFooter />
   </DrawerVariants>
 </Drawer>
 
@@ -535,6 +558,35 @@
             class="w-full px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 text-sm font-medium"
             >Snap to 90%</button
           >
+        </div>
+      </div>
+    </div>
+    <DrawerFooter />
+  </DrawerContent>
+</Drawer>
+
+<!-- Portal Drawer -->
+<Drawer bind:open={portalOpen} portal={true}>
+  <DrawerOverlay />
+  <DrawerContent
+    class="bg-gray-100 flex flex-col rounded-t-[10px] fixed bottom-0 left-0 right-0 outline-none"
+  >
+    <div class="p-4 bg-white rounded-t-[10px] flex-1">
+      <DrawerHandle class="mb-8" />
+      <div class="max-w-md mx-auto">
+        <h2 class="font-medium mb-4 text-gray-900">Portal Drawer</h2>
+        <p class="text-gray-600 mb-2">
+          This drawer is rendered in a portal at the end of the document body.
+        </p>
+        <p class="text-gray-600 mb-4">
+          This prevents z-index conflicts in complex layouts and works great
+          with third-party component libraries.
+        </p>
+        <div
+          class="bg-blue-50 border border-blue-200 rounded p-3 text-sm text-blue-900"
+        >
+          <strong>Tip:</strong> Inspect the DOM to see this drawer is rendered outside
+          the main app container!
         </div>
       </div>
     </div>

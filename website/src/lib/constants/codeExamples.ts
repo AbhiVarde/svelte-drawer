@@ -105,6 +105,7 @@ export const codeExamples = {
       <h2 class="text-xl font-semibold mb-4">Sheet Variant</h2>
       <p class="text-gray-600">This uses the prebuilt "sheet" variant style.</p>
     </div>
+    <DrawerFooter />
   </DrawerVariants>
 </Drawer>`,
 
@@ -153,6 +154,30 @@ export const codeExamples = {
         </div>
       </div>
     </div>
+    <DrawerFooter />
+  </DrawerContent>
+</Drawer>`,
+
+  portalDrawer: `<script>
+  let open = $state(false);
+<\/script>
+
+<Drawer bind:open portal={true}>
+  <DrawerOverlay />
+  <DrawerContent class="bg-gray-100 flex flex-col rounded-t-[10px] fixed bottom-0 left-0 right-0 outline-none">
+    <div class="p-4 bg-white rounded-t-[10px] flex-1">
+      <DrawerHandle class="mb-8" />
+      <div class="max-w-md mx-auto">
+        <h2 class="font-medium mb-4 text-gray-900">Portal Drawer</h2>
+        <p class="text-gray-600 mb-2">
+          This drawer is rendered in a portal at the end of the document body.
+        </p>
+        <p class="text-gray-600 mb-2">
+          This prevents z-index conflicts in complex layouts.
+        </p>
+      </div>
+    </div>
+    <DrawerFooter />
   </DrawerContent>
 </Drawer>`,
 };
