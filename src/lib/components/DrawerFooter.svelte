@@ -12,11 +12,11 @@
   } = $props();
 </script>
 
-<div class="p-4 border-t border-gray-200 mt-auto {className}" {...restProps}>
+<div class="border-t border-gray-200 p-4 mt-auto {className}" {...restProps}>
   {#if children}
     {@render children()}
   {:else if actions}
-    <div class="flex gap-3 justify-end">
+    <div class="flex justify-end gap-3">
       {@render actions()}
     </div>
   {/if}
