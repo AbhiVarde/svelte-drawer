@@ -5,6 +5,8 @@
     DrawerContent,
     DrawerVariants,
     DrawerHandle,
+    DrawerHeader,
+    DrawerFooter as LibDrawerFooter,
   } from "@abhivarde/svelte-drawer";
   import CodeBlock from "$lib/components/CodeBlock.svelte";
   import DrawerFooter from "$lib/components/DrawerFooter.svelte";
@@ -21,6 +23,7 @@
   let snapPointOpen = $state(false);
   let currentSnapPoint = $state<number | undefined>(undefined);
   let portalOpen = $state(false);
+  let headerFooterOpen = $state(false);
 
   let copyStatus: Record<string, "idle" | "success"> = $state({
     installation: "idle",
@@ -35,6 +38,7 @@
     "variants-feature": "idle",
     snappoint: "idle",
     portal: "idle",
+    "header-footer": "idle",
   });
 
   async function copyToClipboard(text: string, key: string) {
@@ -91,6 +95,12 @@
       key: "portal",
       open: () => (portalOpen = true),
       code: codeExamples.portalDrawer,
+    },
+    {
+      title: "Header & Footer",
+      key: "header-footer",
+      open: () => (headerFooterOpen = true),
+      code: codeExamples.headerFooterDrawer,
     },
   ];
 
@@ -305,6 +315,20 @@
       <CodeBlock
         code={codeExamples.portalDrawer}
         copyKey="portal"
+        {copyStatus}
+        onCopy={copyToClipboard}
+      />
+    </section>
+
+    <section>
+      <h2 class="text-xl font-medium mb-3">Header & Footer Components</h2>
+      <p class="text-sm text-gray-600 mb-4">
+        Optional pre-styled header and footer components for quick drawer setup.
+        Use them for convenience or build your own custom headers/footers.
+      </p>
+      <CodeBlock
+        code={codeExamples.headerFooterDrawer}
+        copyKey="header-footer"
         {copyStatus}
         onCopy={copyToClipboard}
       />
@@ -591,5 +615,61 @@
       </div>
     </div>
     <DrawerFooter />
+  </DrawerContent>
+</Drawer>
+
+<!-- Header & Footer Drawer -->
+<Drawer bind:open={headerFooterOpen}>
+  <DrawerOverlay />
+  <DrawerContent
+    class="bg-white flex flex-col rounded-t-[10px] fixed bottom-0 left-0 right-0 outline-none h-[70vh]"
+  >
+    <DrawerHeader
+      title="Drawer with Header & Footer"
+      description="Optional pre-styled components for quick setup"
+    />
+
+    <div class="p-4 flex-1 overflow-y-auto">
+      <div class="max-w-md mx-auto space-y-4">
+        <p class="text-gray-600">
+          DrawerHeader and DrawerFooter are optional components that provide
+          pre-styled layouts.
+        </p>
+        <p class="text-gray-600">
+          You can also build your own custom headers and footers without
+          importing these components.
+        </p>
+        <div
+          class="bg-blue-50 border border-blue-200 rounded p-3 text-sm text-blue-900"
+        >
+          <strong>Tip:</strong> These components are completely optional - use them
+          for quick setup or build your own!
+        </div>
+
+        <div class="space-y-2 pt-4">
+          <h3 class="font-medium text-gray-900">Example Usage:</h3>
+          <ul class="list-disc pl-5 space-y-1 text-sm text-gray-600">
+            <li>DrawerHeader: Includes title, description, and close button</li>
+            <li>DrawerFooter: Pre-styled container with border and spacing</li>
+            <li>Both accept custom children for full flexibility</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <LibDrawerFooter>
+      <button
+        onclick={() => (headerFooterOpen = false)}
+        class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 text-sm font-medium"
+      >
+        Cancel
+      </button>
+      <button
+        onclick={() => (headerFooterOpen = false)}
+        class="px-4 py-2 bg-black text-white rounded hover:bg-gray-800 text-sm font-medium"
+      >
+        Confirm
+      </button>
+    </LibDrawerFooter>
   </DrawerContent>
 </Drawer>
