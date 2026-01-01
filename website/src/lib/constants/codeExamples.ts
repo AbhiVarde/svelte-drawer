@@ -194,24 +194,44 @@ export const codeExamples = {
 
 <Drawer bind:open>
   <DrawerOverlay />
-  <DrawerContent class="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg flex flex-col h-[70vh]">
-    <DrawerHeader 
-      title="Settings" 
-      description="Manage your preferences"
-    />
-    
+
+  <DrawerContent
+    class="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg flex flex-col h-[70vh]"
+  >
+    <!-- Header -->
+    <DrawerHeader>
+      <div class="max-w-md mx-auto">
+        <h2 class="text-lg font-semibold text-gray-900">
+          Settings
+        </h2>
+        <p class="text-sm text-gray-600 mt-1">
+          Manage your preferences
+        </p>
+      </div>
+    </DrawerHeader>
+
+    <!-- Body -->
     <div class="p-4 flex-1 overflow-y-auto">
-      <p>Your content here</p>
+      <div class="max-w-md mx-auto">
+        <p>Your content here</p>
+      </div>
     </div>
-    
+
+    <!-- Footer -->
     <DrawerFooter>
-      <button onclick={() => open = false} 
-        class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">
-        Cancel
-      </button>
-      <button class="px-4 py-2 bg-black text-white rounded hover:bg-gray-800">
-        Save
-      </button>
+      <div class="max-w-md mx-auto flex justify-end gap-3">
+        <button
+          onclick={() => open = false}
+          class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+        >
+          Cancel
+        </button>
+        <button
+          class="px-4 py-2 bg-black text-white rounded hover:bg-gray-800"
+        >
+          Save
+        </button>
+      </div>
     </DrawerFooter>
   </DrawerContent>
 </Drawer>`,

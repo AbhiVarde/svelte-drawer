@@ -621,13 +621,20 @@
 <!-- Header & Footer Drawer -->
 <Drawer bind:open={headerFooterOpen}>
   <DrawerOverlay />
+
   <DrawerContent
     class="bg-white flex flex-col rounded-t-[10px] fixed bottom-0 left-0 right-0 outline-none h-[70vh]"
   >
-    <DrawerHeader
-      title="Drawer with Header & Footer"
-      description="Optional pre-styled components for quick setup"
-    />
+    <DrawerHeader>
+      <div class="max-w-md mx-auto">
+        <h2 class="text-lg font-semibold text-gray-900">
+          Drawer with Header & Footer
+        </h2>
+        <p class="text-sm text-gray-600 mt-1">
+          Optional pre-styled components for quick setup
+        </p>
+      </div>
+    </DrawerHeader>
 
     <div class="p-4 flex-1 overflow-y-auto">
       <div class="max-w-md mx-auto space-y-4">
@@ -635,14 +642,16 @@
           DrawerHeader and DrawerFooter are optional components that provide
           pre-styled layouts.
         </p>
+
         <p class="text-gray-600">
           You can also build your own custom headers and footers without
           importing these components.
         </p>
+
         <div
           class="bg-blue-50 border border-blue-200 rounded p-3 text-sm text-blue-900"
         >
-          <strong>Tip:</strong> These components are completely optional - use them
+          <strong>Tip:</strong> These components are completely optional – use them
           for quick setup or build your own!
         </div>
 
@@ -658,18 +667,21 @@
     </div>
 
     <LibDrawerFooter>
-      <button
-        onclick={() => (headerFooterOpen = false)}
-        class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 text-sm font-medium"
-      >
-        Cancel
-      </button>
-      <button
-        onclick={() => (headerFooterOpen = false)}
-        class="px-4 py-2 bg-black text-white rounded hover:bg-gray-800 text-sm font-medium"
-      >
-        Confirm
-      </button>
+      <div class="max-w-md mx-auto flex justify-end gap-3">
+        <button
+          onclick={() => (headerFooterOpen = false)}
+          class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 text-sm font-medium"
+        >
+          Cancel
+        </button>
+
+        <button
+          onclick={() => (headerFooterOpen = false)}
+          class="px-4 py-2 bg-black text-white rounded hover:bg-gray-800 text-sm font-medium"
+        >
+          Confirm
+        </button>
+      </div>
     </LibDrawerFooter>
   </DrawerContent>
 </Drawer>
