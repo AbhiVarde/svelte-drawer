@@ -13,6 +13,8 @@ A drawer component for Svelte 5, inspired by [Vaul](https://github.com/emilkowal
 - ✅ Prebuilt variants (**default, sheet, dialog, minimal, sidebar**)
 - ✅ **Drag handle component** with auto-adaptive orientation
 - ✅ **Snap points** for iOS-like multi-height drawers
+- ✅ **Portal rendering** to escape z-index conflicts
+- ✅ **Optional header & footer** components for quick setup
 - ✅ Nested drawer support
 - ✅ Scrollable content areas
 - ✅ Keyboard shortcuts (**Escape to close**, Tab navigation)
