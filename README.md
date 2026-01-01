@@ -268,6 +268,98 @@ Render the drawer in a portal to avoid z-index conflicts in complex layouts.
 - Modals inside scrollable containers
 - Preventing overflow: hidden conflicts
 
+### Header & Footer Components
+
+Optional pre-styled header and footer components for quick setup.
+
+#### DrawerHeader
+```svelte
+<script>
+	import { Drawer, DrawerOverlay, DrawerContent, DrawerHeader, DrawerHandle } from '@abhivarde/svelte-drawer';
+
+	let open = $state(false);
+</script>
+
+<!-- With title and description -->
+<Drawer bind:open>
+	<DrawerOverlay class="fixed inset-0 bg-black/40" />
+	<DrawerContent class="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg">
+		<DrawerHeader 
+			title="Drawer Title" 
+			description="Optional description text"
+			showCloseButton={true}
+		/>
+		<div class="p-4">
+			<p>Drawer content here</p>
+		</div>
+	</DrawerContent>
+</Drawer>
+
+<!-- Custom header content -->
+<Drawer bind:open>
+	<DrawerOverlay />
+	<DrawerContent class="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg">
+		<DrawerHeader>
+			<div class="flex items-center gap-3">
+				<img src="/icon.png" alt="Icon" class="w-8 h-8" />
+				<div>
+					<h2 class="font-semibold">Custom Header</h2>
+					<p class="text-sm text-gray-600">Your custom content</p>
+				</div>
+			</div>
+		</DrawerHeader>
+		<div class="p-4">
+			<p>Drawer content</p>
+		</div>
+	</DrawerContent>
+</Drawer>
+```
+
+#### DrawerFooter
+```svelte
+<script>
+	import { Drawer, DrawerOverlay, DrawerContent, DrawerFooter } from '@abhivarde/svelte-drawer';
+
+	let open = $state(false);
+</script>
+
+<!-- Simple footer with custom content -->
+<Drawer bind:open>
+	<DrawerOverlay class="fixed inset-0 bg-black/40" />
+	<DrawerContent class="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg flex flex-col">
+		<div class="p-4 flex-1">
+			<h2>Drawer Content</h2>
+		</div>
+		<DrawerFooter>
+			<button onclick={() => open = false} class="px-4 py-2 bg-gray-200 rounded">
+				Cancel
+			</button>
+			<button class="px-4 py-2 bg-black text-white rounded">
+				Confirm
+			</button>
+		</DrawerFooter>
+	</DrawerContent>
+</Drawer>
+
+<!-- Custom footer with links -->
+<Drawer bind:open>
+	<DrawerOverlay />
+	<DrawerContent class="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg flex flex-col">
+		<div class="p-4 flex-1">
+			<h2>Content</h2>
+		</div>
+		<DrawerFooter class="bg-gray-50">
+			<div class="flex justify-between w-full">
+				<a href="/privacy" class="text-sm text-gray-600 hover:text-gray-900">Privacy</a>
+				<a href="/terms" class="text-sm text-gray-600 hover:text-gray-900">Terms</a>
+			</div>
+		</DrawerFooter>
+	</DrawerContent>
+</Drawer>
+```
+
+**Note:** These components are **optional**. You can still build custom headers and footers using plain HTML/Svelte markup without importing these components.
+
 ## Variants
 
 Available variants for `DrawerVariants` component:
@@ -356,6 +448,38 @@ Pre-styled drawer content with built-in variants.
 - `variant` ('default' | 'sheet' | 'dialog' | 'minimal' | 'sidebar', default: 'default') - Preset style variant
 - `class` (string, optional) - Additional CSS classes for styling
 - `trapFocus` (boolean, optional, default: true) - Whether to trap focus inside drawer
+
+### DrawerHeader
+
+Optional pre-styled header component.
+
+**Props:**
+
+- `title` (string, optional) - Header title text
+- `description` (string, optional) - Description text below title
+- `showCloseButton` (boolean, optional, default: true) - Show close button
+- `onClose` (function, optional) - Custom close handler
+- `class` (string, optional) - CSS classes for styling
+
+**Features:**
+
+- Automatic close button with drawer context
+- Customizable via children render
+- Border and padding included
+
+### DrawerFooter
+
+Optional pre-styled footer component.
+
+**Props:**
+
+- `class` (string, optional) - CSS classes for styling
+
+**Features:**
+
+- Automatic border and spacing
+- Flexible content via children
+- Works with mt-auto for bottom positioning
 
 ## Demo
 

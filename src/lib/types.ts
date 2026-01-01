@@ -27,6 +27,18 @@ export interface DrawerPortalProps {
   container?: HTMLElement | string;
 }
 
+export interface DrawerHeaderProps {
+  title?: string;
+  description?: string;
+  showCloseButton?: boolean;
+  onClose?: () => void;
+  class?: string;
+}
+
+export interface DrawerFooterProps {
+  class?: string;
+}
+
 export type DrawerVariant =
   | "default"
   | "sheet"
