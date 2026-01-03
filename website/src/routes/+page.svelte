@@ -12,6 +12,7 @@
   import DrawerFooter from "$lib/components/DrawerFooter.svelte";
   import ExampleSection from "$lib/components/ExampleSection.svelte";
   import { codeExamples } from "$lib/constants/codeExamples";
+  import { ExternalLink } from "lucide-svelte";
 
   let defaultOpen = $state(false);
   let sideOpen = $state(false);
@@ -103,12 +104,6 @@
       code: codeExamples.headerFooterDrawer,
     },
   ];
-
-  const externalLinkIcon = `<svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="16" aria-hidden="true" class="w-3 h-3 ml-1">
-    <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
-    <path d="M15 3h6v6"></path>
-    <path d="M10 14L21 3"></path>
-  </svg>`;
 </script>
 
 <svelte:head>
@@ -396,13 +391,15 @@
               class="text-xs text-zinc-600 flex items-center gap-0.5 hover:text-zinc-900"
               href="https://github.com/AbhiVarde/svelte-drawer"
               target="_blank"
-              rel="noopener noreferrer">GitHub {@html externalLinkIcon}</a
+              rel="noopener noreferrer"
+              >GitHub <ExternalLink class="w-3 h-3 ml-1" /></a
             >
             <a
               class="text-xs text-zinc-600 flex items-center gap-0.5 hover:text-zinc-900"
               href="https://x.com/varde_abhi"
               target="_blank"
-              rel="noopener noreferrer">X {@html externalLinkIcon}</a
+              rel="noopener noreferrer"
+              >X <ExternalLink class="w-3 h-3 ml-1" /></a
             >
           </div>
         </div>
