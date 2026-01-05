@@ -26,6 +26,7 @@
   let currentSnapPoint = $state<number | undefined>(undefined);
   let portalOpen = $state(false);
   let headerFooterOpen = $state(false);
+  let blurOpen = $state(false);
 
   let copyStatus: Record<string, "idle" | "success"> = $state({
     installation: "idle",
@@ -41,6 +42,7 @@
     snappoint: "idle",
     portal: "idle",
     "header-footer": "idle",
+    blur: "idle",
   });
 
   async function copyToClipboard(text: string, key: string) {
@@ -103,6 +105,12 @@
       key: "header-footer",
       open: () => (headerFooterOpen = true),
       code: codeExamples.headerFooterDrawer,
+    },
+    {
+      title: "Backdrop Blur",
+      key: "blur",
+      open: () => (blurOpen = true),
+      code: codeExamples.blurDrawer,
     },
   ];
 </script>
@@ -268,6 +276,20 @@
       <CodeBlock
         code="<Drawer bind:open closeOnEscape={true}>\n  <!-- Drawer content -->\n</Drawer>"
         copyKey="keyboard"
+        {copyStatus}
+        onCopy={copyToClipboard}
+      />
+    </section>
+
+    <section>
+      <h2 class="text-xl font-medium mb-3">Backdrop Blur</h2>
+      <p class="text-sm text-gray-600 mb-4">
+        Add a premium glass-morphism effect to your drawer overlay. Choose from
+        multiple blur intensities.
+      </p>
+      <CodeBlock
+        code={codeExamples.blurDrawer}
+        copyKey="blur"
         {copyStatus}
         onCopy={copyToClipboard}
       />
@@ -676,5 +698,40 @@
         </button>
       </div>
     </LibDrawerFooter>
+  </DrawerContent>
+</Drawer>
+
+<!-- Blur Drawer -->
+<Drawer bind:open={blurOpen}>
+  <DrawerOverlay blur="xl" />
+  <DrawerContent
+    class="bg-white flex flex-col rounded-t-[10px] fixed bottom-0 left-0 right-0 outline-none"
+  >
+    <div class="p-4 flex-1">
+      <DrawerHandle class="mb-8" />
+      <div class="max-w-md mx-auto">
+        <h2 class="font-medium mb-4 text-gray-900">Backdrop Blur Effect</h2>
+        <p class="text-gray-600 mb-4">
+          Notice the beautiful blur effect on the overlay behind this drawer.
+          This creates a premium, modern feel.
+        </p>
+        <div class="bg-blue-50 border border-blue-200 rounded p-3 text-sm">
+          <strong>Tip:</strong> Use lighter overlay colors (like bg-black/30) with
+          blur for the best visual effect.
+        </div>
+        <div class="mt-4 space-y-2">
+          <h3 class="font-medium text-sm">Available intensities:</h3>
+          <div class="flex flex-wrap gap-2">
+            <code class="px-2 py-1 bg-gray-100 rounded text-xs">sm</code>
+            <code class="px-2 py-1 bg-gray-100 rounded text-xs">md</code>
+            <code class="px-2 py-1 bg-gray-100 rounded text-xs">lg</code>
+            <code class="px-2 py-1 bg-gray-100 rounded text-xs">xl</code>
+            <code class="px-2 py-1 bg-gray-100 rounded text-xs">2xl</code>
+            <code class="px-2 py-1 bg-gray-100 rounded text-xs">3xl</code>
+          </div>
+        </div>
+      </div>
+    </div>
+    <DrawerFooter />
   </DrawerContent>
 </Drawer>

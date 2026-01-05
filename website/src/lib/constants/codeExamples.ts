@@ -235,4 +235,22 @@ export const codeExamples = {
     </DrawerFooter>
   </DrawerContent>
 </Drawer>`,
+  blurDrawer: `<script>
+  let open = $state(false);
+<\/script>
+
+<Drawer bind:open>
+  <DrawerOverlay blur="lg" class="fixed inset-0 bg-black/30" />
+  <DrawerContent class="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg p-6">
+    <DrawerHandle class="mb-8" />
+    <h2 class="text-lg font-medium">Blurred Backdrop</h2>
+    <p class="text-gray-600">
+      The overlay behind this drawer has a beautiful blur effect.
+    </p>
+    <div class="mt-4 space-y-2">
+      <p class="text-sm text-gray-500">Try different blur intensities:</p>
+      <code class="text-xs">blur="sm" | "md" | "lg" | "xl" | "2xl" | "3xl"</code>
+    </div>
+  </DrawerContent>
+</Drawer>`,
 };
