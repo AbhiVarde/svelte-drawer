@@ -17,6 +17,7 @@ export interface DrawerContentProps {
 
 export interface DrawerOverlayProps {
   class?: string;
+  blur?: boolean | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl";
 }
 
 export interface DrawerHandleProps {

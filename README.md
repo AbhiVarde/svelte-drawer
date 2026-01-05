@@ -55,6 +55,42 @@ npm install @abhivarde/svelte-drawer
 </Drawer>
 ```
 
+
+### Backdrop Blur
+
+Add a premium blur effect to the overlay background:
+```svelte
+<script>
+	import { Drawer, DrawerOverlay, DrawerContent, DrawerHandle } from '@abhivarde/svelte-drawer';
+
+	let open = $state(false);
+</script>
+
+<Drawer bind:open>
+	<!-- Default medium blur -->
+	<DrawerOverlay blur class="fixed inset-0 bg-black/40" />
+	
+	<!-- Or specify blur intensity -->
+	<!-- <DrawerOverlay blur="sm" class="fixed inset-0 bg-black/40" /> -->
+	<!-- <DrawerOverlay blur="lg" class="fixed inset-0 bg-black/40" /> -->
+	<!-- <DrawerOverlay blur="xl" class="fixed inset-0 bg-black/40" /> -->
+	
+	<DrawerContent class="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg p-4">
+		<DrawerHandle class="mb-8" />
+		<h2>Blurred Backdrop</h2>
+		<p>Notice the premium blur effect behind this drawer.</p>
+	</DrawerContent>
+</Drawer>
+```
+
+**Available blur intensities:**
+- `blur={true}` or `blur="md"` - Medium blur (default)
+- `blur="sm"` - Small blur
+- `blur="lg"` - Large blur
+- `blur="xl"` - Extra large blur
+- `blur="2xl"` - 2x extra large blur
+- `blur="3xl"` - 3x extra large blur
+
 ### Side Drawer
 
 ```svelte
@@ -403,6 +439,7 @@ Overlay component that appears behind the drawer.
 **Props:**
 
 - `class` (string, optional) - CSS classes for styling
+- `blur` (boolean | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl', optional) - Enable backdrop blur effect
 
 ### DrawerContent
 
