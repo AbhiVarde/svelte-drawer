@@ -487,6 +487,10 @@ Optional pre-styled footer component.
 
 Visit [drawer.abhivarde.in](https://drawer.abhivarde.in) to see live examples.
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=AbhiVarde/svelte-drawer&type=Date)](https://star-history.com/#AbhiVarde/svelte-drawer&Date)
+
 ## License
 
 This project is licensed under the MIT License.  
