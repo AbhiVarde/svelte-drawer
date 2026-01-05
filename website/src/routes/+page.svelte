@@ -8,6 +8,7 @@
     DrawerHeader,
     DrawerFooter as LibDrawerFooter,
   } from "@abhivarde/svelte-drawer";
+  import StargazersSection from "$lib/components/StargazersSection.svelte";
   import CodeBlock from "$lib/components/CodeBlock.svelte";
   import DrawerFooter from "$lib/components/DrawerFooter.svelte";
   import ExampleSection from "$lib/components/ExampleSection.svelte";
@@ -216,7 +217,9 @@
     </div>
   </div>
 
-  <div class="w-full max-w-3xl mx-auto px-4 sm:px-6 pb-16 space-y-12">
+  <StargazersSection />
+
+  <div class="w-full max-w-3xl mx-auto px-4 sm:px-6 pt-4 pb-16 space-y-12">
     <section>
       <h2 class="text-xl font-medium mb-3">Installation</h2>
       <CodeBlock
@@ -618,7 +621,6 @@
 <!-- Header & Footer Drawer -->
 <Drawer bind:open={headerFooterOpen}>
   <DrawerOverlay />
-
   <DrawerContent
     class="bg-white flex flex-col rounded-t-[10px] fixed bottom-0 left-0 right-0 outline-none h-[70vh]"
   >
@@ -632,26 +634,22 @@
         </p>
       </div>
     </DrawerHeader>
-
     <div class="p-4 flex-1 overflow-y-auto">
       <div class="max-w-md mx-auto space-y-4">
         <p class="text-gray-600">
           DrawerHeader and DrawerFooter are optional components that provide
           pre-styled layouts.
         </p>
-
         <p class="text-gray-600">
           You can also build your own custom headers and footers without
           importing these components.
         </p>
-
         <div
           class="bg-blue-50 border border-blue-200 rounded p-3 text-sm text-blue-900"
         >
           <strong>Tip:</strong> These components are completely optional – use them
           for quick setup or build your own!
         </div>
-
         <div class="space-y-2 pt-4">
           <h3 class="font-medium text-gray-900">Example Usage:</h3>
           <ul class="list-disc pl-5 space-y-1 text-sm text-gray-600">
@@ -662,7 +660,6 @@
         </div>
       </div>
     </div>
-
     <LibDrawerFooter>
       <div class="max-w-md mx-auto flex justify-end gap-3">
         <button
@@ -671,7 +668,6 @@
         >
           Cancel
         </button>
-
         <button
           onclick={() => (headerFooterOpen = false)}
           class="px-4 py-2 bg-black text-white rounded hover:bg-gray-800 text-sm font-medium"
