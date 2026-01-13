@@ -253,4 +253,57 @@ export const codeExamples = {
     </div>
   </DrawerContent>
 </Drawer>`,
+  
+    persistentDrawer: `<script>
+  import { Drawer, DrawerOverlay, DrawerContent, DrawerHandle } from '@abhivarde/svelte-drawer';
+
+  let open = $state(false);
+<\/script>
+
+<Drawer 
+  bind:open 
+  persistState={true}
+  persistKey="settings-drawer"
+>
+  <DrawerOverlay />
+  <DrawerContent class="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg p-6">
+    <DrawerHandle class="mb-8" />
+    <h2 class="text-lg font-medium">Persistent Drawer</h2>
+    <p class="text-gray-600">
+      This drawer remembers if it was open. Try opening it, then reload the page!
+    </p>
+    <p class="text-gray-600 mt-4">
+      Close it and reload - it will stay closed.
+    </p>
+  </DrawerContent>
+</Drawer>`,
+
+  persistentSnapDrawer: `<script>
+  import { Drawer, DrawerOverlay, DrawerContent, DrawerHandle } from '@abhivarde/svelte-drawer';
+
+  let open = $state(false);
+  let snapPoint = $state(undefined);
+<\/script>
+
+<Drawer 
+  bind:open 
+  snapPoints={[0.25, 0.5, 0.9]}
+  bind:activeSnapPoint={snapPoint}
+  persistState={true}
+  persistKey="snap-settings"
+  persistSnapPoint={true}
+>
+  <DrawerOverlay />
+  <DrawerContent class="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg p-6">
+    <DrawerHandle class="mb-8" />
+    <h2 class="text-lg font-medium">Persistent Snap Points</h2>
+    <p class="text-gray-600">
+      Drag to different heights, then reload the page. The position is saved!
+    </p>
+    <p class="text-sm text-gray-500 mt-4">
+      Current: {snapPoint ? \`\${(snapPoint * 100).toFixed(0)}%\` : 'Default'}
+    </p>
+  </DrawerContent>
+</Drawer>`,
 };
+

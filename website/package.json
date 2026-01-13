@@ -21,7 +21,7 @@
 		"vite": "^7.2.6"
 	},
 	"dependencies": {
-		"@abhivarde/svelte-drawer": "^0.0.24",
+		"@abhivarde/svelte-drawer": "^0.0.25",
 		"lucide-svelte": "^0.562.0"
 	}
 }

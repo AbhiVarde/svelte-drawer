@@ -27,6 +27,9 @@
   let portalOpen = $state(false);
   let headerFooterOpen = $state(false);
   let blurOpen = $state(false);
+  let persistentOpen = $state(false);
+  let persistentSnapOpen = $state(false);
+  let persistentSnapPoint = $state<number | undefined>(undefined);
 
   let copyStatus: Record<string, "idle" | "success"> = $state({
     installation: "idle",
@@ -111,6 +114,18 @@
       key: "blur",
       open: () => (blurOpen = true),
       code: codeExamples.blurDrawer,
+    },
+    {
+      title: "Persistent State",
+      key: "persistent",
+      open: () => (persistentOpen = true),
+      code: codeExamples.persistentDrawer,
+    },
+    {
+      title: "Persistent with Snap Points",
+      key: "persistent-snap",
+      open: () => (persistentSnapOpen = true),
+      code: codeExamples.persistentSnapDrawer,
     },
   ];
 </script>
@@ -729,6 +744,86 @@
             <code class="px-2 py-1 bg-gray-100 rounded text-xs">2xl</code>
             <code class="px-2 py-1 bg-gray-100 rounded text-xs">3xl</code>
           </div>
+        </div>
+      </div>
+    </div>
+    <DrawerFooter />
+  </DrawerContent>
+</Drawer>
+
+<!-- Persistent State Drawer -->
+<Drawer 
+  bind:open={persistentOpen}
+  persistState={true}
+  persistKey="demo-persistent"
+>
+  <DrawerOverlay />
+  <DrawerContent class="bg-gray-100 flex flex-col rounded-t-[10px] mt-24 h-fit fixed bottom-0 left-0 right-0 outline-none">
+    <div class="p-4 bg-white rounded-t-[10px] flex-1">
+      <DrawerHandle class="mb-8" />
+      <div class="max-w-md mx-auto">
+        <h2 class="font-medium mb-4 text-gray-900">Persistent State Drawer</h2>
+        <p class="text-gray-600 mb-2">
+          This drawer remembers if it was open!
+        </p>
+        <p class="text-gray-600 mb-4">
+          Try this: Close this drawer, then reload the page. It will stay closed!
+        </p>
+        <p class="text-gray-600 mb-4">
+          Or keep it open and reload - it will reopen automatically.
+        </p>
+        <div class="bg-blue-50 border border-blue-200 rounded p-3 text-sm text-blue-900">
+          <strong>How it works:</strong> Uses localStorage with a unique key to save state.
+        </div>
+      </div>
+    </div>
+    <DrawerFooter />
+  </DrawerContent>
+</Drawer>
+
+<!-- Persistent Snap Point Drawer -->
+<Drawer 
+  bind:open={persistentSnapOpen}
+  snapPoints={[0.25, 0.5, 0.9]}
+  bind:activeSnapPoint={persistentSnapPoint}
+  persistState={true}
+  persistKey="demo-persistent-snap"
+  persistSnapPoint={true}
+>
+  <DrawerOverlay />
+  <DrawerContent class="bg-gray-100 flex flex-col rounded-t-[10px] fixed bottom-0 left-0 right-0 outline-none">
+    <div class="p-4 bg-white rounded-t-[10px] flex-1">
+      <DrawerHandle class="mb-8" />
+      <div class="max-w-md mx-auto">
+        <h2 class="font-medium mb-4 text-gray-900">Persistent Snap Points</h2>
+        <p class="text-gray-600 mb-2">
+          Drag this drawer to different heights (25%, 50%, or 90%).
+        </p>
+        <p class="text-gray-600 mb-4">
+          Then reload the page - it will remember your position!
+        </p>
+        <p class="text-sm text-gray-500 mb-4">
+          Current position: <strong>{persistentSnapPoint ? `${(persistentSnapPoint * 100).toFixed(0)}%` : 'Loading...'}</strong>
+        </p>
+        <div class="space-y-2">
+          <button 
+            onclick={() => persistentSnapPoint = 0.25}
+            class="w-full px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 text-sm font-medium"
+          >
+            Jump to 25%
+          </button>
+          <button 
+            onclick={() => persistentSnapPoint = 0.5}
+            class="w-full px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 text-sm font-medium"
+          >
+            Jump to 50%
+          </button>
+          <button 
+            onclick={() => persistentSnapPoint = 0.9}
+            class="w-full px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 text-sm font-medium"
+          >
+            Jump to 90%
+          </button>
         </div>
       </div>
     </div>
