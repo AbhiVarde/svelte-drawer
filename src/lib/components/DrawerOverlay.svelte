@@ -1,6 +1,6 @@
 <script lang="ts">
   import { getContext } from "svelte";
-  import type { DrawerOverlayProps } from "../types";
+  import type { DrawerOverlayProps } from "$lib/types";
 
   let {
     class: className = "",
