@@ -1,16 +1,20 @@
-<script>
+<script lang="ts">
   import { getContext } from "svelte";
+  import type { DrawerOverlayProps } from "../types";
 
-  let { class: className = "", blur = false, ...restProps } = $props();
+  let {
+    class: className = "",
+    blur = false,
+    ...restProps
+  }: DrawerOverlayProps = $props();
 
-  const drawer = getContext("drawer");
+  const drawer = getContext<any>("drawer");
 
   const blurClass = $derived(() => {
     if (!blur) return "";
-
     if (blur === true) return "backdrop-blur-md";
 
-    const blurMap = {
+    const blurMap: Record<string, string> = {
       sm: "backdrop-blur-sm",
       md: "backdrop-blur-md",
       lg: "backdrop-blur-lg",
@@ -19,13 +23,10 @@
       "3xl": "backdrop-blur-3xl",
     };
 
-    return blurMap[blur] || "backdrop-blur-md";
+    return blurMap[blur as string] || "backdrop-blur-md";
   });
 
-  /**
-   * @param {KeyboardEvent} e
-   */
-  function handleKeydown(e) {
+  function handleKeydown(e: KeyboardEvent) {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
       drawer.closeDrawer();
