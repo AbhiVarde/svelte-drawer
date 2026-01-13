@@ -3,6 +3,7 @@
   import { expoOut } from "svelte/easing";
   import { setContext, onMount } from "svelte";
   import DrawerPortal from "./DrawerPortal.svelte";
+  import { saveDrawerState, loadDrawerState } from "../utils/storage"; // NEW
 
   let {
     open = $bindable(false),
@@ -14,6 +15,9 @@
     onSnapPointChange = undefined,
     portal = false,
     portalContainer = undefined,
+    persistState = false, 
+    persistKey = "default", 
+    persistSnapPoint = false, 
     children,
   } = $props();
 
@@ -30,6 +34,43 @@
   let previouslyFocusedElement: HTMLElement | null = null;
   let visible = false;
   let previousSnapPoint: number | undefined = undefined;
+  let stateLoaded = false; 
+
+  onMount(() => {
+    if (persistState && !stateLoaded) {
+      const savedState = loadDrawerState(persistKey);
+
+      if (savedState) {
+        open = savedState.open;
+
+        if (
+          persistSnapPoint &&
+          savedState.snapPoint !== undefined &&
+          snapPoints
+        ) {
+          activeSnapPoint = savedState.snapPoint;
+        }
+      }
+
+      stateLoaded = true;
+    }
+
+    window.addEventListener("keydown", handleKeydown);
+    return () => {
+      window.removeEventListener("keydown", handleKeydown);
+      document.body.style.overflow = "";
+    };
+  });
+
+  $effect(() => {
+    if (persistState && stateLoaded) {
+      saveDrawerState(
+        persistKey,
+        open,
+        persistSnapPoint ? activeSnapPoint : undefined
+      );
+    }
+  });
 
   $effect(() => {
     if (
@@ -107,14 +148,6 @@
       closeDrawer();
     }
   }
-
-  onMount(() => {
-    window.addEventListener("keydown", handleKeydown);
-    return () => {
-      window.removeEventListener("keydown", handleKeydown);
-      document.body.style.overflow = "";
-    };
-  });
 
   setContext("drawer", {
     get open() {

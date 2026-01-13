@@ -398,6 +398,61 @@ Optional pre-styled header and footer components for quick setup.
 
 **Note:** These components are **optional**. You can still build custom headers and footers using plain HTML/Svelte markup without importing these components.
 
+### Persistent State
+
+Automatically save and restore drawer state across page reloads.
+```svelte
+<script>
+  import { Drawer, DrawerOverlay, DrawerContent } from '@abhivarde/svelte-drawer';
+
+  let open = $state(false);
+</script>
+
+<Drawer 
+  bind:open 
+  persistState={true}
+  persistKey="main-drawer"
+>
+  <DrawerOverlay />
+  <DrawerContent class="...">
+    <h2>This drawer remembers if it was open!</h2>
+    <p>Reload the page and it will restore its state.</p>
+  </DrawerContent>
+</Drawer>
+```
+
+**With snap points:**
+```svelte
+<Drawer 
+  bind:open 
+  snapPoints={[0.25, 0.5, 0.9]}
+  bind:activeSnapPoint
+  persistState={true}
+  persistKey="snap-drawer"
+  persistSnapPoint={true}
+>
+  <DrawerOverlay />
+  <DrawerContent class="...">
+    <h2>Position is saved too!</h2>
+    <p>The snap point will be restored on reload.</p>
+  </DrawerContent>
+</Drawer>
+```
+
+**Clear saved state programmatically:**
+```svelte
+<script>
+  import { clearDrawerState } from '@abhivarde/svelte-drawer';
+
+  function resetDrawer() {
+    clearDrawerState('main-drawer');
+    // Drawer will reset to default state on next load
+  }
+</script>
+
+<button onclick={resetDrawer}>Reset Drawer State</button>
+```
+
 ## Variants
 
 Available variants for `DrawerVariants` component:
@@ -431,6 +486,9 @@ Main wrapper component that manages drawer state and animations.
 - `onSnapPointChange` (function, optional) - Callback fired when snap changes
 - `portal` (boolean, optional, default: false) - Render drawer in a portal
 - `portalContainer` (HTMLElement | string, optional) - Custom portal container element or selector
+- `persistState` (boolean, optional, default: false) - Enable persistent state
+- `persistKey` (string, optional, default: "default") - Unique identifier for this drawer
+- `persistSnapPoint` (boolean, optional, default: false) - Whether to persist snap point position
 
 ### DrawerOverlay
 

@@ -7,6 +7,12 @@ export { default as DrawerPortal } from "./components/DrawerPortal.svelte";
 export { default as DrawerHeader } from "./components/DrawerHeader.svelte";
 export { default as DrawerFooter } from "./components/DrawerFooter.svelte";
 
+export {
+  saveDrawerState,
+  loadDrawerState,
+  clearDrawerState,
+} from "./utils/storage";
+
 export type {
   DrawerProps,
   DrawerContentProps,

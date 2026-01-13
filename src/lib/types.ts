@@ -8,6 +8,9 @@ export interface DrawerProps {
   onSnapPointChange?: (snapPoint: number) => void;
   portal?: boolean;
   portalContainer?: HTMLElement | string;
+  persistState?: boolean;
+  persistKey?: string;
+  persistSnapPoint?: boolean;
 }
 
 export interface DrawerContentProps {
