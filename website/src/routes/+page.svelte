@@ -11,7 +11,6 @@
   import StargazersSection from "$lib/components/StargazersSection.svelte";
   import CodeBlock from "$lib/components/CodeBlock.svelte";
   import DrawerFooter from "$lib/components/DrawerFooter.svelte";
-  import ExampleSection from "$lib/components/ExampleSection.svelte";
   import { codeExamples } from "$lib/constants/codeExamples";
   import { ExternalLink } from "lucide-svelte";
 
@@ -41,11 +40,12 @@
     scrollable: "idle",
     controlled: "idle",
     variant: "idle",
-    "variants-feature": "idle",
     snappoint: "idle",
     portal: "idle",
     "header-footer": "idle",
     blur: "idle",
+    persistent: "idle",
+    "persistent-snap": "idle",
   });
 
   async function copyToClipboard(text: string, key: string) {
@@ -267,6 +267,36 @@
     </section>
 
     <section>
+      <h2 class="text-xl font-medium mb-6">Examples</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-12">
+        {#each examples as example}
+          <button
+            onclick={example.open}
+            class="px-4 py-3 bg-white border border-gray-200 rounded-lg hover:border-gray-300 hover:shadow-sm transition text-sm font-medium text-gray-700 hover:text-gray-900"
+          >
+            {example.title}
+          </button>
+        {/each}
+      </div>
+
+      <div class="space-y-8">
+        {#each examples as example}
+          <div>
+            <h3 class="text-base font-medium mb-3 text-gray-900">
+              {example.title}
+            </h3>
+            <CodeBlock
+              code={example.code}
+              copyKey={example.key}
+              {copyStatus}
+              onCopy={copyToClipboard}
+            />
+          </div>
+        {/each}
+      </div>
+    </section>
+
+    <section>
       <h2 class="text-xl font-medium mb-3">Position</h2>
       <p class="text-sm text-gray-600 mb-4">
         Change direction with the <code>direction</code> prop.
@@ -286,7 +316,8 @@
           class="px-2 py-1 bg-gray-100 rounded border border-gray-300 text-xs font-mono"
           >Esc</kbd
         >
-        to close the drawer. Disable with <code>closeOnEscape={false}</code>.
+        to close the drawer. Disable with
+        <code>closeOnEscape={"{false}"}</code>.
       </p>
       <CodeBlock
         code="<Drawer bind:open closeOnEscape={true}>\n  <!-- Drawer content -->\n</Drawer>"
@@ -295,99 +326,9 @@
         onCopy={copyToClipboard}
       />
     </section>
-
-    <section>
-      <h2 class="text-xl font-medium mb-3">Backdrop Blur</h2>
-      <p class="text-sm text-gray-600 mb-4">
-        Add a premium glass-morphism effect to your drawer overlay. Choose from
-        multiple blur intensities.
-      </p>
-      <CodeBlock
-        code={codeExamples.blurDrawer}
-        copyKey="blur"
-        {copyStatus}
-        onCopy={copyToClipboard}
-      />
-    </section>
-
-    <section>
-      <h2 class="text-xl font-medium mb-3">Prebuilt Variants</h2>
-      <p class="text-sm text-gray-600 mb-4">
-        Use prebuilt variants for common drawer styles. Available variants: <code
-          >default</code
-        >, <code>sheet</code>, <code>dialog</code>, <code>minimal</code>, and
-        <code>sidebar</code>.
-      </p>
-      <CodeBlock
-        code={`<Drawer bind:open>\n  <DrawerOverlay />\n  <DrawerVariants variant="sheet">\n    <div class="p-6">\n      <h2>Sheet Variant</h2>\n      <p>Prebuilt styling applied!</p>\n    </div>\n  </DrawerVariants>\n</Drawer>\n\n<!-- Available variants -->\n<DrawerVariants variant="default" />  <!-- Default bottom drawer -->\n<DrawerVariants variant="sheet" />    <!-- Full-height sheet -->\n<DrawerVariants variant="dialog" />   <!-- Centered dialog -->\n<DrawerVariants variant="minimal" />  <!-- Minimal bottom -->\n<DrawerVariants variant="sidebar" />  <!-- Side panel -->`}
-        copyKey="variants-feature"
-        {copyStatus}
-        onCopy={copyToClipboard}
-      />
-    </section>
-
-    <section>
-      <h2 class="text-xl font-medium mb-3">Snap Points</h2>
-      <p class="text-sm text-gray-600 mb-4">
-        Snap points allow the drawer to rest at predefined heights, creating an
-        iOS-like sheet experience. Drag to snap between positions or control
-        programmatically.
-      </p>
-      <CodeBlock
-        code={codeExamples.snapPointDrawer}
-        copyKey="snappoint"
-        {copyStatus}
-        onCopy={copyToClipboard}
-      />
-    </section>
-
-    <section>
-      <h2 class="text-xl font-medium mb-3">Portal Support</h2>
-      <p class="text-sm text-gray-600 mb-4">
-        Render the drawer in a portal to avoid z-index conflicts. The portal
-        renders the drawer at the end of the document body by default.
-      </p>
-      <CodeBlock
-        code={codeExamples.portalDrawer}
-        copyKey="portal"
-        {copyStatus}
-        onCopy={copyToClipboard}
-      />
-    </section>
-
-    <section>
-      <h2 class="text-xl font-medium mb-3">Header & Footer Components</h2>
-      <p class="text-sm text-gray-600 mb-4">
-        Optional pre-styled header and footer components for quick drawer setup.
-        Use them for convenience or build your own custom headers/footers.
-      </p>
-      <CodeBlock
-        code={codeExamples.headerFooterDrawer}
-        copyKey="header-footer"
-        {copyStatus}
-        onCopy={copyToClipboard}
-      />
-    </section>
-
-    <section>
-      <h2 class="text-xl font-medium mb-6">Examples</h2>
-      <div class="space-y-10">
-        {#each examples as example}
-          <ExampleSection
-            title={example.title}
-            onOpen={example.open}
-            code={example.code}
-            copyKey={example.key}
-            {copyStatus}
-            onCopy={copyToClipboard}
-          />
-        {/each}
-      </div>
-    </section>
   </div>
 </div>
 
-<!-- Default Drawer -->
 <Drawer bind:open={defaultOpen}>
   <DrawerOverlay />
   <DrawerContent
@@ -408,7 +349,6 @@
   </DrawerContent>
 </Drawer>
 
-<!-- Side Drawer -->
 <Drawer bind:open={sideOpen} direction="right">
   <DrawerOverlay />
   <DrawerContent
@@ -448,7 +388,6 @@
   </DrawerContent>
 </Drawer>
 
-<!-- Nested Drawer 1 -->
 <Drawer bind:open={nested1Open}>
   <DrawerOverlay />
   <DrawerContent
@@ -475,7 +414,6 @@
   </DrawerContent>
 </Drawer>
 
-<!-- Nested Drawer 2 -->
 <Drawer bind:open={nested2Open}>
   <DrawerOverlay class="z-[60]" />
   <DrawerContent
@@ -492,7 +430,6 @@
   </DrawerContent>
 </Drawer>
 
-<!-- Scrollable Drawer -->
 <Drawer bind:open={scrollableOpen}>
   <DrawerOverlay />
   <DrawerContent
@@ -533,7 +470,6 @@
   </DrawerContent>
 </Drawer>
 
-<!-- Controlled Drawer -->
 <Drawer
   bind:open={controlledOpen}
   onOpenChange={(isOpen: boolean) =>
@@ -557,7 +493,6 @@
   </DrawerContent>
 </Drawer>
 
-<!-- Variant Drawer -->
 <Drawer bind:open={variantOpen} closeOnEscape={true}>
   <DrawerOverlay />
   <DrawerVariants variant="sheet">
@@ -578,7 +513,6 @@
   </DrawerVariants>
 </Drawer>
 
-<!-- Snap Point Drawer -->
 <Drawer
   bind:open={snapPointOpen}
   snapPoints={[0.25, 0.5, 0.9]}
@@ -626,7 +560,6 @@
   </DrawerContent>
 </Drawer>
 
-<!-- Portal Drawer -->
 <Drawer bind:open={portalOpen} portal={true}>
   <DrawerOverlay />
   <DrawerContent
@@ -655,7 +588,6 @@
   </DrawerContent>
 </Drawer>
 
-<!-- Header & Footer Drawer -->
 <Drawer bind:open={headerFooterOpen}>
   <DrawerOverlay />
   <DrawerContent
@@ -702,21 +634,18 @@
         <button
           onclick={() => (headerFooterOpen = false)}
           class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 text-sm font-medium"
+          >Cancel</button
         >
-          Cancel
-        </button>
         <button
           onclick={() => (headerFooterOpen = false)}
           class="px-4 py-2 bg-black text-white rounded hover:bg-gray-800 text-sm font-medium"
+          >Confirm</button
         >
-          Confirm
-        </button>
       </div>
     </LibDrawerFooter>
   </DrawerContent>
 </Drawer>
 
-<!-- Blur Drawer -->
 <Drawer bind:open={blurOpen}>
   <DrawerOverlay blur="xl" />
   <DrawerContent
@@ -751,29 +680,32 @@
   </DrawerContent>
 </Drawer>
 
-<!-- Persistent State Drawer -->
-<Drawer 
+<Drawer
   bind:open={persistentOpen}
   persistState={true}
   persistKey="demo-persistent"
 >
   <DrawerOverlay />
-  <DrawerContent class="bg-gray-100 flex flex-col rounded-t-[10px] mt-24 h-fit fixed bottom-0 left-0 right-0 outline-none">
+  <DrawerContent
+    class="bg-gray-100 flex flex-col rounded-t-[10px] mt-24 h-fit fixed bottom-0 left-0 right-0 outline-none"
+  >
     <div class="p-4 bg-white rounded-t-[10px] flex-1">
       <DrawerHandle class="mb-8" />
       <div class="max-w-md mx-auto">
         <h2 class="font-medium mb-4 text-gray-900">Persistent State Drawer</h2>
-        <p class="text-gray-600 mb-2">
-          This drawer remembers if it was open!
-        </p>
+        <p class="text-gray-600 mb-2">This drawer remembers if it was open!</p>
         <p class="text-gray-600 mb-4">
-          Try this: Close this drawer, then reload the page. It will stay closed!
+          Try this: Close this drawer, then reload the page. It will stay
+          closed!
         </p>
         <p class="text-gray-600 mb-4">
           Or keep it open and reload - it will reopen automatically.
         </p>
-        <div class="bg-blue-50 border border-blue-200 rounded p-3 text-sm text-blue-900">
-          <strong>How it works:</strong> Uses localStorage with a unique key to save state.
+        <div
+          class="bg-blue-50 border border-blue-200 rounded p-3 text-sm text-blue-900"
+        >
+          <strong>How it works:</strong> Uses localStorage with a unique key to save
+          state.
         </div>
       </div>
     </div>
@@ -781,8 +713,7 @@
   </DrawerContent>
 </Drawer>
 
-<!-- Persistent Snap Point Drawer -->
-<Drawer 
+<Drawer
   bind:open={persistentSnapOpen}
   snapPoints={[0.25, 0.5, 0.9]}
   bind:activeSnapPoint={persistentSnapPoint}
@@ -791,7 +722,9 @@
   persistSnapPoint={true}
 >
   <DrawerOverlay />
-  <DrawerContent class="bg-gray-100 flex flex-col rounded-t-[10px] fixed bottom-0 left-0 right-0 outline-none">
+  <DrawerContent
+    class="bg-gray-100 flex flex-col rounded-t-[10px] fixed bottom-0 left-0 right-0 outline-none"
+  >
     <div class="p-4 bg-white rounded-t-[10px] flex-1">
       <DrawerHandle class="mb-8" />
       <div class="max-w-md mx-auto">
@@ -803,27 +736,28 @@
           Then reload the page - it will remember your position!
         </p>
         <p class="text-sm text-gray-500 mb-4">
-          Current position: <strong>{persistentSnapPoint ? `${(persistentSnapPoint * 100).toFixed(0)}%` : 'Loading...'}</strong>
+          Current position: <strong
+            >{persistentSnapPoint
+              ? `${(persistentSnapPoint * 100).toFixed(0)}%`
+              : "Loading..."}</strong
+          >
         </p>
         <div class="space-y-2">
-          <button 
-            onclick={() => persistentSnapPoint = 0.25}
+          <button
+            onclick={() => (persistentSnapPoint = 0.25)}
             class="w-full px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 text-sm font-medium"
+            >Jump to 25%</button
           >
-            Jump to 25%
-          </button>
-          <button 
-            onclick={() => persistentSnapPoint = 0.5}
+          <button
+            onclick={() => (persistentSnapPoint = 0.5)}
             class="w-full px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 text-sm font-medium"
+            >Jump to 50%</button
           >
-            Jump to 50%
-          </button>
-          <button 
-            onclick={() => persistentSnapPoint = 0.9}
+          <button
+            onclick={() => (persistentSnapPoint = 0.9)}
             class="w-full px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 text-sm font-medium"
+            >Jump to 90%</button
           >
-            Jump to 90%
-          </button>
         </div>
       </div>
     </div>
