@@ -1,15 +1,6 @@
-import adapter from "@sveltejs/adapter-auto";
-import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
+import { sveltekit } from "@sveltejs/kit/vite";
+import { defineConfig } from "vite";
 
-/** @type {import('@sveltejs/kit').Config} */
-const config = {
-  preprocess: vitePreprocess(),
-  kit: {
-    adapter: adapter(),
-    files: {
-      lib: "src/lib",
-    },
-  },
-};
-
-export default config;
+export default defineConfig({
+  plugins: [sveltekit()],
+});
