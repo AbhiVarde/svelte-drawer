@@ -29,6 +29,9 @@
   let persistentOpen = $state(false);
   let persistentSnapOpen = $state(false);
   let persistentSnapPoint = $state<number | undefined>(undefined);
+  let autoHeightOpen = $state(false);
+  let autoHeightText = $state("");
+  let autoHeightStreaming = $state(false);
 
   let copyStatus: Record<string, "idle" | "success"> = $state({
     installation: "idle",
@@ -126,6 +129,16 @@
       key: "persistent-snap",
       open: () => (persistentSnapOpen = true),
       code: codeExamples.persistentSnapDrawer,
+    },
+    {
+      title: "Auto Height Drawer",
+      key: "autoheight",
+      open: () => {
+        autoHeightOpen = true;
+        autoHeightText = "";
+        autoHeightStreaming = false;
+      },
+      code: codeExamples.autoheight,
     },
   ];
 </script>
@@ -762,5 +775,57 @@
       </div>
     </div>
     <DrawerFooter />
+  </DrawerContent>
+</Drawer>
+
+<Drawer bind:open={autoHeightOpen}>
+  <DrawerOverlay class="fixed inset-0 bg-black/40" />
+  <DrawerContent
+    autoHeight
+    class="fixed bottom-0 left-0 right-0 bg-white rounded-t-2xl p-5"
+  >
+    <DrawerHandle class="mb-4" />
+    <p class="text-sm font-semibold mb-2">AI Response</p>
+
+    {#if autoHeightText}
+      <p class="text-sm text-gray-600 whitespace-pre-wrap leading-relaxed mb-4">
+        {autoHeightText}{autoHeightStreaming ? "▌" : ""}
+      </p>
+    {/if}
+
+    {#if !autoHeightStreaming && !autoHeightText}
+      <button
+        onclick={async () => {
+          autoHeightStreaming = true;
+          autoHeightText = "";
+          const lines = [
+            "Sure! Here is what autoHeight does.",
+            "\n\nIt watches your content with a ResizeObserver.",
+            "\n\nWhen content grows — like this stream — the drawer follows.",
+            "\n\nNo magic numbers. No hardcoded heights. Just works.",
+          ];
+          for (const line of lines) {
+            await new Promise((r) => setTimeout(r, 500));
+            autoHeightText += line;
+          }
+          autoHeightStreaming = false;
+        }}
+        class="w-full rounded-xl bg-zinc-900 text-white text-sm font-medium py-2.5 hover:opacity-90 transition-opacity"
+      >
+        Simulate AI stream ✦
+      </button>
+    {:else if autoHeightStreaming}
+      <p class="text-xs text-zinc-400 text-center py-1">Streaming...</p>
+    {:else}
+      <button
+        onclick={() => {
+          autoHeightText = "";
+          autoHeightStreaming = false;
+        }}
+        class="w-full rounded-xl border border-zinc-200 text-zinc-500 text-sm font-medium py-2.5 hover:bg-zinc-50 transition-colors"
+      >
+        Reset
+      </button>
+    {/if}
   </DrawerContent>
 </Drawer>

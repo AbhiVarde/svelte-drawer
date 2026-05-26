@@ -253,8 +253,8 @@ export const codeExamples = {
     </div>
   </DrawerContent>
 </Drawer>`,
-  
-    persistentDrawer: `<script>
+
+  persistentDrawer: `<script>
   import { Drawer, DrawerOverlay, DrawerContent, DrawerHandle } from '@abhivarde/svelte-drawer';
 
   let open = $state(false);
@@ -305,5 +305,46 @@ export const codeExamples = {
     </p>
   </DrawerContent>
 </Drawer>`,
-};
 
+  autoheight: `<script>
+  import { Drawer, DrawerOverlay, DrawerContent, DrawerHandle } from '@abhivarde/svelte-drawer';
+
+  let open = $state(false);
+  let streaming = $state(false);
+  let text = $state('');
+
+  const lines = [
+    'Sure! Here is what autoHeight does.',
+    '\\n\\nIt watches your content with a ResizeObserver.',
+    '\\n\\nWhen content grows — like this stream — the drawer follows.',
+    '\\n\\nNo magic numbers. No hardcoded heights. Just works.',
+  ];
+
+  async function simulate() {
+    open = true;
+    streaming = true;
+    text = '';
+    for (const line of lines) {
+      await new Promise(r => setTimeout(r, 500));
+      text += line;
+    }
+    streaming = false;
+  }
+<\/script>
+
+<button onclick={simulate}>Simulate AI Stream</button>
+
+<Drawer bind:open>
+  <DrawerOverlay class="fixed inset-0 bg-black/40" />
+  <DrawerContent
+    autoHeight
+    class="fixed bottom-0 left-0 right-0 bg-white rounded-t-2xl p-5"
+  >
+    <DrawerHandle class="mb-4" />
+    <p class="text-sm font-semibold mb-2">AI Response</p>
+    <p class="text-sm text-gray-600 whitespace-pre-wrap leading-relaxed">
+      {text}{streaming ? '▌' : ''}
+    </p>
+  </DrawerContent>
+</Drawer>`,
+};
