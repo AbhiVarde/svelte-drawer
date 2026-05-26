@@ -780,14 +780,17 @@
 
 <Drawer bind:open={autoHeightOpen}>
   <DrawerOverlay />
+
   <DrawerContent
     autoHeight
     class="bg-gray-100 flex flex-col rounded-t-[10px] fixed bottom-0 left-0 right-0 outline-none"
   >
     <div class="p-4 bg-white rounded-t-[10px]">
       <DrawerHandle class="mb-8" />
+
       <div class="max-w-md mx-auto">
         <h2 class="font-medium mb-4 text-gray-900">Auto Height Drawer</h2>
+
         <p class="text-gray-600 mb-4">
           The drawer grows as content streams in. No fixed height needed.
         </p>
@@ -807,16 +810,15 @@
             onclick={async () => {
               autoHeightStreaming = true;
               autoHeightText = "";
-              const lines = [
-                "Sure! Here is what autoHeight does.",
-                "\n\nIt watches your content with a ResizeObserver.",
-                "\n\nWhen content grows, the drawer follows automatically.",
-                "\n\nNo magic numbers. No hardcoded heights. Just works.",
-              ];
-              for (const line of lines) {
-                await new Promise((r) => setTimeout(r, 500));
-                autoHeightText += line;
+
+              const content =
+                "Sure! Here is what autoHeight does. It watches your content with a ResizeObserver. When content grows, the drawer follows automatically. No magic numbers, no hardcoded heights, it just works smoothly with streaming UI like AI chat apps.";
+
+              for (let i = 0; i < content.length; i++) {
+                autoHeightText += content[i];
+                await new Promise((r) => setTimeout(r, 18));
               }
+
               autoHeightStreaming = false;
             }}
             class="w-full rounded-md bg-gray-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-gray-800"
@@ -838,6 +840,7 @@
         {/if}
       </div>
     </div>
+
     <DrawerFooter />
   </DrawerContent>
 </Drawer>
