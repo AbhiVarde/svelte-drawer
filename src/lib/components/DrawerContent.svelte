@@ -190,17 +190,14 @@
   }
 
   let contentInnerRef = $state<HTMLElement | null>(null);
+  let measuredHeight = $state<number | null>(null);
 
   $effect(() => {
     if (!autoHeight || !contentInnerRef) return;
 
     const ro = new ResizeObserver((entries) => {
-      const entry = entries[0];
-      if (!entry) return;
-      const totalHeight = entry.contentRect.height;
-      const viewportH = window.innerHeight;
-      const pct = Math.max(0, ((viewportH - totalHeight) / viewportH) * 100);
-      drawer.drawerPosition.set(pct, { duration: 200 });
+      const h = entries[0]?.contentRect.height;
+      if (h) measuredHeight = h;
     });
 
     ro.observe(contentInnerRef);
@@ -219,7 +216,10 @@
   <div
     bind:this={contentElement}
     class={className}
-    style="transform: {getTransform()}; z-index: 50; touch-action: none;"
+    style="transform: {getTransform()}; z-index: 50; touch-action: none;{autoHeight &&
+    measuredHeight
+      ? ` height: ${measuredHeight}px; transition: height 0.25s cubic-bezier(0.4,0,0.2,1);`
+      : ''}"
     tabindex="-1"
     role="dialog"
     aria-modal="true"
