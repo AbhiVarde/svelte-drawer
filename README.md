@@ -21,7 +21,7 @@ A drawer component for Svelte 5, inspired by [Vaul](https://github.com/emilkowal
 - ✅ Fully accessible with keyboard navigation
 - ✅ Full **TypeScript** support
 - ✅ Customizable styling with **Tailwind CSS**
-- ✅ **Auto height** — resizes to match content (AI streaming, forms, dynamic lists)
+- ✅ **Auto height** for dynamic content (AI streaming, forms, dynamic lists)
 
 ## Installation
 
@@ -470,33 +470,51 @@ Use `autoHeight` on `DrawerContent` when your drawer content changes height at r
   import { Drawer, DrawerOverlay, DrawerContent, DrawerHandle } from '@abhivarde/svelte-drawer';
 
   let open = $state(false);
-  let streamedText = $state('Thinking...');
+  let streaming = $state(false);
+  let text = $state('');
 
-  // simulate streaming
-  function openAndStream() {
+  const lines = [
+    'Sure! Here is what autoHeight does.',
+    '\n\nIt watches your content as it changes.',
+    '\n\nWhen content grows, the drawer follows automatically.',
+    '\n\nNo magic numbers. No hardcoded heights. Just works.',
+  ];
+
+  async function simulate() {
     open = true;
-    setTimeout(() => streamedText = 'Here is the AI response. It grows as tokens arrive, and the drawer follows automatically.', 1000);
+    streaming = true;
+    text = '';
+    for (const line of lines) {
+      await new Promise(r => setTimeout(r, 500));
+      text += line;
+    }
+    streaming = false;
   }
 </script>
 
-<button onclick={openAndStream}>Ask AI</button>
+<button onclick={simulate}>Ask AI</button>
 
 <Drawer bind:open>
-  <DrawerOverlay class="fixed inset-0 bg-black/40" />
-  <DrawerContent autoHeight class="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg p-4">
-    <DrawerHandle class="mb-4" />
-    <p>{streamedText}</p>
+  <DrawerOverlay />
+  <DrawerContent autoHeight class="bg-gray-100 flex flex-col rounded-t-[10px] fixed bottom-0 left-0 right-0 outline-none">
+    <div class="p-4 bg-white rounded-t-[10px]">
+      <DrawerHandle class="mb-8" />
+      <p class="font-medium mb-2 text-gray-900">AI Response</p>
+      {#if text}
+        <p class="text-sm text-gray-600 whitespace-pre-wrap leading-relaxed">{text}{streaming ? '▌' : ''}</p>
+      {/if}
+    </div>
   </DrawerContent>
 </Drawer>
 ```
 
 **How it works:**
 
-- A `ResizeObserver` watches the inner content element
-- When content height changes, it drives the existing `drawerPosition` tween
-- The drawer animates smoothly to the correct height — no magic numbers needed
+- `height: auto` is applied to the drawer when `autoHeight` is true
+- The drawer grows and shrinks naturally as content changes
+- The slide-in animation is unaffected since it runs via CSS transform separately
 - Fully compatible with snap points, portals, and all existing props
-- Zero impact on drawers that don't use `autoHeight` (opt-in, default `false`)
+- Zero impact on drawers that do not use `autoHeight` (opt-in, default `false`)
 
 ## Variants
 
