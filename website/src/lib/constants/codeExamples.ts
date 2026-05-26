@@ -307,27 +307,30 @@ export const codeExamples = {
 </Drawer>`,
 
   autoheight: `<script>
-  import { Drawer, DrawerOverlay, DrawerContent, DrawerHandle } from '@abhivarde/svelte-drawer';
+  import {
+    Drawer,
+    DrawerOverlay,
+    DrawerContent,
+    DrawerHandle
+  } from '@abhivarde/svelte-drawer';
 
   let open = $state(false);
   let streaming = $state(false);
   let text = $state('');
 
-  const lines = [
-    'Sure! Here is what autoHeight does.',
-    '\\n\\nIt watches your content with a ResizeObserver.',
-    '\\n\\nWhen content grows, the drawer follows automatically.',
-    '\\n\\nNo magic numbers. No hardcoded heights. Just works.',
-  ];
-
   async function simulate() {
     open = true;
     streaming = true;
     text = '';
-    for (const line of lines) {
-      await new Promise(r => setTimeout(r, 500));
-      text += line;
+
+    const content =
+      'Sure! Here is what autoHeight does. It watches your content with a ResizeObserver. When content grows, the drawer follows automatically. No magic numbers, no hardcoded heights, it just works smoothly with streaming UI like AI chat apps.';
+
+    for (let i = 0; i < content.length; i++) {
+      text += content[i];
+      await new Promise(r => setTimeout(r, 18));
     }
+
     streaming = false;
   }
 <\/script>
@@ -336,24 +339,31 @@ export const codeExamples = {
 
 <Drawer bind:open>
   <DrawerOverlay />
+
   <DrawerContent
     autoHeight
     class="bg-gray-100 flex flex-col rounded-t-[10px] fixed bottom-0 left-0 right-0 outline-none"
   >
     <div class="p-4 bg-white rounded-t-[10px]">
       <DrawerHandle class="mb-8" />
+
       <div class="max-w-md mx-auto">
-        <h2 class="font-medium mb-4 text-gray-900">Auto Height Drawer</h2>
+        <h2 class="font-medium mb-4 text-gray-900">
+          Auto Height Drawer
+        </h2>
+
         <p class="text-gray-600 mb-4">
           The drawer grows as content streams in. No fixed height needed.
         </p>
+
         {#if text}
           <div class="bg-gray-50 border border-gray-200 rounded-lg p-3 mb-4">
-            <p class="text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">
+            <p class="text-sm text-gray-700 leading-relaxed">
               {text}{streaming ? '▌' : ''}
             </p>
           </div>
         {/if}
+
         {#if !streaming && !text}
           <button
             onclick={simulate}
@@ -361,11 +371,18 @@ export const codeExamples = {
           >
             Simulate AI stream
           </button>
+
         {:else if streaming}
-          <p class="text-xs text-gray-400 text-center py-2">Streaming...</p>
+          <p class="text-xs text-gray-400 text-center py-2">
+            Streaming...
+          </p>
+
         {:else}
           <button
-            onclick={() => { text = ''; streaming = false; }}
+            onclick={() => {
+              text = '';
+              streaming = false;
+            }}
             class="w-full rounded-md border border-gray-200 px-4 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-50"
           >
             Reset

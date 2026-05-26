@@ -463,31 +463,34 @@ Automatically save and restore drawer state across page reloads.
 
 ### Auto Height (AI & Dynamic Content)
 
-Use `autoHeight` on `DrawerContent` when your drawer content changes height at runtime — AI streaming responses, multi-step forms, search results, or any dynamic list.
+Use `autoHeight` on `DrawerContent` when your drawer content changes height at runtime like AI streaming responses, multi-step forms, search results, or dynamic lists.
 
 ```svelte
 <script>
-  import { Drawer, DrawerOverlay, DrawerContent, DrawerHandle } from '@abhivarde/svelte-drawer';
+  import {
+    Drawer,
+    DrawerOverlay,
+    DrawerContent,
+    DrawerHandle
+  } from '@abhivarde/svelte-drawer';
 
   let open = $state(false);
   let streaming = $state(false);
   let text = $state('');
 
-  const lines = [
-    'Sure! Here is what autoHeight does.',
-    '\n\nIt watches your content as it changes.',
-    '\n\nWhen content grows, the drawer follows automatically.',
-    '\n\nNo magic numbers. No hardcoded heights. Just works.',
-  ];
-
   async function simulate() {
     open = true;
     streaming = true;
     text = '';
-    for (const line of lines) {
-      await new Promise(r => setTimeout(r, 500));
-      text += line;
+
+    const content =
+      'Sure! Here is what autoHeight does. It watches your content with a ResizeObserver. When content grows, the drawer follows automatically. No magic numbers, no hardcoded heights, it just works smoothly with streaming UI like AI chat apps.';
+
+    for (let i = 0; i < content.length; i++) {
+      text += content[i];
+      await new Promise(r => setTimeout(r, 18));
     }
+
     streaming = false;
   }
 </script>
@@ -496,12 +499,22 @@ Use `autoHeight` on `DrawerContent` when your drawer content changes height at r
 
 <Drawer bind:open>
   <DrawerOverlay />
-  <DrawerContent autoHeight class="bg-gray-100 flex flex-col rounded-t-[10px] fixed bottom-0 left-0 right-0 outline-none">
+
+  <DrawerContent
+    autoHeight
+    class="bg-gray-100 flex flex-col rounded-t-[10px] fixed bottom-0 left-0 right-0 outline-none"
+  >
     <div class="p-4 bg-white rounded-t-[10px]">
       <DrawerHandle class="mb-8" />
-      <p class="font-medium mb-2 text-gray-900">AI Response</p>
+
+      <p class="font-medium mb-2 text-gray-900">
+        AI Response
+      </p>
+
       {#if text}
-        <p class="text-sm text-gray-600 whitespace-pre-wrap leading-relaxed">{text}{streaming ? '▌' : ''}</p>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          {text}{streaming ? '▌' : ''}
+        </p>
       {/if}
     </div>
   </DrawerContent>
@@ -512,8 +525,9 @@ Use `autoHeight` on `DrawerContent` when your drawer content changes height at r
 
 - `height: auto` is applied to the drawer when `autoHeight` is true
 - The drawer grows and shrinks naturally as content changes
-- The slide-in animation is unaffected since it runs via CSS transform separately
-- Fully compatible with snap points, portals, and all existing props
+- Perfect for AI streaming, dynamic lists, forms, and async content
+- The slide animation remains smooth since it uses CSS transforms separately
+- Fully compatible with snap points, portals, and existing props
 - Zero impact on drawers that do not use `autoHeight` (opt-in, default `false`)
 
 ## Variants
