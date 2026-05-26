@@ -189,19 +189,17 @@
     }
   }
 
-  let contentInnerRef = $state<HTMLElement | null>(null);
-  let measuredHeight = $state<number | null>(null);
-
   $effect(() => {
-    if (!autoHeight || !contentInnerRef) return;
-
-    const ro = new ResizeObserver((entries) => {
-      const h = entries[0]?.contentRect.height;
-      if (h) measuredHeight = h;
-    });
-
-    ro.observe(contentInnerRef);
-    return () => ro.disconnect();
+    if (drawer.open && trapFocus && contentElement) {
+      tick().then(() => {
+        const focusable = getFocusableElements();
+        if (focusable[0]) {
+          focusable[0].focus({ preventScroll: true });
+        } else {
+          contentElement?.focus({ preventScroll: true });
+        }
+      });
+    }
   });
 
   onMount(() => {
@@ -216,9 +214,8 @@
   <div
     bind:this={contentElement}
     class={className}
-    style="transform: {getTransform()}; z-index: 50; touch-action: none;{autoHeight &&
-    measuredHeight
-      ? ` height: ${measuredHeight}px; transition: height 0.25s cubic-bezier(0.4,0,0.2,1);`
+    style="transform: {getTransform()}; z-index: 50; touch-action: none;{autoHeight
+      ? ' height: auto;'
       : ''}"
     tabindex="-1"
     role="dialog"
@@ -227,8 +224,6 @@
     ontouchstart={onPointerDown}
     {...restProps}
   >
-    <div bind:this={contentInnerRef}>
-      {@render children()}
-    </div>
+    {@render children()}
   </div>
 {/if}

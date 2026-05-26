@@ -316,7 +316,7 @@ export const codeExamples = {
   const lines = [
     'Sure! Here is what autoHeight does.',
     '\\n\\nIt watches your content with a ResizeObserver.',
-    '\\n\\nWhen content grows — like this stream — the drawer follows.',
+    '\\n\\nWhen content grows, the drawer follows automatically.',
     '\\n\\nNo magic numbers. No hardcoded heights. Just works.',
   ];
 
@@ -332,19 +332,47 @@ export const codeExamples = {
   }
 <\/script>
 
-<button onclick={simulate}>Simulate AI Stream</button>
+<button onclick={simulate}>Simulate AI stream</button>
 
 <Drawer bind:open>
-  <DrawerOverlay class="fixed inset-0 bg-black/40" />
+  <DrawerOverlay />
   <DrawerContent
     autoHeight
-    class="fixed bottom-0 left-0 right-0 bg-white rounded-t-2xl p-5"
+    class="bg-gray-100 flex flex-col rounded-t-[10px] fixed bottom-0 left-0 right-0 outline-none"
   >
-    <DrawerHandle class="mb-4" />
-    <p class="text-sm font-semibold mb-2">AI Response</p>
-    <p class="text-sm text-gray-600 whitespace-pre-wrap leading-relaxed">
-      {text}{streaming ? '▌' : ''}
-    </p>
+    <div class="p-4 bg-white rounded-t-[10px]">
+      <DrawerHandle class="mb-8" />
+      <div class="max-w-md mx-auto">
+        <h2 class="font-medium mb-4 text-gray-900">Auto Height Drawer</h2>
+        <p class="text-gray-600 mb-4">
+          The drawer grows as content streams in. No fixed height needed.
+        </p>
+        {#if text}
+          <div class="bg-gray-50 border border-gray-200 rounded-lg p-3 mb-4">
+            <p class="text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">
+              {text}{streaming ? '▌' : ''}
+            </p>
+          </div>
+        {/if}
+        {#if !streaming && !text}
+          <button
+            onclick={simulate}
+            class="w-full rounded-md bg-gray-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-gray-800"
+          >
+            Simulate AI stream
+          </button>
+        {:else if streaming}
+          <p class="text-xs text-gray-400 text-center py-2">Streaming...</p>
+        {:else}
+          <button
+            onclick={() => { text = ''; streaming = false; }}
+            class="w-full rounded-md border border-gray-200 px-4 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-50"
+          >
+            Reset
+          </button>
+        {/if}
+      </div>
+    </div>
   </DrawerContent>
 </Drawer>`,
 };
