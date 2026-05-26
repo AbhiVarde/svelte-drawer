@@ -1,4 +1,5 @@
 # Svelte Drawer
+
 A drawer component for Svelte 5, inspired by [Vaul](https://github.com/emilkowalski/vaul).
 
 [![](https://img.shields.io/badge/npm-@abhivarde/svelte--drawer-000?style=flat&logo=npm&logoColor=white)](https://www.npmjs.com/package/@abhivarde/svelte-drawer) [![](https://img.shields.io/badge/npmx-@abhivarde/svelte--drawer-000?style=flat&logo=node.js&logoColor=white)](https://npmx.dev/package/@abhivarde/svelte-drawer)
@@ -20,6 +21,7 @@ A drawer component for Svelte 5, inspired by [Vaul](https://github.com/emilkowal
 - ✅ Fully accessible with keyboard navigation
 - ✅ Full **TypeScript** support
 - ✅ Customizable styling with **Tailwind CSS**
+- ✅ **Auto height** — resizes to match content (AI streaming, forms, dynamic lists)
 
 ## Installation
 
@@ -53,10 +55,10 @@ npm install @abhivarde/svelte-drawer
 </Drawer>
 ```
 
-
 ### Backdrop Blur
 
 Add a premium blur effect to the overlay background:
+
 ```svelte
 <script>
 	import { Drawer, DrawerOverlay, DrawerContent, DrawerHandle } from '@abhivarde/svelte-drawer';
@@ -67,12 +69,12 @@ Add a premium blur effect to the overlay background:
 <Drawer bind:open>
 	<!-- Default medium blur -->
 	<DrawerOverlay blur class="fixed inset-0 bg-black/40" />
-	
+
 	<!-- Or specify blur intensity -->
 	<!-- <DrawerOverlay blur="sm" class="fixed inset-0 bg-black/40" /> -->
 	<!-- <DrawerOverlay blur="lg" class="fixed inset-0 bg-black/40" /> -->
 	<!-- <DrawerOverlay blur="xl" class="fixed inset-0 bg-black/40" /> -->
-	
+
 	<DrawerContent class="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg p-4">
 		<DrawerHandle class="mb-8" />
 		<h2>Blurred Backdrop</h2>
@@ -82,6 +84,7 @@ Add a premium blur effect to the overlay background:
 ```
 
 **Available blur intensities:**
+
 - `blur={true}` or `blur="md"` - Medium blur (default)
 - `blur="sm"` - Small blur
 - `blur="lg"` - Large blur
@@ -270,6 +273,7 @@ Snap points allow the drawer to rest at predefined heights, creating an iOS-like
 ### Portal Support
 
 Render the drawer in a portal to avoid z-index conflicts in complex layouts.
+
 ```svelte
 <script>
 	import { Drawer, DrawerOverlay, DrawerContent, DrawerHandle } from '@abhivarde/svelte-drawer';
@@ -299,6 +303,7 @@ Render the drawer in a portal to avoid z-index conflicts in complex layouts.
 ```
 
 **When to use portals:**
+
 - Complex layouts with nested z-index contexts
 - Third-party component libraries with fixed positioning
 - Modals inside scrollable containers
@@ -309,6 +314,7 @@ Render the drawer in a portal to avoid z-index conflicts in complex layouts.
 Optional pre-styled header and footer components for quick setup.
 
 #### DrawerHeader
+
 ```svelte
 <script>
 	import { Drawer, DrawerOverlay, DrawerContent, DrawerHeader, DrawerHandle } from '@abhivarde/svelte-drawer';
@@ -320,8 +326,8 @@ Optional pre-styled header and footer components for quick setup.
 <Drawer bind:open>
 	<DrawerOverlay class="fixed inset-0 bg-black/40" />
 	<DrawerContent class="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg">
-		<DrawerHeader 
-			title="Drawer Title" 
+		<DrawerHeader
+			title="Drawer Title"
 			description="Optional description text"
 			showCloseButton={true}
 		/>
@@ -352,6 +358,7 @@ Optional pre-styled header and footer components for quick setup.
 ```
 
 #### DrawerFooter
+
 ```svelte
 <script>
 	import { Drawer, DrawerOverlay, DrawerContent, DrawerFooter } from '@abhivarde/svelte-drawer';
@@ -399,6 +406,7 @@ Optional pre-styled header and footer components for quick setup.
 ### Persistent State
 
 Automatically save and restore drawer state across page reloads.
+
 ```svelte
 <script>
   import { Drawer, DrawerOverlay, DrawerContent } from '@abhivarde/svelte-drawer';
@@ -406,8 +414,8 @@ Automatically save and restore drawer state across page reloads.
   let open = $state(false);
 </script>
 
-<Drawer 
-  bind:open 
+<Drawer
+  bind:open
   persistState={true}
   persistKey="main-drawer"
 >
@@ -420,9 +428,10 @@ Automatically save and restore drawer state across page reloads.
 ```
 
 **With snap points:**
+
 ```svelte
-<Drawer 
-  bind:open 
+<Drawer
+  bind:open
   snapPoints={[0.25, 0.5, 0.9]}
   bind:activeSnapPoint
   persistState={true}
@@ -438,6 +447,7 @@ Automatically save and restore drawer state across page reloads.
 ```
 
 **Clear saved state programmatically:**
+
 ```svelte
 <script>
   import { clearDrawerState } from '@abhivarde/svelte-drawer';
@@ -450,6 +460,43 @@ Automatically save and restore drawer state across page reloads.
 
 <button onclick={resetDrawer}>Reset Drawer State</button>
 ```
+
+### Auto Height (AI & Dynamic Content)
+
+Use `autoHeight` on `DrawerContent` when your drawer content changes height at runtime — AI streaming responses, multi-step forms, search results, or any dynamic list.
+
+```svelte
+<script>
+  import { Drawer, DrawerOverlay, DrawerContent, DrawerHandle } from '@abhivarde/svelte-drawer';
+
+  let open = $state(false);
+  let streamedText = $state('Thinking...');
+
+  // simulate streaming
+  function openAndStream() {
+    open = true;
+    setTimeout(() => streamedText = 'Here is the AI response. It grows as tokens arrive, and the drawer follows automatically.', 1000);
+  }
+</script>
+
+<button onclick={openAndStream}>Ask AI</button>
+
+<Drawer bind:open>
+  <DrawerOverlay class="fixed inset-0 bg-black/40" />
+  <DrawerContent autoHeight class="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg p-4">
+    <DrawerHandle class="mb-4" />
+    <p>{streamedText}</p>
+  </DrawerContent>
+</Drawer>
+```
+
+**How it works:**
+
+- A `ResizeObserver` watches the inner content element
+- When content height changes, it drives the existing `drawerPosition` tween
+- The drawer animates smoothly to the correct height — no magic numbers needed
+- Fully compatible with snap points, portals, and all existing props
+- Zero impact on drawers that don't use `autoHeight` (opt-in, default `false`)
 
 ## Variants
 
@@ -505,6 +552,7 @@ Content container for the drawer.
 
 - `class` (string, optional) - CSS classes for styling
 - `trapFocus` (boolean, optional, default: true) - Whether to trap focus inside drawer
+- `autoHeight` (boolean, optional, default: false) - Automatically resize the drawer height to match its content
 
 ### DrawerHandle
 

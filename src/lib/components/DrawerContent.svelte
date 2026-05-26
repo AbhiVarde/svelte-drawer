@@ -16,6 +16,7 @@
   let {
     class: className = "",
     trapFocus = true,
+    autoHeight = false,
     children,
     ...restProps
   } = $props();
@@ -165,8 +166,8 @@
     if (!contentElement) return [];
     return Array.from(
       contentElement.querySelectorAll(
-        'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
-      )
+        'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      ),
     ) as HTMLElement[];
   }
 
@@ -188,17 +189,22 @@
     }
   }
 
+  let contentInnerRef = $state<HTMLElement | null>(null);
+
   $effect(() => {
-    if (drawer.open && trapFocus && contentElement) {
-      tick().then(() => {
-        const focusable = getFocusableElements();
-        if (focusable[0]) {
-          focusable[0].focus({ preventScroll: true });
-        } else {
-          contentElement?.focus({ preventScroll: true });
-        }
-      });
-    }
+    if (!autoHeight || !contentInnerRef) return;
+
+    const ro = new ResizeObserver((entries) => {
+      const entry = entries[0];
+      if (!entry) return;
+      const totalHeight = entry.contentRect.height;
+      const viewportH = window.innerHeight;
+      const pct = Math.max(0, ((viewportH - totalHeight) / viewportH) * 100);
+      drawer.drawerPosition.set(pct, { duration: 200 });
+    });
+
+    ro.observe(contentInnerRef);
+    return () => ro.disconnect();
   });
 
   onMount(() => {
@@ -221,6 +227,8 @@
     ontouchstart={onPointerDown}
     {...restProps}
   >
-    {@render children()}
+    <div bind:this={contentInnerRef}>
+      {@render children()}
+    </div>
   </div>
 {/if}

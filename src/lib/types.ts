@@ -16,6 +16,7 @@ export interface DrawerProps {
 export interface DrawerContentProps {
   class?: string;
   trapFocus?: boolean;
+  autoHeight?: boolean;
 }
 
 export interface DrawerOverlayProps {
