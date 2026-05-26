@@ -789,7 +789,7 @@
       <div class="max-w-md mx-auto">
         <h2 class="font-medium mb-4 text-gray-900">Auto Height Drawer</h2>
         <p class="text-gray-600 mb-4">
-          The drawer grows as content streams in -- no fixed height needed.
+          The drawer grows as content streams in. No fixed height needed.
         </p>
 
         {#if autoHeightText}
@@ -810,7 +810,7 @@
               const lines = [
                 "Sure! Here is what autoHeight does.",
                 "\n\nIt watches your content with a ResizeObserver.",
-                "\n\nWhen content grows -- like this stream -- the drawer follows.",
+                "\n\nWhen content grows, the drawer follows automatically.",
                 "\n\nNo magic numbers. No hardcoded heights. Just works.",
               ];
               for (const line of lines) {
