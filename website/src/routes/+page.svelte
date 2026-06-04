@@ -13,6 +13,9 @@
   import DrawerFooter from "$lib/components/DrawerFooter.svelte";
   import { codeExamples } from "$lib/constants/codeExamples";
   import { ExternalLink } from "lucide-svelte";
+  import { Copy } from "lucide-svelte";
+
+  let skillCopyStatus: "idle" | "success" = $state("idle");
 
   let defaultOpen = $state(false);
   let sideOpen = $state(false);
@@ -141,6 +144,14 @@
       code: codeExamples.autoheight,
     },
   ];
+
+  async function copySkillCommand() {
+    await navigator.clipboard.writeText(
+      "npx skills add AbhiVarde/svelte-drawer",
+    );
+    skillCopyStatus = "success";
+    setTimeout(() => (skillCopyStatus = "idle"), 2000);
+  }
 </script>
 
 <svelte:head>
@@ -197,7 +208,7 @@
 </svelte:head>
 
 <div class="min-h-screen bg-[#fafafa] flex flex-col">
-  <div class="w-full max-w-3xl mx-auto px-4 sm:px-6 py-12 text-center">
+  <div class="w-full max-w-3xl mx-auto px-4 sm:px-6 py-6 text-center">
     <p class="text-sm text-gray-500 mb-4">
       npm: <a
         href="https://www.npmjs.com/package/@abhivarde/svelte-drawer"
@@ -217,7 +228,7 @@
         >Vaul</a
       >.
     </p>
-    <div class="flex justify-center gap-4 mb-6">
+    <div class="flex justify-center gap-4 mb-4">
       <button
         onclick={() => (defaultOpen = true)}
         class="px-5 py-2 bg-black text-white rounded-md font-medium hover:bg-gray-800 transition text-sm"
@@ -231,7 +242,7 @@
         >GitHub</a
       >
     </div>
-    <div class="space-y-1 text-sm text-gray-400">
+    <div class="space-y-1 text-xs text-gray-400">
       <p>
         UI library: <a
           href="https://syncui.design"
@@ -250,6 +261,44 @@
           >abhivarde.in</a
         >
       </p>
+    </div>
+  </div>
+
+  <div class="w-full max-w-3xl mx-auto px-4 sm:px-6 pb-4">
+    <div class="flex flex-col items-center gap-2 text-center">
+      <div
+        class="flex flex-wrap items-center justify-center gap-1.5 text-xs text-gray-500"
+      >
+        <span>Also available as an agent skill</span>
+        <span class="hidden sm:inline">·</span>
+        <a
+          href="https://www.skills.sh/abhivarde/svelte-drawer/svelte-drawer"
+          target="_blank"
+          rel="noreferrer"
+          class="underline underline-offset-4 hover:text-gray-700"
+        >
+          skills.sh
+        </a>
+      </div>
+      <div
+        class="flex w-full max-w-full items-center justify-center gap-2 sm:w-auto"
+      >
+        <code
+          class="min-w-0 flex-1 overflow-x-auto rounded border border-gray-200 bg-gray-50 px-2 py-1 text-[11px] text-gray-700 sm:flex-none sm:text-xs"
+        >
+          npx skills add AbhiVarde/svelte-drawer
+        </code>
+        <button
+          onclick={copySkillCommand}
+          class="shrink-0 rounded border border-gray-200 bg-white p-1.5 transition-colors hover:bg-gray-100"
+          title="Copy install command"
+        >
+          <Copy size={14} class="text-gray-500" />
+        </button>
+      </div>
+      {#if skillCopyStatus === "success"}
+        <span class="text-xs text-green-600 transition-opacity"> Copied! </span>
+      {/if}
     </div>
   </div>
 
