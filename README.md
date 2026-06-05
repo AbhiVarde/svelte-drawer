@@ -2,6 +2,7 @@
 
 A drawer component for Svelte 5, inspired by [Vaul](https://github.com/emilkowalski/vaul).
 
+[![skills.sh](https://skills.sh/b/AbhiVarde/svelte-drawer)](https://skills.sh/AbhiVarde/svelte-drawer)
 [![](https://img.shields.io/badge/npm-@abhivarde/svelte--drawer-000?style=flat&logo=npm&logoColor=white)](https://www.npmjs.com/package/@abhivarde/svelte-drawer) [![](https://img.shields.io/badge/npmx-@abhivarde/svelte--drawer-000?style=flat&logo=node.js&logoColor=white)](https://npmx.dev/package/@abhivarde/svelte-drawer)
 
 ## Features
