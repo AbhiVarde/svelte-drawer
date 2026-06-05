@@ -11,6 +11,7 @@
     snapPoints?: number[];
     activeSnapPoint?: number;
     setActiveSnapPoint?: (point: number) => void;
+    closeThreshold: number;
   };
 
   let {
@@ -134,6 +135,7 @@
     dragging = false;
 
     const pos = drawer.drawerPosition.current;
+    const threshold = drawer.closeThreshold * 100;
 
     if (drawer.snapPoints && drawer.snapPoints.length > 0) {
       const nearestSnapPoint = findNearestSnapPoint(pos);
@@ -142,14 +144,14 @@
       const lowestSnapPoint = Math.min(...drawer.snapPoints);
       const lowestSnapPos = snapPointToPosition(lowestSnapPoint);
 
-      if (pos > lowestSnapPos + 30) {
+      if (pos > lowestSnapPos + threshold) {
         drawer.closeDrawer();
       } else {
         drawer.drawerPosition.set(snapPos);
         drawer.setActiveSnapPoint?.(nearestSnapPoint);
       }
     } else {
-      if (pos > 30) {
+      if (pos > threshold) {
         drawer.closeDrawer();
       } else {
         drawer.drawerPosition.set(0);

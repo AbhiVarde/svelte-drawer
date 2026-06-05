@@ -11,6 +11,7 @@ export interface DrawerProps {
   persistState?: boolean;
   persistKey?: string;
   persistSnapPoint?: boolean;
+  closeThreshold?: number;
 }
 
 export interface DrawerContentProps {

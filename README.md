@@ -161,6 +161,24 @@ Add a premium blur effect to the overlay background:
 </Drawer>
 ```
 
+### Close Threshold
+
+Control how far the user needs to drag before the drawer dismisses.
+
+```svelte
+<!-- easier to dismiss (short drag) -->
+<Drawer bind:open closeThreshold={0.15}>
+  ...
+</Drawer>
+
+<!-- harder to dismiss (long drag required) -->
+<Drawer bind:open closeThreshold={0.5}>
+  ...
+</Drawer>
+```
+
+Values range from `0` to `1`. Default is `0.3` (30% of the viewport).
+
 ### Using Variants
 
 ```svelte
@@ -559,6 +577,7 @@ Main wrapper component that manages drawer state and animations.
 - `onOpenChange` (function, optional) - Callback when open state changes
 - `direction` ('bottom' | 'top' | 'left' | 'right', default: 'bottom') - Direction from which drawer slides
 - `closeOnEscape` (boolean, optional, default: true) - Whether Escape key closes the drawer
+- `closeThreshold` (number, optional, default: 0.3) - How far the user must drag to dismiss (0–1). Lower = easier to close, higher = requires a longer drag.
 - `snapPoints` (number[], optional) - Array of snap positions between 0-1
 - `activeSnapPoint` (number, bindable, optional) - Current active snap point value
 - `onSnapPointChange` (function, optional) - Callback fired when snap changes

@@ -15,9 +15,10 @@
     onSnapPointChange = undefined,
     portal = false,
     portalContainer = undefined,
-    persistState = false, 
-    persistKey = "default", 
-    persistSnapPoint = false, 
+    persistState = false,
+    persistKey = "default",
+    persistSnapPoint = false,
+    closeThreshold = 0.3,
     children,
   } = $props();
 
@@ -34,7 +35,7 @@
   let previouslyFocusedElement: HTMLElement | null = null;
   let visible = false;
   let previousSnapPoint: number | undefined = undefined;
-  let stateLoaded = false; 
+  let stateLoaded = false;
 
   onMount(() => {
     if (persistState && !stateLoaded) {
@@ -67,7 +68,7 @@
       saveDrawerState(
         persistKey,
         open,
-        persistSnapPoint ? activeSnapPoint : undefined
+        persistSnapPoint ? activeSnapPoint : undefined,
       );
     }
   });
@@ -170,6 +171,9 @@
     },
     get activeSnapPoint() {
       return activeSnapPoint;
+    },
+    get closeThreshold() {
+      return closeThreshold;
     },
     setActiveSnapPoint(point: number) {
       activeSnapPoint = point;
