@@ -1,6 +1,6 @@
 {
   "name": "@abhivarde/svelte-drawer",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A drawer component for Svelte 5, inspired by Vaul",
   "author": "Abhi Varde",
   "license": "MIT",
@@ -35,10 +35,10 @@
     "@sveltejs/adapter-auto": "^7.0.0",
     "@sveltejs/kit": "^2.53.0",
     "@sveltejs/package": "^2.5.7",
-    "@sveltejs/vite-plugin-svelte": "^7.0.0",
+    "@sveltejs/vite-plugin-svelte": "^7.1.2",
     "publint": "^0.2.12",
-    "svelte": "^5.46.4",
-    "svelte-check": "^4.3.4",
+    "svelte": "^5.56.0",
+    "svelte-check": "^4.4.8",
     "typescript": "^5.9.3",
     "vite": "^8.0.0"
   },

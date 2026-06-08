@@ -15,6 +15,8 @@ A drawer component for Svelte 5, inspired by [Vaul](https://github.com/emilkowal
 - ✅ **Snap points** for iOS-like multi-height drawers
 - ✅ **Portal rendering** to escape z-index conflicts
 - ✅ **Optional header & footer** components for quick setup
+- ✅ **Auto height** for dynamic content (AI streaming, forms, dynamic lists)
+- ✅ **Configurable dismiss threshold** via `closeThreshold` prop
 - ✅ Nested drawer support
 - ✅ Scrollable content areas
 - ✅ Keyboard shortcuts (**Escape to close**, Tab navigation)
@@ -22,7 +24,6 @@ A drawer component for Svelte 5, inspired by [Vaul](https://github.com/emilkowal
 - ✅ Fully accessible with keyboard navigation
 - ✅ Full **TypeScript** support
 - ✅ Customizable styling with **Tailwind CSS**
-- ✅ **Auto height** for dynamic content (AI streaming, forms, dynamic lists)
 
 ## Installation
 
@@ -166,14 +167,28 @@ Add a premium blur effect to the overlay background:
 Control how far the user needs to drag before the drawer dismisses.
 
 ```svelte
+<script>
+  import { Drawer, DrawerOverlay, DrawerContent, DrawerHandle } from '@abhivarde/svelte-drawer';
+
+  let open = $state(false);
+</script>
+
 <!-- easier to dismiss (short drag) -->
 <Drawer bind:open closeThreshold={0.15}>
-  ...
+  <DrawerOverlay class="fixed inset-0 bg-black/40" />
+  <DrawerContent class="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg p-4">
+    <DrawerHandle class="mb-8" />
+    <p>Short drag closes this drawer.</p>
+  </DrawerContent>
 </Drawer>
 
 <!-- harder to dismiss (long drag required) -->
 <Drawer bind:open closeThreshold={0.5}>
-  ...
+  <DrawerOverlay class="fixed inset-0 bg-black/40" />
+  <DrawerContent class="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg p-4">
+    <DrawerHandle class="mb-8" />
+    <p>Requires a longer drag to close.</p>
+  </DrawerContent>
 </Drawer>
 ```
 

@@ -68,7 +68,7 @@
     }
   }
 
-  function onPointerDown(e: PointerEvent | TouchEvent) {
+  function onPointerDown(e: PointerEvent) {
     const target = e.target as HTMLElement;
 
     if (
@@ -82,36 +82,24 @@
 
     startPos =
       drawer.direction === "bottom" || drawer.direction === "top"
-        ? "clientY" in e
-          ? e.clientY
-          : (e.touches[0]?.clientY ?? 0)
-        : "clientX" in e
-          ? e.clientX
-          : (e.touches[0]?.clientX ?? 0);
+        ? e.clientY
+        : e.clientX;
 
     startDragPos = drawer.drawerPosition.current;
 
     window.addEventListener("pointermove", onPointerMove, { passive: false });
     window.addEventListener("pointerup", onPointerUp);
-    window.addEventListener("touchmove", onPointerMove, { passive: false });
-    window.addEventListener("touchend", onPointerUp);
-
-    e.preventDefault();
   }
 
-  function onPointerMove(e: PointerEvent | TouchEvent) {
+  function onPointerMove(e: PointerEvent) {
     if (!dragging) return;
 
     e.preventDefault();
 
     const current =
       drawer.direction === "bottom" || drawer.direction === "top"
-        ? "clientY" in e
-          ? e.clientY
-          : (e.touches[0]?.clientY ?? 0)
-        : "clientX" in e
-          ? e.clientX
-          : (e.touches[0]?.clientX ?? 0);
+        ? e.clientY
+        : e.clientX;
 
     const delta = current - startPos;
     let newPos = startDragPos;
@@ -160,8 +148,6 @@
 
     window.removeEventListener("pointermove", onPointerMove);
     window.removeEventListener("pointerup", onPointerUp);
-    window.removeEventListener("touchmove", onPointerMove);
-    window.removeEventListener("touchend", onPointerUp);
   }
 
   function getFocusableElements(): HTMLElement[] {
@@ -223,7 +209,6 @@
     role="dialog"
     aria-modal="true"
     onpointerdown={onPointerDown}
-    ontouchstart={onPointerDown}
     {...restProps}
   >
     {@render children()}
