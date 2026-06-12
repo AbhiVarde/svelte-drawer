@@ -7,23 +7,25 @@ A drawer component for Svelte 5, inspired by [Vaul](https://github.com/emilkowal
 
 ## Features
 
-- ✅ Smooth animations with **gesture-driven dragging** (mouse & touch)
-- ✅ Mobile-optimized drag handling with **scroll prevention**
-- ✅ Support for multiple directions (**bottom, top, left, right**)
-- ✅ Prebuilt variants (**default, sheet, dialog, minimal, sidebar**)
-- ✅ **Drag handle component** with auto-adaptive orientation
-- ✅ **Snap points** for iOS-like multi-height drawers
-- ✅ **Portal rendering** to escape z-index conflicts
-- ✅ **Optional header & footer** components for quick setup
-- ✅ **Auto height** for dynamic content (AI streaming, forms, dynamic lists)
-- ✅ **Configurable dismiss threshold** via `closeThreshold` prop
-- ✅ Nested drawer support
-- ✅ Scrollable content areas
-- ✅ Keyboard shortcuts (**Escape to close**, Tab navigation)
-- ✅ Focus management (**auto-focus, focus trap, focus restoration**)
-- ✅ Fully accessible with keyboard navigation
-- ✅ Full **TypeScript** support
-- ✅ Customizable styling with **Tailwind CSS**
+- Smooth animations with gesture-driven dragging (mouse and touch)
+- Support for multiple directions (bottom, top, left, right)
+- Customizable animation duration and easing per drawer
+- Snap points for iOS-like multi-height drawers
+- Auto height for dynamic content (AI streaming, forms, lists)
+- Backdrop blur on the overlay
+- Portal rendering to escape z-index conflicts
+- Prebuilt variants (default, sheet, dialog, minimal, sidebar)
+- Drag handle with auto-adaptive orientation
+- Optional header and footer components
+- Nested drawer support
+- Scrollable content areas
+- Persistent state across page reloads
+- Configurable dismiss threshold
+- Keyboard shortcuts (Escape to close, Tab navigation)
+- Focus management (auto-focus, focus trap, focus restoration)
+- Fully accessible with keyboard navigation
+- Full TypeScript support
+- Works with Tailwind CSS
 
 ## Installation
 
@@ -33,138 +35,7 @@ npm install @abhivarde/svelte-drawer
 
 ## Usage
 
-### Basic Example
-
-```svelte
-<script>
-	import { Drawer, DrawerOverlay, DrawerContent, DrawerHandle } from '@abhivarde/svelte-drawer';
-
-	let open = $state(false);
-</script>
-
-<button onclick={() => open = true}>
-	Open Drawer
-</button>
-
-<Drawer bind:open>
-	<DrawerOverlay class="fixed inset-0 bg-black/40" />
-	<DrawerContent class="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg p-4">
-		<DrawerHandle class="mb-8" />
-		<h2>Drawer Content</h2>
-		<p>This is a drawer component.</p>
-		<button onclick={() => open = false}>Close</button>
-	</DrawerContent>
-</Drawer>
-```
-
-### Backdrop Blur
-
-Add a premium blur effect to the overlay background:
-
-```svelte
-<script>
-	import { Drawer, DrawerOverlay, DrawerContent, DrawerHandle } from '@abhivarde/svelte-drawer';
-
-	let open = $state(false);
-</script>
-
-<Drawer bind:open>
-	<!-- Default medium blur -->
-	<DrawerOverlay blur class="fixed inset-0 bg-black/40" />
-
-	<!-- Or specify blur intensity -->
-	<!-- <DrawerOverlay blur="sm" class="fixed inset-0 bg-black/40" /> -->
-	<!-- <DrawerOverlay blur="lg" class="fixed inset-0 bg-black/40" /> -->
-	<!-- <DrawerOverlay blur="xl" class="fixed inset-0 bg-black/40" /> -->
-
-	<DrawerContent class="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg p-4">
-		<DrawerHandle class="mb-8" />
-		<h2>Blurred Backdrop</h2>
-		<p>Notice the premium blur effect behind this drawer.</p>
-	</DrawerContent>
-</Drawer>
-```
-
-**Available blur intensities:**
-
-- `blur={true}` or `blur="md"` - Medium blur (default)
-- `blur="sm"` - Small blur
-- `blur="lg"` - Large blur
-- `blur="xl"` - Extra large blur
-- `blur="2xl"` - 2x extra large blur
-- `blur="3xl"` - 3x extra large blur
-
-### Side Drawer
-
-```svelte
-<script>
-	import { Drawer, DrawerOverlay, DrawerContent, DrawerHandle } from '@abhivarde/svelte-drawer';
-
-	let open = $state(false);
-</script>
-
-<Drawer bind:open direction="right">
-	<DrawerOverlay class="fixed inset-0 bg-black/40" />
-	<DrawerContent class="fixed right-0 top-0 bottom-0 w-80 bg-white p-4">
-		<DrawerHandle class="mb-4" />
-		<h2>Side Drawer</h2>
-		<button onclick={() => open = false}>Close</button>
-	</DrawerContent>
-</Drawer>
-```
-
-### Controlled Drawer
-
-```svelte
-<script>
-	import { Drawer, DrawerOverlay, DrawerContent, DrawerHandle } from '@abhivarde/svelte-drawer';
-
-	let open = $state(false);
-
-	function handleOpenChange(isOpen) {
-		console.log('Drawer is now:', isOpen ? 'open' : 'closed');
-		open = isOpen;
-	}
-</script>
-
-<Drawer bind:open onOpenChange={handleOpenChange}>
-	<DrawerOverlay class="fixed inset-0 bg-black/40" />
-	<DrawerContent class="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg p-4">
-		<DrawerHandle class="mb-8" />
-		<h2>Controlled Drawer</h2>
-	</DrawerContent>
-</Drawer>
-```
-
-### Disable Keyboard Features
-
-```svelte
-<script>
-	import { Drawer, DrawerOverlay, DrawerContent } from '@abhivarde/svelte-drawer';
-
-	let open = $state(false);
-</script>
-
-<!-- Disable Escape key -->
-<Drawer bind:open closeOnEscape={false}>
-	<DrawerOverlay class="fixed inset-0 bg-black/40" />
-	<DrawerContent class="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg p-4">
-		<h2>Cannot close with Escape</h2>
-	</DrawerContent>
-</Drawer>
-
-<!-- Disable focus trap -->
-<Drawer bind:open>
-	<DrawerOverlay class="fixed inset-0 bg-black/40" />
-	<DrawerContent trapFocus={false} class="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg p-4">
-		<h2>Tab navigation not restricted</h2>
-	</DrawerContent>
-</Drawer>
-```
-
-### Close Threshold
-
-Control how far the user needs to drag before the drawer dismisses.
+### Basic
 
 ```svelte
 <script>
@@ -173,341 +44,112 @@ Control how far the user needs to drag before the drawer dismisses.
   let open = $state(false);
 </script>
 
-<!-- easier to dismiss (short drag) -->
-<Drawer bind:open closeThreshold={0.15}>
-  <DrawerOverlay class="fixed inset-0 bg-black/40" />
-  <DrawerContent class="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg p-4">
-    <DrawerHandle class="mb-8" />
-    <p>Short drag closes this drawer.</p>
-  </DrawerContent>
-</Drawer>
+<button onclick={() => open = true}>Open Drawer</button>
 
-<!-- harder to dismiss (long drag required) -->
-<Drawer bind:open closeThreshold={0.5}>
+<Drawer bind:open>
   <DrawerOverlay class="fixed inset-0 bg-black/40" />
   <DrawerContent class="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg p-4">
     <DrawerHandle class="mb-8" />
-    <p>Requires a longer drag to close.</p>
+    <h2>Drawer Content</h2>
+    <p>This is a drawer component.</p>
+    <button onclick={() => open = false}>Close</button>
   </DrawerContent>
 </Drawer>
 ```
 
-Values range from `0` to `1`. Default is `0.3` (30% of the viewport).
+### Directions
 
-### Using Variants
+```svelte
+<Drawer bind:open direction="bottom">...</Drawer>
+<Drawer bind:open direction="top">...</Drawer>
+<Drawer bind:open direction="left">...</Drawer>
+<Drawer bind:open direction="right">...</Drawer>
+```
+
+### Custom Animation
+
+Control the speed and easing of any drawer independently.
 
 ```svelte
 <script>
-	import { Drawer, DrawerOverlay, DrawerVariants, DrawerHandle } from '@abhivarde/svelte-drawer';
-
-	let open = $state(false);
+  import { cubicOut, bounceOut, linear } from 'svelte/easing';
 </script>
 
-<!-- Sheet variant (iOS-style bottom sheet) -->
-<Drawer bind:open>
-	<DrawerOverlay class="fixed inset-0 bg-black/40" />
-	<DrawerVariants variant="sheet">
-		<div class="p-6">
-			<DrawerHandle class="mb-6" />
-			<h2>iOS-style Sheet</h2>
-			<p>Clean and modern bottom sheet design</p>
-		</div>
-	</DrawerVariants>
+<!-- slower, softer -->
+<Drawer bind:open animationDuration={400} animationEasing={cubicOut}>
+  ...
 </Drawer>
 
-<!-- Dialog variant (center modal) -->
-<Drawer bind:open>
-	<DrawerOverlay class="fixed inset-0 bg-black/40" />
-	<DrawerVariants variant="dialog">
-		<div class="p-6">
-			<h2>Dialog Style</h2>
-			<p>Center-positioned modal dialog</p>
-		</div>
-	</DrawerVariants>
+<!-- fast and snappy -->
+<Drawer bind:open animationDuration={150} animationEasing={linear}>
+  ...
 </Drawer>
 
-<!-- Sidebar variant (navigation drawer) -->
+<!-- playful bounce -->
+<Drawer bind:open animationDuration={500} animationEasing={bounceOut}>
+  ...
+</Drawer>
+```
+
+Any easing from `svelte/easing` works, or pass your own `(t: number) => number` function. Default is `220ms` with `expoOut`.
+
+### Side Drawer
+
+```svelte
 <Drawer bind:open direction="right">
-	<DrawerOverlay class="fixed inset-0 bg-black/40" />
-	<DrawerVariants variant="sidebar">
-		<div class="p-6">
-			<DrawerHandle class="mb-4" />
-			<h2>Sidebar Navigation</h2>
-			<p>Side navigation drawer</p>
-		</div>
-	</DrawerVariants>
+  <DrawerOverlay class="fixed inset-0 bg-black/40" />
+  <DrawerContent class="fixed right-0 top-0 bottom-0 w-80 bg-white p-4">
+    <DrawerHandle class="mb-4" />
+    <h2>Side Drawer</h2>
+  </DrawerContent>
 </Drawer>
 ```
 
-### Drag Handle Customization
+### Backdrop Blur
 
 ```svelte
-<script>
-	import { Drawer, DrawerOverlay, DrawerContent, DrawerHandle } from '@abhivarde/svelte-drawer';
-
-	let open = $state(false);
-</script>
-
 <Drawer bind:open>
-	<DrawerOverlay class="fixed inset-0 bg-black/40" />
-	<DrawerContent class="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg p-4">
-		<!-- Default gray handle -->
-		<DrawerHandle class="mb-8" />
-
-		<!-- Custom colored handle -->
-		<!-- <DrawerHandle class="bg-blue-500 mb-8" /> -->
-
-		<!-- Larger handle -->
-		<!-- <DrawerHandle class="w-16 h-2 mb-8" /> -->
-
-		<h2>Drawer with Custom Handle</h2>
-		<p>The handle automatically adapts to drawer direction.</p>
-	</DrawerContent>
+  <DrawerOverlay blur="lg" class="fixed inset-0 bg-black/30" />
+  <DrawerContent class="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg p-4">
+    <DrawerHandle class="mb-8" />
+    <h2>Blurred Backdrop</h2>
+  </DrawerContent>
 </Drawer>
 ```
+
+Available intensities: `sm`, `md`, `lg`, `xl`, `2xl`, `3xl`. Default is `md`.
 
 ### Snap Points
 
-Snap points allow the drawer to rest at predefined heights, creating an iOS-like sheet experience.
-
 ```svelte
 <script>
-	import { Drawer, DrawerOverlay, DrawerContent, DrawerHandle } from '@abhivarde/svelte-drawer';
-
-	let open = $state(false);
-	let activeSnapPoint = $state(undefined);
-</script>
-
-<Drawer
-	bind:open
-	snapPoints={[0.25, 0.5, 0.9]}
-	bind:activeSnapPoint
-	onSnapPointChange={(point) => console.log('Snapped to:', point)}
->
-	<DrawerOverlay class="fixed inset-0 bg-black/40" />
-	<DrawerContent class="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg p-4">
-		<DrawerHandle class="mb-8" />
-		<h2>Drawer with Snap Points</h2>
-		<p>Drag to see snapping behavior at 25%, 50%, and 90%</p>
-
-		<!-- Programmatically change snap point -->
-		<button onclick={() => activeSnapPoint = 0.5}>Jump to 50%</button>
-	</DrawerContent>
-</Drawer>
-```
-
-**How it works:**
-
-- Snap point values range from 0 to 1 (e.g., `0.5` = 50% of screen height)
-- The drawer automatically snaps to the nearest point when released
-- Dragging beyond the lowest snap point dismisses the drawer
-- Use `bind:activeSnapPoint` to programmatically control the current position
-- Use `onSnapPointChange` callback to react to snap changes
-
-### Portal Support
-
-Render the drawer in a portal to avoid z-index conflicts in complex layouts.
-
-```svelte
-<script>
-	import { Drawer, DrawerOverlay, DrawerContent, DrawerHandle } from '@abhivarde/svelte-drawer';
-
-	let open = $state(false);
-</script>
-
-<!-- Enable portal (renders at end of body) -->
-<Drawer bind:open portal={true}>
-	<DrawerOverlay class="fixed inset-0 bg-black/40" />
-	<DrawerContent class="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg p-4">
-		<DrawerHandle class="mb-8" />
-		<h2>Portal Drawer</h2>
-		<p>This drawer is rendered in a portal, preventing z-index issues.</p>
-	</DrawerContent>
-</Drawer>
-
-<!-- Custom portal container -->
-<Drawer bind:open portal={true} portalContainer="#custom-portal">
-	<DrawerOverlay />
-	<DrawerContent>
-		<h2>Custom Portal</h2>
-	</DrawerContent>
-</Drawer>
-
-<div id="custom-portal"></div>
-```
-
-**When to use portals:**
-
-- Complex layouts with nested z-index contexts
-- Third-party component libraries with fixed positioning
-- Modals inside scrollable containers
-- Preventing overflow: hidden conflicts
-
-### Header & Footer Components
-
-Optional pre-styled header and footer components for quick setup.
-
-#### DrawerHeader
-
-```svelte
-<script>
-	import { Drawer, DrawerOverlay, DrawerContent, DrawerHeader, DrawerHandle } from '@abhivarde/svelte-drawer';
-
-	let open = $state(false);
-</script>
-
-<!-- With title and description -->
-<Drawer bind:open>
-	<DrawerOverlay class="fixed inset-0 bg-black/40" />
-	<DrawerContent class="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg">
-		<DrawerHeader
-			title="Drawer Title"
-			description="Optional description text"
-			showCloseButton={true}
-		/>
-		<div class="p-4">
-			<p>Drawer content here</p>
-		</div>
-	</DrawerContent>
-</Drawer>
-
-<!-- Custom header content -->
-<Drawer bind:open>
-	<DrawerOverlay />
-	<DrawerContent class="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg">
-		<DrawerHeader>
-			<div class="flex items-center gap-3">
-				<img src="/icon.png" alt="Icon" class="w-8 h-8" />
-				<div>
-					<h2 class="font-semibold">Custom Header</h2>
-					<p class="text-sm text-gray-600">Your custom content</p>
-				</div>
-			</div>
-		</DrawerHeader>
-		<div class="p-4">
-			<p>Drawer content</p>
-		</div>
-	</DrawerContent>
-</Drawer>
-```
-
-#### DrawerFooter
-
-```svelte
-<script>
-	import { Drawer, DrawerOverlay, DrawerContent, DrawerFooter } from '@abhivarde/svelte-drawer';
-
-	let open = $state(false);
-</script>
-
-<!-- Simple footer with custom content -->
-<Drawer bind:open>
-	<DrawerOverlay class="fixed inset-0 bg-black/40" />
-	<DrawerContent class="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg flex flex-col">
-		<div class="p-4 flex-1">
-			<h2>Drawer Content</h2>
-		</div>
-		<DrawerFooter>
-			<button onclick={() => open = false} class="px-4 py-2 bg-gray-200 rounded">
-				Cancel
-			</button>
-			<button class="px-4 py-2 bg-black text-white rounded">
-				Confirm
-			</button>
-		</DrawerFooter>
-	</DrawerContent>
-</Drawer>
-
-<!-- Custom footer with links -->
-<Drawer bind:open>
-	<DrawerOverlay />
-	<DrawerContent class="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg flex flex-col">
-		<div class="p-4 flex-1">
-			<h2>Content</h2>
-		</div>
-		<DrawerFooter class="bg-gray-50">
-			<div class="flex justify-between w-full">
-				<a href="/privacy" class="text-sm text-gray-600 hover:text-gray-900">Privacy</a>
-				<a href="/terms" class="text-sm text-gray-600 hover:text-gray-900">Terms</a>
-			</div>
-		</DrawerFooter>
-	</DrawerContent>
-</Drawer>
-```
-
-**Note:** These components are **optional**. You can still build custom headers and footers using plain HTML/Svelte markup without importing these components.
-
-### Persistent State
-
-Automatically save and restore drawer state across page reloads.
-
-```svelte
-<script>
-  import { Drawer, DrawerOverlay, DrawerContent } from '@abhivarde/svelte-drawer';
-
   let open = $state(false);
+  let activeSnapPoint = $state(undefined);
 </script>
 
-<Drawer
-  bind:open
-  persistState={true}
-  persistKey="main-drawer"
->
-  <DrawerOverlay />
-  <DrawerContent class="...">
-    <h2>This drawer remembers if it was open!</h2>
-    <p>Reload the page and it will restore its state.</p>
-  </DrawerContent>
-</Drawer>
-```
-
-**With snap points:**
-
-```svelte
 <Drawer
   bind:open
   snapPoints={[0.25, 0.5, 0.9]}
   bind:activeSnapPoint
-  persistState={true}
-  persistKey="snap-drawer"
-  persistSnapPoint={true}
+  onSnapPointChange={(point) => console.log('Snapped to:', point)}
 >
-  <DrawerOverlay />
-  <DrawerContent class="...">
-    <h2>Position is saved too!</h2>
-    <p>The snap point will be restored on reload.</p>
+  <DrawerOverlay class="fixed inset-0 bg-black/40" />
+  <DrawerContent class="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg p-4">
+    <DrawerHandle class="mb-8" />
+    <p>Current: {activeSnapPoint ? `${(activeSnapPoint * 100).toFixed(0)}%` : 'loading'}</p>
+    <button onclick={() => activeSnapPoint = 0.5}>Jump to 50%</button>
   </DrawerContent>
 </Drawer>
 ```
 
-**Clear saved state programmatically:**
+Snap point values range from 0 to 1. The drawer snaps to the nearest point on release. Dragging past the lowest snap point dismisses it.
+
+### Auto Height
+
+Use `autoHeight` on `DrawerContent` when content changes height at runtime, such as AI streaming responses, multi-step forms, or dynamic lists.
 
 ```svelte
 <script>
-  import { clearDrawerState } from '@abhivarde/svelte-drawer';
-
-  function resetDrawer() {
-    clearDrawerState('main-drawer');
-    // Drawer will reset to default state on next load
-  }
-</script>
-
-<button onclick={resetDrawer}>Reset Drawer State</button>
-```
-
-### Auto Height (AI & Dynamic Content)
-
-Use `autoHeight` on `DrawerContent` when your drawer content changes height at runtime like AI streaming responses, multi-step forms, search results, or dynamic lists.
-
-```svelte
-<script>
-  import {
-    Drawer,
-    DrawerOverlay,
-    DrawerContent,
-    DrawerHandle
-  } from '@abhivarde/svelte-drawer';
-
   let open = $state(false);
   let streaming = $state(false);
   let text = $state('');
@@ -516,15 +158,16 @@ Use `autoHeight` on `DrawerContent` when your drawer content changes height at r
     open = true;
     streaming = true;
     text = '';
-
-    const content =
-      'Sure! Here is what autoHeight does. It watches your content with a ResizeObserver. When content grows, the drawer follows automatically. No magic numbers, no hardcoded heights, it just works smoothly with streaming UI like AI chat apps.';
-
-    for (let i = 0; i < content.length; i++) {
-      text += content[i];
-      await new Promise(r => setTimeout(r, 18));
+    const lines = [
+      'Sure! Here is what autoHeight does.',
+      '\n\nIt watches your content as it changes.',
+      '\n\nWhen content grows, the drawer follows automatically.',
+      '\n\nNo magic numbers. No hardcoded heights. Just works.',
+    ];
+    for (const line of lines) {
+      await new Promise(r => setTimeout(r, 500));
+      text += line;
     }
-
     streaming = false;
   }
 </script>
@@ -533,18 +176,13 @@ Use `autoHeight` on `DrawerContent` when your drawer content changes height at r
 
 <Drawer bind:open>
   <DrawerOverlay />
-
   <DrawerContent
     autoHeight
     class="bg-gray-100 flex flex-col rounded-t-[10px] fixed bottom-0 left-0 right-0 outline-none"
   >
     <div class="p-4 bg-white rounded-t-[10px]">
       <DrawerHandle class="mb-8" />
-
-      <p class="font-medium mb-2 text-gray-900">
-        AI Response
-      </p>
-
+      <p class="font-medium mb-2 text-gray-900">AI Response</p>
       {#if text}
         <p class="text-sm text-gray-600 leading-relaxed">
           {text}{streaming ? '▌' : ''}
@@ -555,145 +193,210 @@ Use `autoHeight` on `DrawerContent` when your drawer content changes height at r
 </Drawer>
 ```
 
-**How it works:**
+### Close Threshold
 
-- `height: auto` is applied to the drawer when `autoHeight` is true
-- The drawer grows and shrinks naturally as content changes
-- Perfect for AI streaming, dynamic lists, forms, and async content
-- The slide animation remains smooth since it uses CSS transforms separately
-- Fully compatible with snap points, portals, and existing props
-- Zero impact on drawers that do not use `autoHeight` (opt-in, default `false`)
+Control how far the user must drag before the drawer dismisses.
 
-## Variants
+```svelte
+<!-- easier to dismiss -->
+<Drawer bind:open closeThreshold={0.15}>...</Drawer>
 
-Available variants for `DrawerVariants` component:
+<!-- harder to dismiss -->
+<Drawer bind:open closeThreshold={0.5}>...</Drawer>
+```
 
-- `default` - Standard bottom drawer with gray background
-- `sheet` - iOS-style bottom sheet (white, rounded, 85vh height)
-- `dialog` - Center modal dialog style
-- `minimal` - Simple bottom drawer without extra styling
-- `sidebar` - Side navigation drawer (full height)
+Values range from `0` to `1`. Default is `0.3`.
 
-## Keyboard Shortcuts
+### Variants
 
-- **Escape** - Close the drawer (can be disabled with `closeOnEscape={false}`)
-- **Tab / Shift+Tab** - Navigate between focusable elements inside the drawer
-- **Enter / Space** (on overlay) - Close the drawer
+```svelte
+<!-- iOS-style sheet -->
+<Drawer bind:open>
+  <DrawerOverlay class="fixed inset-0 bg-black/40" />
+  <DrawerVariants variant="sheet">
+    <DrawerHandle class="mb-6" />
+    <h2>Sheet</h2>
+  </DrawerVariants>
+</Drawer>
+
+<!-- sidebar -->
+<Drawer bind:open direction="right">
+  <DrawerOverlay class="fixed inset-0 bg-black/40" />
+  <DrawerVariants variant="sidebar">
+    <h2>Sidebar</h2>
+  </DrawerVariants>
+</Drawer>
+```
+
+Available: `default`, `sheet`, `dialog`, `minimal`, `sidebar`.
+
+### Portal
+
+Renders the drawer at the end of `<body>` to avoid z-index and overflow conflicts.
+
+```svelte
+<Drawer bind:open portal={true}>
+  <DrawerOverlay />
+  <DrawerContent class="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg p-4">
+    <DrawerHandle class="mb-8" />
+    <h2>Portal Drawer</h2>
+  </DrawerContent>
+</Drawer>
+```
+
+Custom container:
+
+```svelte
+<Drawer bind:open portal={true} portalContainer="#my-portal">
+  ...
+</Drawer>
+
+<div id="my-portal"></div>
+```
+
+### Header and Footer
+
+Optional pre-styled components for quick layout setup.
+
+```svelte
+<Drawer bind:open>
+  <DrawerOverlay />
+  <DrawerContent class="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg flex flex-col h-[70vh]">
+    <DrawerHeader title="Settings" description="Manage your preferences" />
+    <div class="p-4 flex-1 overflow-y-auto">
+      <p>Content here</p>
+    </div>
+    <DrawerFooter>
+      <button onclick={() => open = false} class="px-4 py-2 bg-gray-200 rounded">Cancel</button>
+      <button class="px-4 py-2 bg-black text-white rounded">Save</button>
+    </DrawerFooter>
+  </DrawerContent>
+</Drawer>
+```
+
+These are optional. You can use plain HTML instead.
+
+### Persistent State
+
+Saves and restores drawer state across page reloads.
+
+```svelte
+<Drawer bind:open persistState={true} persistKey="settings-drawer">
+  <DrawerOverlay />
+  <DrawerContent class="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg p-6">
+    <DrawerHandle class="mb-8" />
+    <p>This drawer remembers if it was open.</p>
+  </DrawerContent>
+</Drawer>
+```
+
+With snap points:
+
+```svelte
+<Drawer
+  bind:open
+  snapPoints={[0.25, 0.5, 0.9]}
+  bind:activeSnapPoint
+  persistState={true}
+  persistKey="snap-drawer"
+  persistSnapPoint={true}
+>
+  ...
+</Drawer>
+```
+
+Clear saved state:
+
+```svelte
+<script>
+  import { clearDrawerState } from '@abhivarde/svelte-drawer';
+</script>
+
+<button onclick={() => clearDrawerState('settings-drawer')}>Reset</button>
+```
+
+### Keyboard Shortcuts
+
+- `Escape` to close (disable with `closeOnEscape={false}`)
+- `Tab` and `Shift+Tab` to navigate focusable elements
+- `Enter` or `Space` on overlay to close
+
+### Focus Management
+
+The drawer auto-focuses the first focusable element when it opens, traps focus while open, and restores focus on close. Disable focus trapping with `trapFocus={false}` on `DrawerContent`.
 
 ## API Reference
 
 ### Drawer
 
-Main wrapper component that manages drawer state and animations.
-
-**Props:**
-
-- `open` (boolean, bindable) - Controls the open/closed state
-- `onOpenChange` (function, optional) - Callback when open state changes
-- `direction` ('bottom' | 'top' | 'left' | 'right', default: 'bottom') - Direction from which drawer slides
-- `closeOnEscape` (boolean, optional, default: true) - Whether Escape key closes the drawer
-- `closeThreshold` (number, optional, default: 0.3) - How far the user must drag to dismiss (0–1). Lower = easier to close, higher = requires a longer drag.
-- `snapPoints` (number[], optional) - Array of snap positions between 0-1
-- `activeSnapPoint` (number, bindable, optional) - Current active snap point value
-- `onSnapPointChange` (function, optional) - Callback fired when snap changes
-- `portal` (boolean, optional, default: false) - Render drawer in a portal
-- `portalContainer` (HTMLElement | string, optional) - Custom portal container element or selector
-- `persistState` (boolean, optional, default: false) - Enable persistent state
-- `persistKey` (string, optional, default: "default") - Unique identifier for this drawer
-- `persistSnapPoint` (boolean, optional, default: false) - Whether to persist snap point position
-
-### DrawerOverlay
-
-Overlay component that appears behind the drawer.
-
-**Props:**
-
-- `class` (string, optional) - CSS classes for styling
-- `blur` (boolean | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl', optional) - Enable backdrop blur effect
+| Prop                | Type                             | Default   | Description                        |
+| ------------------- | -------------------------------- | --------- | ---------------------------------- |
+| `open`              | `boolean`                        | `false`   | Controls open state (bindable)     |
+| `onOpenChange`      | `(open: boolean) => void`        |           | Callback when open state changes   |
+| `direction`         | `bottom \| top \| left \| right` | `bottom`  | Slide-in edge                      |
+| `closeOnEscape`     | `boolean`                        | `true`    | Close on Escape key                |
+| `closeThreshold`    | `number`                         | `0.3`     | Drag distance to dismiss (0 to 1)  |
+| `animationDuration` | `number`                         | `220`     | Animation duration in milliseconds |
+| `animationEasing`   | `(t: number) => number`          | `expoOut` | Easing function for animations     |
+| `snapPoints`        | `number[]`                       |           | Snap positions between 0 and 1     |
+| `activeSnapPoint`   | `number`                         |           | Current snap point (bindable)      |
+| `onSnapPointChange` | `(point: number) => void`        |           | Fires when snap point changes      |
+| `portal`            | `boolean`                        | `false`   | Render in a portal                 |
+| `portalContainer`   | `HTMLElement \| string`          |           | Custom portal target               |
+| `persistState`      | `boolean`                        | `false`   | Save state to localStorage         |
+| `persistKey`        | `string`                         | `default` | Unique key for saved state         |
+| `persistSnapPoint`  | `boolean`                        | `false`   | Also save snap point position      |
 
 ### DrawerContent
 
-Content container for the drawer.
+| Prop         | Type      | Default | Description                  |
+| ------------ | --------- | ------- | ---------------------------- |
+| `class`      | `string`  |         | CSS classes                  |
+| `trapFocus`  | `boolean` | `true`  | Trap keyboard focus inside   |
+| `autoHeight` | `boolean` | `false` | Resize to fit content height |
 
-**Props:**
+### DrawerOverlay
 
-- `class` (string, optional) - CSS classes for styling
-- `trapFocus` (boolean, optional, default: true) - Whether to trap focus inside drawer
-- `autoHeight` (boolean, optional, default: false) - Automatically resize the drawer height to match its content
+| Prop    | Type                                            | Default | Description             |
+| ------- | ----------------------------------------------- | ------- | ----------------------- |
+| `class` | `string`                                        |         | CSS classes             |
+| `blur`  | `boolean \| sm \| md \| lg \| xl \| 2xl \| 3xl` |         | Backdrop blur intensity |
 
 ### DrawerHandle
 
-Visual drag indicator that automatically adapts to drawer direction.
+| Prop    | Type     | Default | Description |
+| ------- | -------- | ------- | ----------- |
+| `class` | `string` |         | CSS classes |
 
-**Props:**
-
-- `class` (string, optional) - CSS classes for styling
-
-**Features:**
-
-- Automatically horizontal for `bottom`/`top` drawers (12px wide, 1.5px tall)
-- Automatically vertical for `left`/`right` drawers (1.5px wide, 12px tall)
-- Includes `data-drawer-drag` attribute for improved touch targeting
-- Fully customizable with Tailwind classes
-
-**Example:**
-
-```svelte
-<!-- Default gray handle -->
-<DrawerHandle class="mb-8" />
-
-<!-- Custom color -->
-<DrawerHandle class="bg-blue-500 mb-8" />
-
-<!-- Larger size -->
-<DrawerHandle class="w-16 h-2 mb-8" />
-```
+Automatically horizontal for `bottom` and `top` drawers, vertical for `left` and `right`.
 
 ### DrawerVariants
 
-Pre-styled drawer content with built-in variants.
-
-**Props:**
-
-- `variant` ('default' | 'sheet' | 'dialog' | 'minimal' | 'sidebar', default: 'default') - Preset style variant
-- `class` (string, optional) - Additional CSS classes for styling
-- `trapFocus` (boolean, optional, default: true) - Whether to trap focus inside drawer
+| Prop        | Type                                               | Default   | Description                |
+| ----------- | -------------------------------------------------- | --------- | -------------------------- |
+| `variant`   | `default \| sheet \| dialog \| minimal \| sidebar` | `default` | Preset style               |
+| `class`     | `string`                                           |           | Additional CSS classes     |
+| `trapFocus` | `boolean`                                          | `true`    | Trap keyboard focus inside |
 
 ### DrawerHeader
 
-Optional pre-styled header component.
-
-**Props:**
-
-- `title` (string, optional) - Header title text
-- `description` (string, optional) - Description text below title
-- `showCloseButton` (boolean, optional, default: true) - Show close button
-- `onClose` (function, optional) - Custom close handler
-- `class` (string, optional) - CSS classes for styling
-
-**Features:**
-
-- Automatic close button with drawer context
-- Customizable via children render
-- Border and padding included
+| Prop              | Type         | Default | Description             |
+| ----------------- | ------------ | ------- | ----------------------- |
+| `title`           | `string`     |         | Header title            |
+| `description`     | `string`     |         | Description below title |
+| `showCloseButton` | `boolean`    | `true`  | Show close button       |
+| `onClose`         | `() => void` |         | Custom close handler    |
+| `class`           | `string`     |         | CSS classes             |
 
 ### DrawerFooter
 
-Optional pre-styled footer component.
-
-**Props:**
-
-- `class` (string, optional) - CSS classes for styling
-
-**Features:**
-
-- Automatic border and spacing
-- Flexible content via children
-- Works with mt-auto for bottom positioning
+| Prop    | Type     | Default | Description |
+| ------- | -------- | ------- | ----------- |
+| `class` | `string` |         | CSS classes |
 
 ## Demo
 
-Visit [drawer.abhivarde.in](https://drawer.abhivarde.in) to see live examples.
+[drawer.abhivarde.in](https://drawer.abhivarde.in)
 
 ## Star History
 
@@ -701,8 +404,7 @@ Visit [drawer.abhivarde.in](https://drawer.abhivarde.in) to see live examples.
 
 ## License
 
-This project is licensed under the MIT License.  
-See the [LICENSE](./LICENSE) file for details.
+MIT. See [LICENSE](./LICENSE) for details.
 
 ## Credits
 

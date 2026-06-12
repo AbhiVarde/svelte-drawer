@@ -12,6 +12,8 @@ export interface DrawerProps {
   persistKey?: string;
   persistSnapPoint?: boolean;
   closeThreshold?: number;
+  animationDuration?: number;
+  animationEasing?: (t: number) => number;
 }
 
 export interface DrawerContentProps {

@@ -3,7 +3,7 @@
   import { expoOut } from "svelte/easing";
   import { setContext, onMount } from "svelte";
   import DrawerPortal from "./DrawerPortal.svelte";
-  import { saveDrawerState, loadDrawerState } from "../utils/storage"; // NEW
+  import { saveDrawerState, loadDrawerState } from "../utils/storage";
 
   let {
     open = $bindable(false),
@@ -19,6 +19,8 @@
     persistKey = "default",
     persistSnapPoint = false,
     closeThreshold = 0.3,
+    animationDuration = 220,
+    animationEasing = expoOut,
     children,
   } = $props();
 
@@ -27,10 +29,7 @@
     easing: expoOut,
   });
 
-  let drawerPosition = new Tween(100, {
-    duration: 220,
-    easing: expoOut,
-  });
+  let drawerPosition = new Tween(100);
 
   let previouslyFocusedElement: HTMLElement | null = null;
   let visible = false;
@@ -85,7 +84,10 @@
         previousSnapPoint !== activeSnapPoint
       ) {
         const snapPos = (1 - activeSnapPoint) * 100;
-        drawerPosition.set(snapPos, { duration: 220 });
+        drawerPosition.set(snapPos, {
+          duration: animationDuration,
+          easing: animationEasing,
+        });
       }
       previousSnapPoint = activeSnapPoint;
     }
@@ -104,9 +106,15 @@
           activeSnapPoint = snapPoints[snapPoints.length - 1];
         }
         const snapPos = (1 - activeSnapPoint) * 100;
-        drawerPosition.set(snapPos, { duration: 220 });
+        drawerPosition.set(snapPos, {
+          duration: animationDuration,
+          easing: animationEasing,
+        });
       } else {
-        drawerPosition.set(0);
+        drawerPosition.set(0, {
+          duration: animationDuration,
+          easing: animationEasing,
+        });
       }
     } else if (visible) {
       if (
@@ -119,7 +127,10 @@
       }
 
       overlayOpacity.set(0, { duration: 120 });
-      drawerPosition.set(100, { duration: 180 });
+      drawerPosition.set(100, {
+        duration: animationDuration,
+        easing: animationEasing,
+      });
 
       document.body.style.overflow = "";
 
@@ -131,7 +142,7 @@
       setTimeout(() => {
         visible = false;
         previousSnapPoint = undefined;
-      }, 180);
+      }, animationDuration);
     }
   });
 
