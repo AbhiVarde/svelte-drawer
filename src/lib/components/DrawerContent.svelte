@@ -28,6 +28,9 @@
   let startPos = 0;
   let startDragPos = 0;
   let dragging = false;
+  let lastPointerPos = 0;
+  let lastPointerTime = 0;
+  let velocity = 0;
 
   function snapPointToPosition(snapPoint: number): number {
     return (1 - snapPoint) * 100;
@@ -115,6 +118,13 @@
     }
 
     drawer.drawerPosition.set(newPos, { duration: 0 });
+
+    const now = Date.now();
+    if (lastPointerTime > 0) {
+      velocity = (current - lastPointerPos) / (now - lastPointerTime);
+    }
+    lastPointerPos = current;
+    lastPointerTime = now;
   }
 
   function onPointerUp() {
@@ -123,7 +133,12 @@
     dragging = false;
 
     const pos = drawer.drawerPosition.current;
-    const threshold = drawer.closeThreshold * 100;
+
+    const isFlick =
+      (drawer.direction === "bottom" && velocity > 0.5) ||
+      (drawer.direction === "top" && velocity < -0.5) ||
+      (drawer.direction === "left" && velocity < -0.5) ||
+      (drawer.direction === "right" && velocity > 0.5);
 
     if (drawer.snapPoints && drawer.snapPoints.length > 0) {
       const nearestSnapPoint = findNearestSnapPoint(pos);
@@ -132,19 +147,23 @@
       const lowestSnapPoint = Math.min(...drawer.snapPoints);
       const lowestSnapPos = snapPointToPosition(lowestSnapPoint);
 
-      if (pos > lowestSnapPos + threshold) {
+      if (isFlick || pos > lowestSnapPos + 30) {
         drawer.closeDrawer();
       } else {
         drawer.drawerPosition.set(snapPos);
         drawer.setActiveSnapPoint?.(nearestSnapPoint);
       }
     } else {
-      if (pos > threshold) {
+      if (isFlick || pos > 30) {
         drawer.closeDrawer();
       } else {
         drawer.drawerPosition.set(0);
       }
     }
+
+    velocity = 0;
+    lastPointerPos = 0;
+    lastPointerTime = 0;
 
     window.removeEventListener("pointermove", onPointerMove);
     window.removeEventListener("pointerup", onPointerUp);
@@ -202,7 +221,8 @@
   <div
     bind:this={contentElement}
     class={className}
-    style="transform: {getTransform()}; z-index: 50; touch-action: none;{autoHeight
+    data-svelte-drawer
+    style="transform: {getTransform()}; z-index: 50; touch-action: none; will-change: transform;{autoHeight
       ? ' height: auto;'
       : ''}"
     tabindex="-1"
@@ -214,3 +234,15 @@
     {@render children()}
   </div>
 {/if}
+
+<style>
+  :global([data-svelte-drawer]::after) {
+    content: "";
+    position: absolute;
+    background: inherit;
+    left: 0;
+    right: 0;
+    height: 200px;
+    top: 100%;
+  }
+</style>
