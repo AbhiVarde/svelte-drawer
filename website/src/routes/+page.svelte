@@ -8,12 +8,14 @@
     DrawerHeader,
     DrawerFooter as LibDrawerFooter,
   } from "@abhivarde/svelte-drawer";
-  import StargazersSection from "$lib/components/StargazersSection.svelte";
+  import GithubStars from "$lib/components/GithubStars.svelte";
   import CodeBlock from "$lib/components/CodeBlock.svelte";
   import DrawerFooter from "$lib/components/DrawerFooter.svelte";
   import { codeExamples } from "$lib/constants/codeExamples";
   import { ExternalLink } from "lucide-svelte";
   import { Copy } from "lucide-svelte";
+
+  let { data } = $props();
 
   let skillCopyStatus: "idle" | "success" = $state("idle");
 
@@ -302,7 +304,7 @@
     </div>
   </div>
 
-  <StargazersSection />
+  <GithubStars stars={data.stars} stargazers={data.stargazers} />
 
   <div class="w-full max-w-3xl mx-auto px-4 sm:px-6 pt-4 pb-16 space-y-12">
     <section>
