@@ -32,7 +32,7 @@
   let drawerPosition = new Tween(100);
 
   let previouslyFocusedElement: HTMLElement | null = null;
-  let visible = false;
+  let visible = $state(false);
   let previousSnapPoint: number | undefined = undefined;
   let stateLoaded = false;
 
