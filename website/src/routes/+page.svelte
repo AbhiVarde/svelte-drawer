@@ -209,7 +209,7 @@
   ></script>
 </svelte:head>
 
-<div class="min-h-screen bg-[#fafafa] flex flex-col">
+<div class="min-h-screen flex flex-col">
   <div class="w-full max-w-3xl mx-auto px-4 sm:px-6 py-6 text-center">
     <p class="text-sm text-gray-500 mb-4">
       npm: <a
@@ -233,14 +233,14 @@
     <div class="flex justify-center gap-4 mb-4">
       <button
         onclick={() => (defaultOpen = true)}
-        class="px-5 py-2 bg-black text-white rounded-md font-medium hover:bg-gray-800 transition text-sm"
+        class="px-5 py-2 bg-gray-900 text-white rounded-md font-medium hover:bg-gray-800 transition text-sm"
         >Render a drawer</button
       >
       <a
         href="https://github.com/AbhiVarde/svelte-drawer"
         target="_blank"
         rel="noopener noreferrer"
-        class="px-5 py-2 bg-white text-black rounded-md font-medium border border-gray-200 hover:bg-gray-50 transition text-sm"
+        class="px-5 py-2 bg-white text-gray-900 rounded-md font-medium border border-gray-200 hover:bg-gray-50 transition text-sm"
         >GitHub</a
       >
     </div>
@@ -702,7 +702,7 @@
         >
         <button
           onclick={() => (headerFooterOpen = false)}
-          class="px-4 py-2 bg-black text-white rounded hover:bg-gray-800 text-sm font-medium"
+          class="px-4 py-2 bg-gray-900 text-white rounded hover:bg-gray-800 text-sm font-medium"
           >Confirm</button
         >
       </div>

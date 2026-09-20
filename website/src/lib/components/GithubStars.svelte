@@ -116,7 +116,7 @@
         href={GITHUB_URL}
         target="_blank"
         rel="noopener noreferrer"
-        class="link inline-flex items-center gap-1 font-medium text-gray-700 hover:text-black transition-colors group whitespace-nowrap"
+        class="link inline-flex items-center gap-1 font-medium text-gray-700 hover:text-gray-900 transition-colors group whitespace-nowrap"
       >
         <Github class="w-3.5 h-3.5 flex-shrink-0" />
         <span>Star</span>
@@ -129,7 +129,7 @@
         href={SPONSOR_URL}
         target="_blank"
         rel="noopener noreferrer"
-        class="link inline-flex items-center gap-1 font-medium text-gray-700 hover:text-black transition-colors group whitespace-nowrap"
+        class="link inline-flex items-center gap-1 font-medium text-gray-700 hover:text-gray-900 transition-colors group whitespace-nowrap"
       >
         <Heart class="w-3.5 h-3.5 flex-shrink-0" />
         <span>Sponsor</span>
@@ -142,7 +142,7 @@
         href={COFFEE_URL}
         target="_blank"
         rel="noopener noreferrer"
-        class="link inline-flex items-center gap-1 font-medium text-gray-700 hover:text-black transition-colors group whitespace-nowrap"
+        class="link inline-flex items-center gap-1 font-medium text-gray-700 hover:text-gray-900 transition-colors group whitespace-nowrap"
       >
         <Coffee class="w-3.5 h-3.5 flex-shrink-0" />
         <span>Buy me a coffee</span>
