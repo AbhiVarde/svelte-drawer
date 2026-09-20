@@ -12,8 +12,7 @@
   import CodeBlock from "$lib/components/CodeBlock.svelte";
   import DrawerFooter from "$lib/components/DrawerFooter.svelte";
   import { codeExamples } from "$lib/constants/codeExamples";
-  import { ExternalLink } from "lucide-svelte";
-  import { Copy } from "lucide-svelte";
+  import { Check, Copy, ExternalLink } from "lucide-svelte";
 
   let { data } = $props();
 
@@ -210,65 +209,50 @@
 </svelte:head>
 
 <div class="min-h-screen flex flex-col">
-  <div class="w-full max-w-3xl mx-auto px-4 sm:px-6 py-6 text-center">
-    <p class="text-sm text-gray-500 mb-4">
-      npm: <a
+  <header
+    class="w-full max-w-3xl mx-auto px-4 sm:px-6 pt-10 pb-2 flex flex-col items-center gap-4 text-center"
+  >
+    <div class="flex flex-col items-center gap-2">
+      <a
         href="https://www.npmjs.com/package/@abhivarde/svelte-drawer"
         target="_blank"
         rel="noopener noreferrer"
-        class="underline underline-offset-2 hover:text-gray-800 transition-colors"
-        >@abhivarde/svelte-drawer</a
+        class="inline-flex items-center gap-1.5 rounded-full border border-gray-200 px-3 py-1 font-mono text-xs text-gray-500 transition-colors hover:text-gray-900"
       >
-    </p>
-    <h1 class="text-2xl sm:text-3xl font-medium mb-3">Svelte Drawer</h1>
-    <p class="text-base text-gray-600 mb-6">
-      A drawer component for Svelte 5, inspired by <a
-        href="https://github.com/emilkowalski/vaul"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="underline underline-offset-4 hover:text-gray-900 transition-colors"
-        >Vaul</a
-      >.
-    </p>
-    <div class="flex justify-center gap-4 mb-4">
+        <span class="text-gray-400">npm</span>@abhivarde/svelte-drawer
+      </a>
+      <h1 class="text-3xl sm:text-4xl font-medium tracking-tight">
+        Svelte Drawer
+      </h1>
+      <p class="max-w-md text-base text-gray-600">
+        A drawer component for Svelte 5, inspired by
+        <a
+          href="https://github.com/emilkowalski/vaul"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="underline underline-offset-4 hover:text-gray-900 transition-colors"
+          >Vaul</a
+        >.
+      </p>
+    </div>
+
+    <div class="flex justify-center gap-3">
       <button
         onclick={() => (defaultOpen = true)}
-        class="px-5 py-2 bg-gray-900 text-white rounded-md font-medium hover:bg-gray-800 transition text-sm"
+        class="px-3 py-1.5 bg-gray-900 text-white rounded-lg font-medium hover:bg-gray-800 transition text-sm"
         >Render a drawer</button
       >
       <a
         href="https://github.com/AbhiVarde/svelte-drawer"
         target="_blank"
         rel="noopener noreferrer"
-        class="px-5 py-2 bg-white text-gray-900 rounded-md font-medium border border-gray-200 hover:bg-gray-50 transition text-sm"
+        class="px-3 py-1.5 bg-white text-gray-900 rounded-lg font-medium border border-gray-200 hover:bg-gray-50 transition text-sm"
         >GitHub</a
       >
     </div>
-    <div class="space-y-1 text-xs text-gray-400">
-      <p>
-        UI library: <a
-          href="https://syncui.design"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="underline underline-offset-2 hover:text-gray-600 transition-colors"
-          >syncui.design</a
-        >
-      </p>
-      <p>
-        by <a
-          href="https://abhivarde.in"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="underline underline-offset-2 hover:text-gray-600 transition-colors"
-          >abhivarde.in</a
-        >
-      </p>
-    </div>
-  </div>
 
-  <div class="w-full max-w-3xl mx-auto px-4 sm:px-6 pb-4">
-    <div class="flex flex-col items-center gap-2 text-center">
-      <div
+    <div class="flex w-full flex-col items-center gap-1">
+      <p
         class="flex flex-wrap items-center justify-center gap-1.5 text-xs text-gray-500"
       >
         <span>Also available as an agent skill</span>
@@ -277,32 +261,48 @@
           href="https://www.skills.sh/abhivarde/svelte-drawer/svelte-drawer"
           target="_blank"
           rel="noreferrer"
-          class="underline underline-offset-4 hover:text-gray-700"
+          class="underline underline-offset-4 hover:text-gray-700">skills.sh</a
         >
-          skills.sh
-        </a>
-      </div>
+      </p>
       <div
-        class="flex w-full max-w-full items-center justify-center gap-2 sm:w-auto"
+        class="flex w-full max-w-full items-center gap-2 rounded-lg border border-gray-200 bg-white py-1 pl-3 pr-1 sm:w-auto"
       >
         <code
-          class="min-w-0 flex-1 overflow-x-auto rounded border border-gray-200 bg-gray-50 px-2 py-1 text-[11px] text-gray-700 sm:flex-none sm:text-xs"
+          class="min-w-0 flex-1 overflow-x-auto whitespace-nowrap text-xs text-gray-700"
+          >npx skills add AbhiVarde/svelte-drawer</code
         >
-          npx skills add AbhiVarde/svelte-drawer
-        </code>
         <button
           onclick={copySkillCommand}
-          class="shrink-0 rounded border border-gray-200 bg-white p-1.5 transition-colors hover:bg-gray-100"
-          title="Copy install command"
+          aria-label="Copy install command"
+          class="shrink-0 rounded p-1.5 text-gray-500 transition-colors hover:text-gray-900"
         >
-          <Copy size={14} class="text-gray-500" />
+          {#if skillCopyStatus === "success"}
+            <Check size={14} class="text-green-600" />
+          {:else}
+            <Copy size={14} />
+          {/if}
         </button>
       </div>
-      {#if skillCopyStatus === "success"}
-        <span class="text-xs text-green-600 transition-opacity"> Copied! </span>
-      {/if}
     </div>
-  </div>
+
+    <p class="text-sm text-gray-500">
+      Also building
+      <a
+        href="https://tryeve.abhivarde.in"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="underline underline-offset-2 hover:text-gray-900 transition-colors"
+        >tryeve</a
+      >, an agent builder, and
+      <a
+        href="https://ui.abhivarde.in"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="underline underline-offset-2 hover:text-gray-900 transition-colors"
+        >syncui</a
+      >, a UI system.
+    </p>
+  </header>
 
   <GithubStars stars={data.stars} stargazers={data.stargazers} />
 
@@ -311,6 +311,7 @@
       <h2 class="text-xl font-medium mb-3">Installation</h2>
       <CodeBlock
         code={codeExamples.installation}
+        lang="bash"
         copyKey="installation"
         {copyStatus}
         onCopy={copyToClipboard}

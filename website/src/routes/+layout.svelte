@@ -20,9 +20,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     const steps = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900];
-    const gray = Object.fromEntries(
-      steps.map((s) => [s, `var(--gray-${s})`]),
-    );
+    const gray = Object.fromEntries(steps.map((s) => [s, `var(--gray-${s})`]));
 
     tailwind.config = {
       theme: {
@@ -104,5 +102,15 @@
     font-family: "Plus Jakarta Sans", sans-serif;
     background: var(--page);
     color: var(--fg);
+  }
+
+  :global(.shiki),
+  :global(.shiki span) {
+    color: var(--shiki-light);
+  }
+
+  :global(.dark .shiki),
+  :global(.dark .shiki span) {
+    color: var(--shiki-dark);
   }
 </style>

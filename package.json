@@ -61,5 +61,10 @@
   "bugs": {
     "url": "https://github.com/AbhiVarde/svelte-drawer/issues"
   },
-  "homepage": "https://drawer.abhivarde.in"
+  "homepage": "https://drawer.abhivarde.in",
+  "dependencies": {
+    "@shikijs/langs": "^4.4.3",
+    "@shikijs/themes": "^4.4.3",
+    "shiki": "^4.4.3"
+  }
 }
