@@ -22,6 +22,9 @@
   },
   "dependencies": {
     "@abhivarde/svelte-drawer": "^2.0.1",
-    "lucide-svelte": "^0.562.0"
+    "@shikijs/langs": "^4.4.3",
+    "@shikijs/themes": "^4.4.3",
+    "lucide-svelte": "^0.562.0",
+    "shiki": "^4.4.3"
   }
 }
